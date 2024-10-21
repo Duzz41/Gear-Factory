@@ -21,8 +21,14 @@ public class GameManager : MonoBehaviour
             // Bu spawn noktasında zaten AI var mı kontrol et
             if (CountAIAtSpawn(spawn) < maxAI)
             {
-                GameObject ai = Instantiate(aiPrefab, spawn.position, Quaternion.identity);
-                ai.GetComponent<Clockwork_AI>().spawnPoint = spawn;
+                for (int i = 0; i < maxAI - 1; i++)
+                {
+                    GameObject ai = Instantiate(aiPrefab, spawn.position, Quaternion.identity);
+                    ai.transform.parent = spawn;
+                    ai.GetComponent<Clockwork_AI>().spawnPoint = spawn;
+                }
+
+
             }
         }
     }
@@ -30,6 +36,6 @@ public class GameManager : MonoBehaviour
     private int CountAIAtSpawn(Transform spawn)
     {
         // Belirli bir spawn noktasındaki AI sayısını say
-        return GameObject.FindGameObjectsWithTag("AI").Length;
+        return spawn.childCount;
     }
 }
