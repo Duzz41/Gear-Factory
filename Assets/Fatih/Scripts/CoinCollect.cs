@@ -24,17 +24,6 @@ public class CoinCollect : MonoBehaviour
             Destroy(this);
         }
     }
-    void Start()
-    {
-
-    }
-    void Update()
-    {
-
-
-    }
-
-
 
 
     void ThrowBag()
@@ -56,7 +45,7 @@ public class CoinCollect : MonoBehaviour
         {
             Destroy(coins[coins.Count - 1]);
             coins.RemoveAt(coins.Count - 1);
-            // coin_count -= 1;
+            
         }
     }
 

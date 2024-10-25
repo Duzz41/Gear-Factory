@@ -18,6 +18,7 @@ public class MiniGame : MonoBehaviour
     void Start()
     {
         start_pos = uiElement2.localPosition;
+        EventDispatcher.RegisterFunction("ActivateGame", ActivateGame);
     }
     void Update()
     {
@@ -33,21 +34,22 @@ public class MiniGame : MonoBehaviour
             if (AreUIElementsOverlapping(uiElement1, uiElement2))
             {
                 characterMovement_cs.energy = 20f;
-                
+
                 Debug.Log("UI elementleri carpisiyor!");
             }
             else
             {
                 Debug.Log("UI elementleri carpisymior.");
             }
-
+            EventDispatcher.SummonEvent("MiniGameForEnergy");
             traveling = false;
         }
     }
 
     public void ActivateGame()
     {
-        slider.value = (float)Random.Range(0, 1);
+        slider.value = (float)Random.Range(0, 1f);
+        Debug.Log(slider.value);
         traveling = true;
     }
 
