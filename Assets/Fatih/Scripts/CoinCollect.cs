@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CoinCollect : MonoBehaviour
 {
@@ -24,6 +25,12 @@ public class CoinCollect : MonoBehaviour
             Destroy(this);
         }
     }
+<<<<<<< Updated upstream
+=======
+
+
+
+>>>>>>> Stashed changes
 
 
     void ThrowBag()
