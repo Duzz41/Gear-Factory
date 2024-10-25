@@ -17,7 +17,7 @@ public class Clockwork_AI : MonoBehaviour
     private void Start()
     {
         // Başlangıçta hedef pozisyonu belirle
-        baseTransform = GameObject.Find("Base").transform;
+        baseTransform = GameObject.Find("Square").transform;
         SetRandomTargetPosition();
 
     }
@@ -76,7 +76,6 @@ public class Clockwork_AI : MonoBehaviour
         targetPosition = GetRandomPosition(spawnPoint, 2f);
 
         // Hedef pozisyonu sınırlandır (Spawn noktalarının çevresinde kalması için)
-        Debug.Log("Hedef pozisyonu: " + targetPosition.x);
     }
     void SetRandomBasePatrolPos()
     {

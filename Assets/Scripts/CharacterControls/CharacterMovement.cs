@@ -109,7 +109,11 @@ public class CharacterMovement : MonoBehaviour
 
 
           GameObject coin = Instantiate(coin_prefab, this.transform.position + new Vector3(0, 1.5f, 0), Quaternion.identity);
-          coin.transform.DOMove(slot_position, fill_speed).OnComplete(() => { coin.GetComponent<Rigidbody2D>().simulated = false; CoinCollect.instance.RemoveToCoinFromList(null); });
+          coin.transform.DOMove(slot_position, fill_speed).OnComplete(() =>
+          {
+            coin.GetComponent<Rigidbody2D>().simulated = false;
+            CoinCollect.instance.RemoveToCoinFromList(null);
+          });
           active_coins.Add(coin);
 
         }
@@ -117,6 +121,7 @@ public class CharacterMovement : MonoBehaviour
         if (current_slot == building_slot_count)
         {
           StartCoroutine(RemoveCoinOnComplete());
+          PaymentDone();
         }
 
       }
@@ -127,6 +132,11 @@ public class CharacterMovement : MonoBehaviour
       }
 
     }
+  }
+
+  void PaymentDone()
+  {
+    Debug.Log("Payment Done");
   }
   IEnumerator RemoveCoinOnComplete()
   {

@@ -1,20 +1,20 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovements : MonoBehaviour
 {
     public float moveSpeed = 5f; // Karakterin hareket hızı
     public Camera cam;
 
     private Vector2 movementInput;
     private Rigidbody2D rb;
-    private PlayerInputActions playerInputActions;
+    private PlayerInput playerInputActions;
     public float interactionDistance = 1f;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        playerInputActions = new PlayerInputActions(); // PlayerInputActions sınıfını oluşturuyoruz
+        playerInputActions = new PlayerInput(); // PlayerInputActions sınıfını oluşturuyoruz
     }
 
     private void FixedUpdate()
@@ -55,32 +55,33 @@ public class CharacterMovement : MonoBehaviour
 
 
 
-    private void OnEnable()
-    {
-        // Input olaylarını kaydeder
-        playerInputActions.Player.Enable();
+    /* private void OnEnable()
+     {
+         // Input olaylarını kaydeder
+         playerInputActions.Player.Enable();
 
-        // Hareket girdisi olayı
-        playerInputActions.Player.Move.performed += OnMove;
-        playerInputActions.Player.Move.canceled += OnMove;
-        playerInputActions.Player.Interaction.performed += OnInteraction;
+         // Hareket girdisi olayı
+         playerInputActions.Player.Move.performed += OnMove;
+         playerInputActions.Player.Move.canceled += OnMove;
+         playerInputActions.Player.Interaction.performed += OnInteraction;
 
-    }
-    private void OnDisable()
-    {
-        // Input olaylarını devre dışı bırak
-        playerInputActions.Player.Disable();
-    }
+     }
+     private void OnDisable()
+     {
+         // Input olaylarını devre dışı bırak
+         playerInputActions.Player.Disable();
+     }
 
-    private void OnMove(InputAction.CallbackContext context)
-    {
-        // Hareket girdisini al
-        movementInput = context.ReadValue<Vector2>();
-    }
-    private void OnInteraction(InputAction.CallbackContext context)
-    {
-        // Etkilesim girdisini al
-        TestInteraction();
-    }
+     private void OnMove(InputAction.CallbackContext context)
+     {
+         // Hareket girdisini al
+         movementInput = context.ReadValue<Vector2>();
+     }
+     private void OnInteraction(InputAction.CallbackContext context)
+     {
+         // Etkilesim girdisini al
+         TestInteraction();
+     }
+     */
 
 }
