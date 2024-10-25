@@ -33,11 +33,7 @@ public class MiniGame : MonoBehaviour
         {
             if (AreUIElementsOverlapping(uiElement1, uiElement2))
             {
-<<<<<<< Updated upstream
-                characterMovement_cs.energy = 20f;
-=======
-
->>>>>>> Stashed changes
+                //characterMovement_cs.energy = 20f;
 
                 Debug.Log("UI elementleri carpisiyor!");
             }

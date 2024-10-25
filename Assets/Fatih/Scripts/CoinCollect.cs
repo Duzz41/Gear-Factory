@@ -25,12 +25,6 @@ public class CoinCollect : MonoBehaviour
             Destroy(this);
         }
     }
-<<<<<<< Updated upstream
-=======
-
-
-
->>>>>>> Stashed changes
 
 
     void ThrowBag()
