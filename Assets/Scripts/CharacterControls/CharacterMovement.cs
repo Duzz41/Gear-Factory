@@ -18,7 +18,7 @@ public class CharacterMovement : MonoBehaviour
   private float horizontal_input;
 
 
-  [Header("Interaction")]
+ /* [Header("Interaction")]
   private bool can_interact = false;
   private int current_slot = 0;
   private int building_slot_count;
@@ -28,7 +28,7 @@ public class CharacterMovement : MonoBehaviour
   [SerializeField] private GameObject coin_prefab;
   [SerializeField] private float fill_speed;
   [SerializeField] private float drop_duration;
-  [SerializeField] private float remove_duration;
+  [SerializeField] private float remove_duration;*/
 
 
 
@@ -93,7 +93,7 @@ public class CharacterMovement : MonoBehaviour
 
   #endregion
 
-  #region Coin Jobs
+ /* #region Coin Jobs
   void FillCoin()
   {
     if (can_interact)
@@ -271,7 +271,7 @@ public class CharacterMovement : MonoBehaviour
     other.gameObject.transform.GetChild(0).gameObject.SetActive(true);
     can_interact = true;
 
-  }
+  }*/
 
 
 
@@ -283,7 +283,7 @@ public class CharacterMovement : MonoBehaviour
     horizontal_input = context.ReadValue<Vector2>().x;
   }
 
-  public void InteractionKey(InputAction.CallbackContext context)
+ /* public void InteractionKey(InputAction.CallbackContext context)
   {
 
     if (context.performed)
@@ -304,6 +304,6 @@ public class CharacterMovement : MonoBehaviour
       }
 
     }
-  }
+  }*/
   #endregion
 }

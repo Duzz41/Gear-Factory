@@ -466,12 +466,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 339327249}
+  - component: {fileID: 339327255}
   - component: {fileID: 339327252}
   - component: {fileID: 339327251}
   - component: {fileID: 339327250}
   - component: {fileID: 339327254}
   - component: {fileID: 339327253}
-  - component: {fileID: 339327255}
+  - component: {fileID: 339327256}
   m_Layer: 0
   m_Name: Character
   m_TagString: Player
@@ -651,11 +652,6 @@ MonoBehaviour:
   run_speed: 5
   walk_speed: 2
   energy: 20
-  active_coins: []
-  coin_prefab: {fileID: 6283444194330273741, guid: 76639da3b7023cb4e944be62bf543d77, type: 3}
-  fill_speed: 1
-  drop_duration: 1
-  remove_duration: 1
 --- !u!114 &339327255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -699,8 +695,8 @@ MonoBehaviour:
     m_ActionName: Player/Movement[/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 339327254}
-        m_TargetAssemblyTypeName: CharacterMovement, Assembly-CSharp
+      - m_Target: {fileID: 339327256}
+        m_TargetAssemblyTypeName: PayementSystem, Assembly-CSharp
         m_MethodName: InteractionKey
         m_Mode: 0
         m_Arguments:
@@ -718,6 +714,24 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &339327256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339327248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44443aaae174df448894830bc1ab6a4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active_coins: []
+  isCoinsFalling: 0
+  coin_prefab: {fileID: 6283444194330273741, guid: 76639da3b7023cb4e944be62bf543d77, type: 3}
+  fill_speed: 1
+  drop_duration: 1
+  remove_duration: 1
 --- !u!1 &366887629
 GameObject:
   m_ObjectHideFlags: 3
@@ -1399,7 +1413,6 @@ MonoBehaviour:
   uiElement2: {fileID: 436398848}
   slider: {fileID: 299624359}
   travel_speed: 50
-  characterMovement_cs: {fileID: 339327254}
 --- !u!1001 &1388592251
 PrefabInstance:
   m_ObjectHideFlags: 0
