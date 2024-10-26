@@ -542,9 +542,9 @@ GameObject:
   - component: {fileID: 4302169494554370399}
   - component: {fileID: 1849586173855241895}
   - component: {fileID: 4806373487548260264}
-  - component: {fileID: 9126281905757030615}
+  - component: {fileID: 7714190885785294368}
   m_Layer: 0
-  m_Name: Square
+  m_Name: GearFactory
   m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -663,7 +663,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &9126281905757030615
+--- !u!114 &7714190885785294368
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -672,7 +672,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6892792661243331629}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f389c281f8a86354cba70d2bb3fef4f1, type: 3}
+  m_Script: {fileID: 11500000, guid: e8890620522bf2e41970b80869c905ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buildingsSO: {fileID: 11400000, guid: b4b2353906843294e9af0601be6bc1f8, type: 2}
