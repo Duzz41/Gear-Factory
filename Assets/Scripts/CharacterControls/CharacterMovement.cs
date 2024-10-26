@@ -23,6 +23,7 @@ public class CharacterMovement : MonoBehaviour
   private int current_slot = 0;
   private int building_slot_count;
   public List<GameObject> active_coins = new List<GameObject>();
+  private Clockwork_AI robots;
 
   [SerializeField] private GameObject coin_prefab;
   [SerializeField] private float fill_speed;
@@ -95,41 +96,66 @@ public class CharacterMovement : MonoBehaviour
   #region Coin Jobs
   void FillCoin()
   {
-
     if (can_interact)
     {
       if (CoinCollect.instance.coin_count > 0)
       {
-        if (current_slot < building_slot_count)
+        // Determine whether to use Building or AI for coin filling
+        if (building_cs != null)
         {
-
-          Vector3 slot_position = building_cs.coin_holders[current_slot].transform.position;
-          current_slot += 1;
-          CoinCollect.instance.coin_count -= 1;
-
-
-          GameObject coin = Instantiate(coin_prefab, this.transform.position + new Vector3(0, 1.5f, 0), Quaternion.identity);
-          coin.transform.DOMove(slot_position, fill_speed).OnComplete(() =>
-          {
-            coin.GetComponent<Rigidbody2D>().simulated = false;
-            CoinCollect.instance.RemoveToCoinFromList(null);
-          });
-          active_coins.Add(coin);
-
+          FillCoinForBuilding();
         }
-
-        if (current_slot == building_slot_count)
+        else if (robots != null)
         {
-          StartCoroutine(RemoveCoinOnComplete());
-          PaymentDone();
+          FillCoinForAI();
         }
-
       }
 
       if (CoinCollect.instance.coin_count == 0)
       {
         StartCoroutine(DropCoin());
       }
+    }
+  }
+  void FillCoinForBuilding()
+  {
+    if (current_slot < building_slot_count)
+    {
+      Vector3 slot_position = building_cs.coin_holders[current_slot].transform.position;
+      current_slot += 1;
+      CoinCollect.instance.coin_count -= 1;
+
+      GameObject coin = Instantiate(coin_prefab, transform.position + new Vector3(0, 1.5f, 0), Quaternion.identity);
+      coin.transform.DOMove(slot_position, fill_speed).OnComplete(() =>
+      {
+        coin.GetComponent<Rigidbody2D>().simulated = false;
+        CoinCollect.instance.RemoveToCoinFromList(null);
+      });
+      active_coins.Add(coin);
+
+      if (current_slot == building_slot_count)
+      {
+        StartCoroutine(RemoveCoinOnComplete());
+        PaymentDone();
+      }
+    }
+  }
+  void FillCoinForAI()
+  {
+    if (current_slot < building_slot_count)
+    {
+      Vector3 dropPos = transform.position;
+      CoinCollect.instance.coin_count -= 1;
+
+      GameObject coin = Instantiate(coin_prefab, dropPos + new Vector3(0, 1.5f, 0), Quaternion.identity);
+
+      coin.GetComponent<Rigidbody2D>().simulated = true;
+      CoinCollect.instance.RemoveToCoinFromList(null);
+      active_coins.Add(coin);
+
+
+      StartCoroutine(RemoveCoinOnComplete());
+      PaymentDone();
 
     }
   }
@@ -138,6 +164,7 @@ public class CharacterMovement : MonoBehaviour
   {
     Debug.Log("Payment Done");
   }
+  GameObject targetCoin;
   IEnumerator RemoveCoinOnComplete()
   {
 
@@ -152,6 +179,9 @@ public class CharacterMovement : MonoBehaviour
     StopCoroutine(RemoveCoinOnComplete());
 
 
+  }
+  void DropGear()
+  {
   }
   IEnumerator DropCoin()
   {
@@ -175,44 +205,82 @@ public class CharacterMovement : MonoBehaviour
     }
 
   }
+  private void TestInteraction()
+  {
+    Clockwork_AI[] aiControllers = FindObjectsOfType<Clockwork_AI>();
+
+    foreach (var ai in aiControllers)
+    {
+
+      // Eğer mesafe etkileşim mesafesinden kısa ise etkileşim metodunu çağır
+      if (can_interact)
+      {
+        ai.Interact();
+      }
+    }
+  }
 
   #endregion
-  IEnumerator ControlBuildingUI()
+  IEnumerator ControlBuildingUI(Collider2D other)
   {
     float maxWaitTime = 2f; // Örneğin 5 saniye bekliyoruz
     float startTime = Time.time;
     yield return new WaitUntil(() => active_coins.Count == 0 || Time.time - startTime >= maxWaitTime);
     if (active_coins.Count == 0 && !can_interact)
     {
-      building_cs.transform.GetChild(0).gameObject.SetActive(false);
+      other.transform.GetChild(0).gameObject.SetActive(false);
     }
-    StopCoroutine(ControlBuildingUI());
+    StopCoroutine(ControlBuildingUI(other));
 
   }
 
   private Building building_cs;
+  private GameObject targetObject;
 
   void OnTriggerEnter2D(Collider2D other)
   {
     if (other.gameObject.tag == "Building")
     {
-      other.gameObject.transform.GetChild(0).gameObject.SetActive(true);
-      can_interact = true;
-
-
+      OpenUI(other);
       #region GetObjectInfos
-      building_cs = other.gameObject.GetComponent<Building>();
+      targetObject = other.gameObject;
+      building_cs = targetObject.GetComponent<Building>();
+      robots = null; // Clear robots reference to avoid conflicts
       building_slot_count = building_cs.coin_holders.Count;
+      #endregion
+    }
+    else if (other.gameObject.tag == "AI")
+    {
+
+      OpenUI(other);
+      #region GetAIInfos
+      targetObject = other.gameObject;
+      robots = targetObject.GetComponent<Clockwork_AI>();
+      if (robots.currentState == RobotState.Broken)
+      {
+
+      }
+      building_cs = null; // Clear building reference to avoid conflicts
+      building_slot_count = robots.coin_holders.Count;
       #endregion
     }
   }
   void OnTriggerExit2D(Collider2D other)
   {
-    if (other.gameObject.tag == "Building")
+    if (other.gameObject.tag == "Building" || other.gameObject.tag == "AI")
     {
       can_interact = false;
-      StartCoroutine(ControlBuildingUI());
+      StartCoroutine(ControlBuildingUI(other));
     }
+
+
+  }
+
+  void OpenUI(Collider2D other)
+  {
+    other.gameObject.transform.GetChild(0).gameObject.SetActive(true);
+    can_interact = true;
+
   }
 
 

@@ -45,7 +45,6 @@ public class CharacterMovements : MonoBehaviour
             if (distance <= interactionDistance)
             {
                 ai.Interact();
-                ai.isBroken = false;
             }
         }
     }
