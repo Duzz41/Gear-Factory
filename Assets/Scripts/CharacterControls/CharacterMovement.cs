@@ -24,7 +24,7 @@ public class CharacterMovement : MonoBehaviour
   private int building_slot_count;
   public List<GameObject> active_coins = new List<GameObject>();
   private Clockwork_AI robots;
-
+  [SerializeField] bool isCoinsFalling = false;
   [SerializeField] private GameObject coin_prefab;
   [SerializeField] private float fill_speed;
   [SerializeField] private float drop_duration;
@@ -103,7 +103,8 @@ public class CharacterMovement : MonoBehaviour
         // Determine whether to use Building or AI for coin filling
         if (building_cs != null)
         {
-          FillCoinForBuilding();
+          if (isCoinsFalling == false)
+            FillCoinForBuilding();
         }
         else if (robots != null)
         {
@@ -147,7 +148,7 @@ public class CharacterMovement : MonoBehaviour
       Vector3 dropPos = transform.position;
       CoinCollect.instance.coin_count -= 1;
 
-      GameObject coin = Instantiate(coin_prefab, dropPos + new Vector3(0, 1.5f, 0), Quaternion.identity);
+      GameObject coin = Instantiate(coin_prefab, dropPos + new Vector3(1.5f, 0, 0), Quaternion.identity);
 
       coin.GetComponent<Rigidbody2D>().simulated = true;
       CoinCollect.instance.RemoveToCoinFromList(null);
@@ -186,6 +187,7 @@ public class CharacterMovement : MonoBehaviour
   IEnumerator DropCoin()
   {
     CancelInvoke("FillCoin");
+    isCoinsFalling = true;
     if (active_coins.Count > 0)
     {
 
@@ -201,24 +203,12 @@ public class CharacterMovement : MonoBehaviour
 
       }
       current_slot = 0;
+      isCoinsFalling = false;
       StopCoroutine(DropCoin());
     }
 
   }
-  private void TestInteraction()
-  {
-    Clockwork_AI[] aiControllers = FindObjectsOfType<Clockwork_AI>();
 
-    foreach (var ai in aiControllers)
-    {
-
-      // Eğer mesafe etkileşim mesafesinden kısa ise etkileşim metodunu çağır
-      if (can_interact)
-      {
-        ai.Interact();
-      }
-    }
-  }
 
   #endregion
   IEnumerator ControlBuildingUI(Collider2D other)
