@@ -19,16 +19,7 @@ public class PayementSystem : MonoBehaviour
     [SerializeField] private float remove_duration;
 
 
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
 
     #region Coin Jobs
@@ -116,6 +107,9 @@ public class PayementSystem : MonoBehaviour
         }
         current_slot = 0;
         StopCoroutine(RemoveCoinOnComplete());
+        
+
+        //Call Building Job
 
 
     }
@@ -151,7 +145,7 @@ public class PayementSystem : MonoBehaviour
     #endregion
     IEnumerator ControlBuildingUI(Collider2D other)
     {
-        float maxWaitTime = 2f; // Örneğin 5 saniye bekliyoruz
+        float maxWaitTime = 2f; 
         float startTime = Time.time;
         yield return new WaitUntil(() => active_coins.Count == 0 || Time.time - startTime >= maxWaitTime);
         if (active_coins.Count == 0 && !can_interact)
