@@ -4,9 +4,22 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
     public SpawnPoint spawnPoint; // Spawn noktası
     public GameObject aiPrefab; // Yapay zeka prefab'ı
     public int maxAI = 2; // Maksimum AI sayısı
+    public List<GameObject> coins = new List<GameObject>();
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(this);
+        }
+    }
 
     private void Start()
     {

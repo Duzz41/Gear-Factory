@@ -30,7 +30,9 @@ public class CoinCollect : MonoBehaviour
     void ThrowBag()
     {
         GameObject new_coin = Instantiate(coinforbag_prefab, spawn_point.position, Quaternion.identity);
+
         coins.Add(new_coin);
+
         coin_count += 1;
     }
 
@@ -46,7 +48,7 @@ public class CoinCollect : MonoBehaviour
         {
             Destroy(coins[coins.Count - 1]);
             coins.RemoveAt(coins.Count - 1);
-            
+
         }
     }
 
@@ -55,6 +57,7 @@ public class CoinCollect : MonoBehaviour
         if (other.gameObject.tag == "Coin")
         {
             Destroy(other.gameObject);
+            GameManager.instance.coins.Remove(other.gameObject);
             ThrowBag();
         }
     }

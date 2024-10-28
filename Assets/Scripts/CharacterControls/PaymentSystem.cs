@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 
-public class PayementSystem : MonoBehaviour
+public class PaymentSystem : MonoBehaviour
 {
     [Header("Interaction")]
     private bool can_interact = false;
@@ -17,18 +17,6 @@ public class PayementSystem : MonoBehaviour
     [SerializeField] private float fill_speed;
     [SerializeField] private float drop_duration;
     [SerializeField] private float remove_duration;
-
-
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
 
     #region Coin Jobs
@@ -69,6 +57,7 @@ public class PayementSystem : MonoBehaviour
             {
                 coin.GetComponent<Rigidbody2D>().simulated = false;
                 CoinCollect.instance.RemoveToCoinFromList(null);
+
             });
             active_coins.Add(coin);
 
@@ -81,20 +70,15 @@ public class PayementSystem : MonoBehaviour
     }
     void FillCoinForAI()
     {
-        if (current_slot < building_slot_count)
+        if (current_slot < 1)
         {
             Vector3 dropPos = transform.position;
             CoinCollect.instance.coin_count -= 1;
-
+            CoinCollect.instance.RemoveToCoinFromList(null);
             GameObject coin = Instantiate(coin_prefab, dropPos + new Vector3(1.5f, 0, 0), Quaternion.identity);
+            GameManager.instance.coins.Add(coin);
 
             coin.GetComponent<Rigidbody2D>().simulated = true;
-            CoinCollect.instance.RemoveToCoinFromList(null);
-            active_coins.Add(coin);
-
-
-            StartCoroutine(RemoveCoinOnComplete());
-            PaymentDone();
 
         }
     }
@@ -103,7 +87,6 @@ public class PayementSystem : MonoBehaviour
     {
         Debug.Log("Payment Done");
     }
-    GameObject targetCoin;
     IEnumerator RemoveCoinOnComplete()
     {
 
@@ -119,9 +102,6 @@ public class PayementSystem : MonoBehaviour
 
 
     }
-    void DropGear()
-    {
-    }
     IEnumerator DropCoin()
     {
         CancelInvoke("FillCoin");
@@ -136,6 +116,7 @@ public class PayementSystem : MonoBehaviour
                 if (active_coins.Count != 0)
                 {
                     active_coins[0].GetComponent<Rigidbody2D>().simulated = true;
+                    GameManager.instance.coins.Add(active_coins[0]);
                     active_coins.RemoveAt(0);
                 }
 
@@ -156,14 +137,15 @@ public class PayementSystem : MonoBehaviour
         yield return new WaitUntil(() => active_coins.Count == 0 || Time.time - startTime >= maxWaitTime);
         if (active_coins.Count == 0 && !can_interact)
         {
-            other.transform.GetChild(0).gameObject.SetActive(false);
+            if (other.transform.GetChild(0).gameObject != null)
+                other.transform.GetChild(0).gameObject.SetActive(false);
         }
-        StopCoroutine(ControlBuildingUI(other));
 
     }
 
     private Building building_cs;
     private GameObject targetObject;
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -180,25 +162,25 @@ public class PayementSystem : MonoBehaviour
         else if (other.gameObject.tag == "AI")
         {
 
-            OpenUI(other);
+            //OpenUI(other);
             #region GetAIInfos
             targetObject = other.gameObject;
             robots = targetObject.GetComponent<Clockwork_AI>();
-            if (robots.currentState == RobotState.Broken)
-            {
-
-            }
             building_cs = null; // Clear building reference to avoid conflicts
-            building_slot_count = robots.coin_holders.Count;
+            can_interact = true;
             #endregion
         }
     }
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Building" || other.gameObject.tag == "AI")
+        if (other.gameObject.tag == "Building")
         {
             can_interact = false;
             StartCoroutine(ControlBuildingUI(other));
+        }
+        else if (other.gameObject.tag == "AI")
+        {
+            can_interact = false;
         }
 
 
@@ -212,28 +194,17 @@ public class PayementSystem : MonoBehaviour
     }
 
 
-
-
-    public void InteractionKey(InputAction.CallbackContext context)
+    public void CancelAction()
     {
+        CancelInvoke("FillCoin");
 
-        if (context.performed)
+        if (active_coins.Count == building_slot_count)
         {
-            InvokeRepeating("FillCoin", 0.5f, 1f);
+            StartCoroutine(RemoveCoinOnComplete());
         }
-        if (context.canceled)
+        else if (active_coins.Count > 0)
         {
-            CancelInvoke("FillCoin");
-
-            if (active_coins.Count == building_slot_count)
-            {
-                StartCoroutine(RemoveCoinOnComplete());
-            }
-            else if (active_coins.Count > 0)
-            {
-                StartCoroutine(DropCoin());
-            }
-
+            StartCoroutine(DropCoin());
         }
     }
 }

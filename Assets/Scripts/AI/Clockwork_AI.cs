@@ -17,14 +17,10 @@ public class Clockwork_AI : MonoBehaviour
     public float moveSpeed = 2f; // Yapay zekanın hareket hızı
     public Transform spawnPoint;
     private Transform baseTransform; // Ana üssün transformu
-    private bool isReachingBase = false;
-    private Vector3 targetPosition; // Hedef pozisyo
+    public Vector3 targetPosition; // Hedef pozisyo
+    [SerializeField] Transform closestCoin;
 
-
-    [Header("Coin UI")]
-    [SerializeField] private Canvas my_canvas;
-    public List<Transform> coin_holders = new List<Transform>();
-    public int price = 1;
+    public List<GameObject> coins = new List<GameObject>();
 
 
     private void Start()
@@ -55,6 +51,7 @@ public class Clockwork_AI : MonoBehaviour
                 HandleMinerState();
                 break;
         }
+
     }
     #region ChangeState
     public void ChangeState(RobotState newState)
@@ -81,19 +78,52 @@ public class Clockwork_AI : MonoBehaviour
     {
         // Madenci durumundaki davranışlar
     }
+
+
+
+    //Yapay zekanın en yakınında kalan gear'i bulan metod
+    private Transform FindClosestCoin()
+    {
+        float closestDistance = 5f;
+
+        foreach (GameObject coin in GameManager.instance.coins)
+        {
+            if (coin != null)
+            {
+                float distanceToCoin = Vector2.Distance(transform.position, coin.transform.position);
+                if (distanceToCoin < closestDistance)
+                {
+                    closestDistance = distanceToCoin;
+                    closestCoin = coin.transform;
+                }
+            }
+            else
+                return null;
+        }
+
+        return closestCoin;
+    }
+
+
+
+
     #region Broken Clockwork
+
+
     private void HandleBrokenState()
     {
-        Patrol();
-    }
-    public void Repair()
-    {
-        if (currentState == RobotState.Broken)
+        Transform closestCoin = FindClosestCoin();
+        if (closestCoin != null)
         {
-            ChangeState(RobotState.Villager);
-            Debug.Log("Robot onarıldı ve köylü oldu.");
+            CatchCoin(closestCoin);
         }
+        else
+            Patrol();
     }
+
+
+
+
     private void Patrol()
     {
         MoveTowardsTarget();
@@ -122,9 +152,22 @@ public class Clockwork_AI : MonoBehaviour
     void CatchCoin(Transform targetCoin)
     {
         float distance = Vector2.Distance(transform.position, targetCoin.position);
-        float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
-        float currentSpeed = moveSpeed * slowdownFactor;
+        float currentSpeed = moveSpeed * 1.25f;
         transform.position = Vector2.MoveTowards(transform.position, targetCoin.position, currentSpeed * Time.deltaTime);
+        if (distance < 0.5f)
+        {
+            CollectGear(targetCoin.gameObject);
+
+            MoveTowardsBase();
+            Repair();
+        }
+    }
+    //Parayı topladıktan sonra köy merkezine ulaştıktan sonra çalışacak metod
+    public void Repair()
+    {
+
+        ChangeState(RobotState.Villager);
+        Debug.Log("Robot onarıldı ve köylü oldu.");
     }
     #endregion
 
@@ -136,6 +179,10 @@ public class Clockwork_AI : MonoBehaviour
     {
         PatrolBase();
     }
+
+
+
+    //Köylü olduktan sonra ana üssün etrafında görev alana kadar volta atmasını sağlayan kısım.
     private void PatrolBase()
     {
         // Ana üssün etrafında döner
@@ -143,21 +190,25 @@ public class Clockwork_AI : MonoBehaviour
         UpdateDirection();
 
     }
+
+
+
+    //Parayı aldıktan sonra köy merkezine ulaşana kadar köy merkezine yönelmesini sağlayan method.
     private void MoveTowardsBase()
     {
-        if (isReachingBase == false)
+        if (currentState == RobotState.Broken)
         {
 
-            targetPosition = new Vector2(baseTransform.position.x, baseTransform.position.y);
+            targetPosition = new Vector2(baseTransform.position.x, 0.5f);
             float distance = Vector2.Distance(transform.position, targetPosition);
             float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
-            float currentSpeed = moveSpeed * slowdownFactor;
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
-            if (Vector2.Distance(transform.position, targetPosition) < 1f)
-            {
+            float currentSpeed = moveSpeed* slowdownFactor;
 
-                isReachingBase = true;
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
+            if (distance < 0.5f)
+            {
                 moveSpeed = 2f;
+
                 SetRandomBasePatrolPos();
             }
         }
@@ -167,7 +218,7 @@ public class Clockwork_AI : MonoBehaviour
             float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
             float currentSpeed = moveSpeed * slowdownFactor;
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
-            if (Vector2.Distance(transform.position, targetPosition) < 0.5f)
+            if (distance < 0.5f)
             {
 
                 SetRandomBasePatrolPos();
@@ -189,10 +240,14 @@ public class Clockwork_AI : MonoBehaviour
         float randomX = Random.Range(basePos.position.x - patrolDistance, basePos.position.x + patrolDistance);
 
         // Y ve Z koordinatları sabit kalacak, sadece X koordinatı değişecek
-        return new Vector2(randomX, basePos.position.y);
+        return new Vector2(randomX, 0.5f);
     }
 
-
+    public void CollectGear(GameObject gear)
+    {
+        coins.Add(gear);
+        Destroy(gear);
+    }
 
 
     private void UpdateDirection()
