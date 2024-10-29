@@ -1729,6 +1729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88be41a21bb45d34dbdb8e0593a85c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterMovement_cs: {fileID: 339327254}
   uiElement1: {fileID: 1280528524}
   uiElement2: {fileID: 436398848}
   slider: {fileID: 299624359}

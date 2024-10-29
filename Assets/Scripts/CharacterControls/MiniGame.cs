@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class MiniGame : MonoBehaviour
 {
+
+    [SerializeField] private CharacterMovement characterMovement_cs;
     public RectTransform uiElement1; // Birinci UI elementi
     public RectTransform uiElement2; // İkinci UI elementi
 
@@ -33,7 +35,7 @@ public class MiniGame : MonoBehaviour
         {
             if (AreUIElementsOverlapping(uiElement1, uiElement2))
             {
-                //characterMovement_cs.energy = 20f;
+                characterMovement_cs.energy = 20f;
 
                 Debug.Log("UI elementleri carpisiyor!");
             }
