@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject aiPrefab; // Yapay zeka prefab'ı
     public int maxAI = 2; // Maksimum AI sayısı
     public List<GameObject> coins = new List<GameObject>();
+    public ParticleSystem sandEffect;
     void Awake()
     {
         if (instance == null)
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SpawnAI();
+        //sandEffect.Play();
     }
 
     private void SpawnAI()

@@ -37,7 +37,6 @@ public class PaymentSystem : MonoBehaviour
                     FillCoinForAI();
                 }
             }
-
             if (CoinCollect.instance.coin_count == 0)
             {
                 StartCoroutine(DropCoin());
@@ -52,7 +51,7 @@ public class PaymentSystem : MonoBehaviour
             current_slot += 1;
             CoinCollect.instance.coin_count -= 1;
 
-            GameObject coin = Instantiate(coin_prefab, transform.position + new Vector3(0, 1.5f, 0), Quaternion.identity);
+            GameObject coin = Instantiate(coin_prefab, transform.position + new Vector3(0, 2f, 0), Quaternion.identity);
             coin.transform.DOMove(slot_position, fill_speed).OnComplete(() =>
             {
                 coin.GetComponent<Rigidbody2D>().simulated = false;
@@ -75,7 +74,7 @@ public class PaymentSystem : MonoBehaviour
             Vector3 dropPos = transform.position;
             CoinCollect.instance.coin_count -= 1;
             CoinCollect.instance.RemoveToCoinFromList(null);
-            GameObject coin = Instantiate(coin_prefab, dropPos + new Vector3(1.5f, 0, 0), Quaternion.identity);
+            GameObject coin = Instantiate(coin_prefab, dropPos + new Vector3(3f, 0, 0), Quaternion.identity);
             GameManager.instance.coins.Add(coin);
 
             coin.GetComponent<Rigidbody2D>().simulated = true;
@@ -157,6 +156,7 @@ public class PaymentSystem : MonoBehaviour
             building_cs = targetObject.GetComponent<Building>();
             robots = null; // Clear robots reference to avoid conflicts
             building_slot_count = building_cs.coin_holders.Count;
+            can_interact = true;
             #endregion
         }
         else if (other.gameObject.tag == "AI")

@@ -81,28 +81,6 @@ public class Clockwork_AI : MonoBehaviour
 
 
 
-    //Yapay zekanın en yakınında kalan gear'i bulan metod
-    private Transform FindClosestCoin()
-    {
-        float closestDistance = 5f;
-
-        foreach (GameObject coin in GameManager.instance.coins)
-        {
-            if (coin != null)
-            {
-                float distanceToCoin = Vector2.Distance(transform.position, coin.transform.position);
-                if (distanceToCoin < closestDistance)
-                {
-                    closestDistance = distanceToCoin;
-                    closestCoin = coin.transform;
-                }
-            }
-            else
-                return null;
-        }
-
-        return closestCoin;
-    }
 
 
 
@@ -149,6 +127,30 @@ public class Clockwork_AI : MonoBehaviour
 
         // Hedef pozisyonu sınırlandır (Spawn noktalarının çevresinde kalması için)
     }
+    //Yapay zekanın en yakınında kalan gear'i bulan metod
+    private Transform FindClosestCoin()
+    {
+        float closestDistance = 5f;
+
+        foreach (GameObject coin in GameManager.instance.coins)
+        {
+            if (coin != null)
+            {
+
+                float distanceToCoin = Vector2.Distance(transform.position, coin.transform.position);
+                if (distanceToCoin < closestDistance)
+                {
+                    closestDistance = distanceToCoin;
+                    closestCoin = coin.transform;
+                }
+            }
+            else
+                return null;
+        }
+
+        return closestCoin;
+    }
+
     void CatchCoin(Transform targetCoin)
     {
         float distance = Vector2.Distance(transform.position, targetCoin.position);
@@ -157,7 +159,6 @@ public class Clockwork_AI : MonoBehaviour
         if (distance < 0.5f)
         {
             CollectGear(targetCoin.gameObject);
-
             MoveTowardsBase();
             Repair();
         }
@@ -198,11 +199,10 @@ public class Clockwork_AI : MonoBehaviour
     {
         if (currentState == RobotState.Broken)
         {
-
-            targetPosition = new Vector2(baseTransform.position.x, 0.5f);
+            targetPosition = new Vector2(baseTransform.position.x, 1.5f);
             float distance = Vector2.Distance(transform.position, targetPosition);
             float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
-            float currentSpeed = moveSpeed* slowdownFactor;
+            float currentSpeed = moveSpeed * slowdownFactor;
 
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
             if (distance < 0.5f)
@@ -240,7 +240,7 @@ public class Clockwork_AI : MonoBehaviour
         float randomX = Random.Range(basePos.position.x - patrolDistance, basePos.position.x + patrolDistance);
 
         // Y ve Z koordinatları sabit kalacak, sadece X koordinatı değişecek
-        return new Vector2(randomX, 0.5f);
+        return new Vector2(randomX, 1.5f);
     }
 
     public void CollectGear(GameObject gear)

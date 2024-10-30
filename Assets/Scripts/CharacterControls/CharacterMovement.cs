@@ -20,6 +20,7 @@ public class CharacterMovement : MonoBehaviour
   private float horizontal_input;
   public ParticleSystem movementParticle;
   private bool facingRight = true;
+  public GameObject carSprite;
 
 
   /* [Header("Interaction")]
@@ -45,7 +46,7 @@ public class CharacterMovement : MonoBehaviour
   }
 
 
-  void Update()
+  void FixedUpdate()
   {
     UpdateEnergy();
     UpdateSpeed();
@@ -72,9 +73,9 @@ public class CharacterMovement : MonoBehaviour
   void Flip()
   {
     facingRight = !facingRight;
-    Vector3 scale = transform.localScale;
+    Vector3 scale = carSprite.transform.localScale;
     scale.x *= -1; // X eksenini tersine çevir
-    transform.localScale = scale;
+    carSprite.transform.localScale = scale;
   }
   void MiniGameForEnergy()
   {
@@ -82,12 +83,14 @@ public class CharacterMovement : MonoBehaviour
   }
   void MovementParticules()
   {
-    Debug.Log(rb.velocity);
     if (rb.velocity.magnitude > 0.1f)
     {
-      Debug.Log("naber mmüğdür");
       if (movementParticle.isPlaying == false)
+      {
         movementParticle.Play();
+        Debug.Log("Movement Particle is Playing");
+      }
+
     }
     else
     {
