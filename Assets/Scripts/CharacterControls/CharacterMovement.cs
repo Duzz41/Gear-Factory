@@ -18,7 +18,7 @@ public class CharacterMovement : MonoBehaviour
   private float current_speed;
   public float energy = 20f;
   private float horizontal_input;
-  public ParticleSystem movementParticle;
+  public ParticleSystem movementParticle, frontTire;
   private bool facingRight = true;
   public GameObject carSprite;
 
@@ -88,6 +88,7 @@ public class CharacterMovement : MonoBehaviour
       if (movementParticle.isPlaying == false)
       {
         movementParticle.Play();
+        frontTire.Play();
         Debug.Log("Movement Particle is Playing");
       }
 
@@ -95,7 +96,10 @@ public class CharacterMovement : MonoBehaviour
     else
     {
       if (movementParticle.isPlaying == true)
+      {
         movementParticle.Stop();
+        frontTire.Stop();
+      }
     }
   }
   void UpdateEnergy()
@@ -338,6 +342,12 @@ public class CharacterMovement : MonoBehaviour
       _paymentSystem.CancelAction();
 
     }
+  }
+  public MiniGame _miniGame;
+  public void EnergyButton(InputAction.CallbackContext context)
+  {
+    if (context.started)
+      _miniGame.MiniGameForEnergy();
   }
   #endregion
 }

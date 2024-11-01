@@ -136,16 +136,19 @@ public class Clockwork_AI : MonoBehaviour
         {
             if (coin != null)
             {
-
                 float distanceToCoin = Vector2.Distance(transform.position, coin.transform.position);
                 if (distanceToCoin < closestDistance)
                 {
-                    closestDistance = distanceToCoin;
+                    Debug.Log("nasdsadasdasd");
+
                     closestCoin = coin.transform;
+                    return closestCoin;
                 }
             }
             else
+            {
                 return null;
+            }
         }
 
         return closestCoin;
@@ -153,6 +156,7 @@ public class Clockwork_AI : MonoBehaviour
 
     void CatchCoin(Transform targetCoin)
     {
+        UpdateDirection();
         float distance = Vector2.Distance(transform.position, targetCoin.position);
         float currentSpeed = moveSpeed * 1.25f;
         transform.position = Vector2.MoveTowards(transform.position, targetCoin.position, currentSpeed * Time.deltaTime);
@@ -161,15 +165,24 @@ public class Clockwork_AI : MonoBehaviour
             CollectGear(targetCoin.gameObject);
             MoveTowardsBase();
             Repair();
+
         }
     }
     //Parayı topladıktan sonra köy merkezine ulaştıktan sonra çalışacak metod
     public void Repair()
     {
-
         ChangeState(RobotState.Villager);
         Debug.Log("Robot onarıldı ve köylü oldu.");
     }
+
+    void CollectGear(GameObject gear)
+    {
+        GameManager.instance.coins.Remove(gear);
+        coins.Add(gear);
+        Destroy(gear);
+        closestCoin = null;
+    }
+
     #endregion
 
 
@@ -199,7 +212,7 @@ public class Clockwork_AI : MonoBehaviour
     {
         if (currentState == RobotState.Broken)
         {
-            targetPosition = new Vector2(baseTransform.position.x, 1.5f);
+            targetPosition = new Vector2(baseTransform.position.x, 1f);
             float distance = Vector2.Distance(transform.position, targetPosition);
             float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
             float currentSpeed = moveSpeed * slowdownFactor;
@@ -240,14 +253,9 @@ public class Clockwork_AI : MonoBehaviour
         float randomX = Random.Range(basePos.position.x - patrolDistance, basePos.position.x + patrolDistance);
 
         // Y ve Z koordinatları sabit kalacak, sadece X koordinatı değişecek
-        return new Vector2(randomX, 1.5f);
+        return new Vector2(randomX, 1f);
     }
 
-    public void CollectGear(GameObject gear)
-    {
-        coins.Add(gear);
-        Destroy(gear);
-    }
 
 
     private void UpdateDirection()

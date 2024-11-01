@@ -12,11 +12,13 @@ public class MiniGame : MonoBehaviour
     [SerializeField] private float travel_speed;
     private bool traveling = true;
     private Vector2 start_pos;
+    private CharacterMovement characterMovement_cs;
 
 
 
     void Start()
     {
+        characterMovement_cs = transform.root.GetComponent<CharacterMovement>();
         start_pos = uiElement2.localPosition;
         EventDispatcher.RegisterFunction("ActivateGame", ActivateGame);
     }
@@ -28,22 +30,27 @@ public class MiniGame : MonoBehaviour
             float xPos = Mathf.PingPong(travel_speed * Time.time, 140);
             uiElement2.localPosition = new Vector2(xPos + start_pos.x, uiElement2.localPosition.y);
         }
-
+        //Yeni Input sistemine göre yaz
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (AreUIElementsOverlapping(uiElement1, uiElement2))
-            {
-                //characterMovement_cs.energy = 20f;
 
-                Debug.Log("UI elementleri carpisiyor!");
-            }
-            else
-            {
-                Debug.Log("UI elementleri carpisymior.");
-            }
-            EventDispatcher.SummonEvent("MiniGameForEnergy");
-            traveling = false;
         }
+    }
+
+    public void MiniGameForEnergy()
+    {
+        if (AreUIElementsOverlapping(uiElement1, uiElement2))
+        {
+            characterMovement_cs.energy = 20f;
+
+            Debug.Log("UI elementleri carpisiyor!");
+        }
+        else
+        {
+            Debug.Log("UI elementleri carpisymior.");
+        }
+        EventDispatcher.SummonEvent("MiniGameForEnergy");
+        traveling = false;
     }
 
     public void ActivateGame()

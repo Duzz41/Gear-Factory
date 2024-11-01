@@ -23,7 +23,6 @@ public class CloudScript : MonoBehaviour
         transform.Translate(Vector3.right * (Time.deltaTime * _speed));
         if (transform.position.x > _endPosX.transform.position.x)
         {
-            Debug.Log("naber");
             Destroy(gameObject);
         }
     }

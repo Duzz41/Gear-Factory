@@ -42,8 +42,6 @@ public class GameManager : MonoBehaviour
                     ai.transform.parent = spawn;
                     ai.GetComponent<Clockwork_AI>().spawnPoint = spawn;
                 }
-
-
             }
         }
     }

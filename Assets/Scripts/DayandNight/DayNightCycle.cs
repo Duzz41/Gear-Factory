@@ -18,7 +18,7 @@ public class DayNightCycle : MonoBehaviour
 
     public bool activateLights;
     public GameObject[] lights;
-    public SpriteRenderer[] stars;
+    public Light2D[] stars;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,18 +57,19 @@ public class DayNightCycle : MonoBehaviour
 
     void ControlPPV()
     {
-        if (hours >= 19 && hours < 21)
+        if (hours >= 18 && hours < 22)
         {
-            if (_light.intensity >= 0.1f)
+            if (_light.intensity > 0.01f)
             {
-                _light.intensity -= Time.fixedDeltaTime / 10;
-                _light.color = Color.Lerp(_light.color, _gradient, Time.fixedDeltaTime);
+                _light.intensity -= Time.fixedDeltaTime / 50;
+                _light.color = Color.Lerp(_light.color, _gradient, Time.fixedDeltaTime / 45);
             }
 
 
             for (int i = 0; i < stars.Length; i++)
             {
-                stars[i].color = new Color(stars[i].color.r, stars[i].color.g, stars[i].color.b, Time.fixedDeltaTime / 10);
+                if (stars[i].intensity >= 0.4f)
+                    stars[i].intensity -= Time.fixedDeltaTime / 15;
             }
             if (activateLights == false)
             {
@@ -88,12 +89,14 @@ public class DayNightCycle : MonoBehaviour
         {
             if (_light.intensity <= 1)
             {
-                _light.intensity += Time.fixedDeltaTime / 10;
-                _light.color = Color.Lerp(_light.color, Color.white, Time.fixedDeltaTime);
+                _light.intensity += Time.fixedDeltaTime / 25;
+                _light.color = Color.Lerp(_light.color, Color.white, Time.fixedDeltaTime / 25);
             }
             for (int i = 0; i < stars.Length; i++)
             {
-                stars[i].color = new Color(stars[i].color.r, stars[i].color.g, stars[i].color.b, Time.fixedDeltaTime / 10);
+                if (stars[i].intensity <= 1)
+                    stars[i].intensity += Time.fixedDeltaTime / 25;
+
             }
             if (activateLights == true)
             {
