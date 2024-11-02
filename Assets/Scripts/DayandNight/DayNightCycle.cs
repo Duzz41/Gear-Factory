@@ -8,7 +8,8 @@ public class DayNightCycle : MonoBehaviour
 {
     //public Volume ppv;
     public Light2D _light;
-    [SerializeField] Color _gradient;
+    [SerializeField] Color _color;
+    [SerializeField] Gradient _gradient;
 
     public float tick;
     public float seconds;
@@ -57,12 +58,18 @@ public class DayNightCycle : MonoBehaviour
 
     void ControlPPV()
     {
+        float timePercent = (hours * 60 + mins) / 1440f;
+
+        // Gradiente göre rengi ayarla
+        _color = _gradient.Evaluate(timePercent);
+        _light.color = _color;
         if (hours >= 18 && hours < 22)
         {
             if (_light.intensity > 0.01f)
             {
                 _light.intensity -= Time.fixedDeltaTime / 50;
-                _light.color = Color.Lerp(_light.color, _gradient, Time.fixedDeltaTime / 45);
+                //_light.color = Color.Lerp(_light.color, _color, Time.fixedDeltaTime / 45);
+
             }
 
 
@@ -84,13 +91,12 @@ public class DayNightCycle : MonoBehaviour
                 }
             }
         }
-
         if (hours >= 5 && hours < 7)
         {
             if (_light.intensity <= 1)
             {
                 _light.intensity += Time.fixedDeltaTime / 25;
-                _light.color = Color.Lerp(_light.color, Color.white, Time.fixedDeltaTime / 25);
+                //_light.color = Color.Lerp(_light.color, Color.white, Time.fixedDeltaTime / 25);
             }
             for (int i = 0; i < stars.Length; i++)
             {
@@ -111,10 +117,4 @@ public class DayNightCycle : MonoBehaviour
             }
         }
     }
-
-    public void DisplayTime()
-    {
-
-    }
-
 }

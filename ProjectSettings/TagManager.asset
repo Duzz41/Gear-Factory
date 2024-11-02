@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Clockwork
   - AI
+  - Coin
+  - Building
   layers:
   - Default
   - TransparentFX
@@ -40,6 +42,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 1407473103
+    locked: 0
+  - name: sun
+    uniqueID: 1452663099
+    locked: 0
+  - name: Obs
+    uniqueID: 1654279167
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: road
+    uniqueID: 933180517
     locked: 0
