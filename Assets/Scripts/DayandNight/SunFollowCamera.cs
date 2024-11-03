@@ -18,9 +18,9 @@ public class SunFollowCamera : MonoBehaviour
 
     void Cycle()
     {
-        while (dayNightCycle.isDay == false)
+        if (dayNightCycle.isDay == false)
             angle = -3;
-        while (dayNightCycle.isDay == true)
+        else if (dayNightCycle.isDay == true)
             angle -= orbitSpeed * Time.deltaTime;
 
         // X ve Y pozisyonlarını hesapla (elips için farklı yarıçaplar kullanarak)

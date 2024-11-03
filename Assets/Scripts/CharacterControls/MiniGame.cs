@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class MiniGame : MonoBehaviour
 {
@@ -31,27 +32,28 @@ public class MiniGame : MonoBehaviour
             uiElement2.localPosition = new Vector2(xPos + start_pos.x, uiElement2.localPosition.y);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (AreUIElementsOverlapping(uiElement1, uiElement2))
-            {
-                characterMovement_cs.energy = 20f;
 
-                Debug.Log("UI elementleri carpisiyor!");
-            }
-            else
-            {
-                Debug.Log("UI elementleri carpisymior.");
-            }
-            EventDispatcher.SummonEvent("MiniGameForEnergy");
-            traveling = false;
+    }
+
+    void StopGame()
+    {
+        if (AreUIElementsOverlapping(uiElement1, uiElement2))
+        {
+            characterMovement_cs.energy = 20f;
+
+            Debug.Log("UI elementleri carpisiyor!");
         }
+        else
+        {
+            Debug.Log("UI elementleri carpisymior.");
+        }
+        EventDispatcher.SummonEvent("MiniGameForEnergy");
+        traveling = false;
     }
 
     public void ActivateGame()
     {
         slider.value = (float)Random.Range(0, 1f);
-        Debug.Log(slider.value);
         traveling = true;
     }
 
@@ -75,5 +77,17 @@ public class MiniGame : MonoBehaviour
         // Dünya koordinatlarıyla Rect oluşturuyoruz
         Vector2 size = new Vector2(corners[2].x - corners[0].x, corners[2].y - corners[0].y);
         return new Rect(corners[0], size);
+    }
+
+
+
+    #region Inputs
+    public void EnergyButton(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            StopGame();
+        }
+        #endregion
     }
 }

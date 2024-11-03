@@ -14,10 +14,10 @@ public class JobManager : MonoBehaviour
         foreach (Clockwork_AI robot in robots)
         {
             // Eğer robot bozuksa, tamir et
-            if (robot.currentState == RobotState.Broken)
+            /*if (robot.currentState == RobotState.Broken)
             {
                 robot.Repair();
-            }
+            }*/
 
             // Robot köylü durumuna geçtiyse, ona bir görev ata (örneğin savaşçı)
             if (robot.currentState == RobotState.Villager)
