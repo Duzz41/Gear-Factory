@@ -24,7 +24,7 @@ public class Building : MonoBehaviour
         Debug.Log("Building upgraded!");
     }
 
-    public virtual void Sell()
+    public virtual void BuyFrombuilding()
     {
         Debug.Log("Building sold!");
     }

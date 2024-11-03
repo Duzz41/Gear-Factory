@@ -12513,6 +12513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42d23f97bd783684ba411722e0f409ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dayNightCycle: {fileID: 1456694670}
   centerObject: {fileID: 339327249}
   radiusX: 10
   radiusY: 5
@@ -13270,6 +13271,7 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
+  isDay: 0
   tick: 600
   seconds: 0
   mins: 0

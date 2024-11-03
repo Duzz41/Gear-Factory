@@ -51,7 +51,6 @@ public class Clockwork_AI : MonoBehaviour
                 HandleMinerState();
                 break;
         }
-
     }
     #region ChangeState
     public void ChangeState(RobotState newState)
@@ -164,16 +163,10 @@ public class Clockwork_AI : MonoBehaviour
         {
             CollectGear(targetCoin.gameObject);
             MoveTowardsBase();
-            Repair();
-
+            ChangeState(RobotState.Villager);
         }
     }
-    //Parayı topladıktan sonra köy merkezine ulaştıktan sonra çalışacak metod
-    public void Repair()
-    {
-        ChangeState(RobotState.Villager);
-        Debug.Log("Robot onarıldı ve köylü oldu.");
-    }
+
 
     void CollectGear(GameObject gear)
     {

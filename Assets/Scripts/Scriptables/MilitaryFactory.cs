@@ -2,24 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GearFactory : Building
+public class MilitaryFactory : Building
 {
     public override void Build()
     {
         base.Build();
-        Debug.Log("Building-specific construction logic.");
     }
 
     public override void Upgrade()
     {
         base.Upgrade();
-        Debug.Log("Building-specific upgrade logic.");
     }
 
     public override void BuyFrombuilding()
     {
-        
         base.BuyFrombuilding();
-       
     }
 }

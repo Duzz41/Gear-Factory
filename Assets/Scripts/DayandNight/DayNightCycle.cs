@@ -11,6 +11,7 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] Color _color;
     [SerializeField] Gradient _gradient;
 
+    public bool isDay;
     public float tick;
     public float seconds;
     public int mins;
@@ -80,15 +81,14 @@ public class DayNightCycle : MonoBehaviour
             }
             if (activateLights == false)
             {
-                if (mins > 45)
+                for (int i = 0; i < lights.Length; i++)
                 {
-                    for (int i = 0; i < lights.Length; i++)
-                    {
-                        lights[i].SetActive(true);
+                    isDay = false;
+                    lights[i].SetActive(true);
 
-                    }
-                    activateLights = true;
                 }
+                activateLights = true;
+
             }
         }
         if (hours >= 5 && hours < 7)
@@ -106,14 +106,12 @@ public class DayNightCycle : MonoBehaviour
             }
             if (activateLights == true)
             {
-                if (mins > 45)
+                for (int i = 0; i < lights.Length; i++)
                 {
-                    for (int i = 0; i < lights.Length; i++)
-                    {
-                        lights[i].SetActive(false);
-                    }
-                    activateLights = false;
+                    isDay = true;
+                    lights[i].SetActive(false);
                 }
+                activateLights = false;
             }
         }
     }

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SunFollowCamera : MonoBehaviour
-{public Transform centerObject;  // Dairenin merkezinde bulunacak nesne (örneğin kamera)
+{
+    public DayNightCycle dayNightCycle;
+    public Transform centerObject;  // Dairenin merkezinde bulunacak nesne (örneğin kamera)
     public float radiusX = 10f;     // X ekseni için yarıçap
     public float radiusY = 5f;     // Y ekseni için yarıçap
     public float orbitSpeed = 0.03f;   // Güneşin dönme hızı
@@ -11,8 +13,15 @@ public class SunFollowCamera : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Açıyı zamanla artırarak dönüşü sağla
-        angle -= orbitSpeed * Time.deltaTime;
+        Cycle();
+    }
+
+    void Cycle()
+    {
+        while (dayNightCycle.isDay == false)
+            angle = -3;
+        while (dayNightCycle.isDay == true)
+            angle -= orbitSpeed * Time.deltaTime;
 
         // X ve Y pozisyonlarını hesapla (elips için farklı yarıçaplar kullanarak)
         float x = centerObject.position.x + Mathf.Cos(angle) * radiusX;
@@ -20,5 +29,7 @@ public class SunFollowCamera : MonoBehaviour
 
         // Güneşin yeni pozisyonunu belirle
         transform.position = new Vector3(x, y, transform.position.z);
+
     }
+
 }
