@@ -328,21 +328,7 @@ public class CharacterMovement : MonoBehaviour
     horizontal_input = context.ReadValue<Vector2>().x;
   }
 
-  public void InteractionKey(InputAction.CallbackContext context)
-  {
 
-
-    if (context.performed)
-    {
-      _paymentSystem.InvokeRepeating("FillCoin", 0.5f, 1f);
-
-    }
-    if (context.canceled)
-    {
-      _paymentSystem.CancelAction();
-
-    }
-  }
   public MiniGame _miniGame;
   public void EnergyButton(InputAction.CallbackContext context)
   {

@@ -1004,8 +1004,8 @@ MonoBehaviour:
     m_ActionName: Player/Movement[/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 339327254}
-        m_TargetAssemblyTypeName: CharacterMovement, Assembly-CSharp
+      - m_Target: {fileID: 339327256}
+        m_TargetAssemblyTypeName: PaymentSystem, Assembly-CSharp
         m_MethodName: InteractionKey
         m_Mode: 0
         m_Arguments:
@@ -1043,7 +1043,7 @@ MonoBehaviour:
   isCoinsFalling: 0
   coin_prefab: {fileID: 6283444194330273741, guid: 76639da3b7023cb4e944be62bf543d77, type: 3}
   fill_speed: 1
-  drop_duration: 0.5
+  drop_duration: 1
   remove_duration: 1
 --- !u!1 &354737347
 GameObject:

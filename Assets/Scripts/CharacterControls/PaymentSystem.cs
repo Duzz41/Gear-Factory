@@ -136,8 +136,8 @@ public class PaymentSystem : MonoBehaviour
         yield return new WaitUntil(() => active_coins.Count == 0 || Time.time - startTime >= maxWaitTime);
         if (active_coins.Count == 0 && !can_interact)
         {
-            if (other.transform.GetChild(0).gameObject != null)
-                other.transform.GetChild(0).gameObject.SetActive(false);
+            //if (other.transform.GetChild(0).gameObject != null)
+            other.transform.GetChild(0).gameObject.SetActive(false);
         }
 
     }
@@ -156,7 +156,7 @@ public class PaymentSystem : MonoBehaviour
             building_cs = targetObject.GetComponent<Building>();
             robots = null; // Clear robots reference to avoid conflicts
             building_slot_count = building_cs.coin_holders.Count;
-            can_interact = true;
+            // can_interact = true;
             #endregion
         }
         else if (other.gameObject.tag == "AI")
@@ -167,7 +167,7 @@ public class PaymentSystem : MonoBehaviour
             targetObject = other.gameObject;
             robots = targetObject.GetComponent<Clockwork_AI>();
             building_cs = null; // Clear building reference to avoid conflicts
-            can_interact = true;
+                                //  can_interact = true;
             #endregion
         }
     }
@@ -193,7 +193,18 @@ public class PaymentSystem : MonoBehaviour
 
     }
 
+    public void InteractionKey(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            InvokeRepeating("FillCoin", 0.5f, 1f);
 
+        }
+        if (context.canceled)
+        {
+            CancelAction();
+        }
+    }
     public void CancelAction()
     {
         CancelInvoke("FillCoin");
