@@ -55,6 +55,7 @@ public class DayNightCycle : MonoBehaviour
             days += 1;
         }
         ControlPPV();
+        CheckDay();
     }
 
     void ControlPPV()
@@ -83,7 +84,7 @@ public class DayNightCycle : MonoBehaviour
             {
                 for (int i = 0; i < lights.Length; i++)
                 {
-                    isDay = false;
+
                     lights[i].SetActive(true);
 
                 }
@@ -108,11 +109,20 @@ public class DayNightCycle : MonoBehaviour
             {
                 for (int i = 0; i < lights.Length; i++)
                 {
-                    isDay = true;
                     lights[i].SetActive(false);
                 }
                 activateLights = false;
             }
         }
+    }
+
+    void CheckDay()
+    {
+        if (hours >= 21 && hours < 22)
+        {
+            isDay = false;
+        }
+        else if (hours >= 5 && hours < 6)
+            isDay = true;
     }
 }

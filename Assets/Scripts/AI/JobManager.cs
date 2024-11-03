@@ -16,7 +16,7 @@ public class JobManager : MonoBehaviour
             // Eğer robot bozuksa, tamir et
             if (robot.currentState == RobotState.Broken)
             {
-                robot.Repair();
+                //   robot.Repair();
             }
 
             // Robot köylü durumuna geçtiyse, ona bir görev ata (örneğin savaşçı)
@@ -38,5 +38,5 @@ public class JobManager : MonoBehaviour
             Debug.Log("Bu robot şu anda köylü değil, ona görev verilemez.");
         }
     }
-    
+
 }

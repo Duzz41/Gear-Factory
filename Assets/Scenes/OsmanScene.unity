@@ -164,6 +164,7 @@ Transform:
   - {fileID: 1653270221}
   - {fileID: 47005622}
   - {fileID: 2001806908}
+  - {fileID: 1145398143}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &47005618 stripped
@@ -428,12 +429,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 248022340}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.304672, y: 4.875313, z: -0.18660374}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.8760586, y: 2.721643, z: -0.064283386}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1886425612}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &281599003
 GameObject:
@@ -480,6 +481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a7e3b03f178fc4fa6ac9ce2e8b0517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 1264692565}
   clouds:
   - {fileID: 1930376297600007098, guid: 0f04d8ac8e7df084e98753a6f9da20ff, type: 3}
   - {fileID: 1930376297600007098, guid: 0f04d8ac8e7df084e98753a6f9da20ff, type: 3}
@@ -714,7 +716,7 @@ GameObject:
   - component: {fileID: 320744643}
   - component: {fileID: 320744647}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: '#Main Camera'
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -890,7 +892,7 @@ GameObject:
   - component: {fileID: 339327253}
   - component: {fileID: 339327255}
   m_Layer: 0
-  m_Name: Character
+  m_Name: $Character
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12093,7 +12095,7 @@ Transform:
   m_LocalScale: {x: 2.233, y: 1, z: 3.9592798}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 22779712}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 90}
 --- !u!1 &1156349656
 GameObject:
@@ -12877,6 +12879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88be41a21bb45d34dbdb8e0593a85c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterMovement_cs: {fileID: 0}
   uiElement1: {fileID: 1280528524}
   uiElement2: {fileID: 436398848}
   slider: {fileID: 299624359}
@@ -13271,7 +13274,7 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
-  isDay: 0
+  isDay: 1
   tick: 600
   seconds: 0
   mins: 0
@@ -13863,7 +13866,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1886425612}
   m_Layer: 0
-  m_Name: Managers
+  m_Name: //Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13886,6 +13889,7 @@ Transform:
   - {fileID: 51504451}
   - {fileID: 1456694669}
   - {fileID: 1245180076}
+  - {fileID: 248022342}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1892765283
@@ -14034,7 +14038,7 @@ GameObject:
   - component: {fileID: 2084285256}
   - component: {fileID: 2084285255}
   m_Layer: 0
-  m_Name: Virtual Camera
+  m_Name: '#Virtual Camera'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19015,8 +19019,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 320744646}
   - {fileID: 2084285256}
-  - {fileID: 248022342}
   - {fileID: 339327249}
-  - {fileID: 1145398143}
   - {fileID: 1886425612}
   - {fileID: 22779712}

@@ -332,8 +332,8 @@ public class CharacterMovement : MonoBehaviour
   public MiniGame _miniGame;
   public void EnergyButton(InputAction.CallbackContext context)
   {
-    if (context.started)
-      _miniGame.MiniGameForEnergy();
+   // if (context.started)
+     //_miniGame.MiniGameForEnergy();
   }
   #endregion
 }

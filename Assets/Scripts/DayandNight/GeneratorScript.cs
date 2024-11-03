@@ -5,6 +5,8 @@ using UnityEngine;
 public class GeneratorScript : MonoBehaviour
 {
     [SerializeField]
+    Transform spawnPoint;
+    [SerializeField]
     GameObject[] clouds;
 
     [SerializeField]
@@ -18,7 +20,6 @@ public class GeneratorScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startPos = transform.position;
         Prewarm();
         Invoke("AttemptSpawn", spawnInterval);
     }
@@ -27,7 +28,6 @@ public class GeneratorScript : MonoBehaviour
     {
         int randomIndex = Random.Range(0, clouds.Length);
         GameObject cloud = Instantiate(clouds[randomIndex]);
-
 
         float startY = Random.Range(startPos.y - 2f, startPos.y + 1f);
         cloud.transform.position = new Vector3(startPos.x, startY, startPos.z);
