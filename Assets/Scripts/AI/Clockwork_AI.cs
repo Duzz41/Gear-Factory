@@ -26,7 +26,7 @@ public class Clockwork_AI : MonoBehaviour
     private void Start()
     {
         // Başlangıçta hedef pozisyonu belirle
-        baseTransform = GameObject.Find("Square").transform;
+        baseTransform = GameObject.Find("GearFactory").transform;
         SetRandomTargetPosition();
 
     }
