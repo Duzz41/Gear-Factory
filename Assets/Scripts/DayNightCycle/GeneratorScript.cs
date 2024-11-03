@@ -20,7 +20,7 @@ public class GeneratorScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Prewarm();
+
         Invoke("AttemptSpawn", spawnInterval);
     }
 
@@ -29,7 +29,7 @@ public class GeneratorScript : MonoBehaviour
         int randomIndex = Random.Range(0, clouds.Length);
         GameObject cloud = Instantiate(clouds[randomIndex]);
 
-        float startY = Random.Range(startPos.y - 2f, startPos.y + 1f);
+        float startY = Random.Range(startPos.y - 4f, startPos.y + 3f);
         cloud.transform.position = new Vector3(startPos.x, startY, startPos.z);
 
         float scale = Random.Range(0.8f, 1.3f);

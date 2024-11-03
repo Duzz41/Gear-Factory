@@ -45,7 +45,10 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    public void SpawnHumans()
+    {
 
+    }
     private int CountAIAtSpawn(Transform spawn)
     {
         // Belirli bir spawn noktasındaki AI sayısını say

@@ -167,7 +167,7 @@ public class PaymentSystem : MonoBehaviour
             targetObject = other.gameObject;
             robots = targetObject.GetComponent<Clockwork_AI>();
             building_cs = null; // Clear building reference to avoid conflicts
-                                //  can_interact = true;
+            can_interact = true;
             #endregion
         }
     }

@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 public class DayNightCycle : MonoBehaviour
 {
     //public Volume ppv;
     public Light2D _light;
+    public Light2D sun;
+    public Light2D moon;
     [SerializeField] Color _color;
     [SerializeField] Gradient _gradient;
 
@@ -20,12 +21,11 @@ public class DayNightCycle : MonoBehaviour
 
     public bool activateLights;
     public GameObject[] lights;
-    public Light2D[] stars;
+
     // Start is called before the first frame update
     void Start()
     {
         _light = GetComponent<Light2D>();
-        //ppv = gameObject.GetComponent<Volume>();
     }
 
     // Update is called once per frame
@@ -67,44 +67,46 @@ public class DayNightCycle : MonoBehaviour
         _light.color = _color;
         if (hours >= 18 && hours < 22)
         {
+
             if (_light.intensity > 0.01f)
             {
                 _light.intensity -= Time.fixedDeltaTime / 50;
-                //_light.color = Color.Lerp(_light.color, _color, Time.fixedDeltaTime / 45);
+                sun.intensity = _light.intensity - 0.04f;
 
             }
-
-
-            for (int i = 0; i < stars.Length; i++)
-            {
-                if (stars[i].intensity >= 0.4f)
-                    stars[i].intensity -= Time.fixedDeltaTime / 15;
-            }
+            if (moon.intensity <= 0.6)
+                moon.intensity += Time.fixedDeltaTime / 50;
             if (activateLights == false)
             {
                 for (int i = 0; i < lights.Length; i++)
                 {
-
                     lights[i].SetActive(true);
-
                 }
                 activateLights = true;
-
             }
         }
-        if (hours >= 5 && hours < 7)
+        if (hours >= 3 && hours < 7)
         {
             if (_light.intensity <= 1)
             {
-                _light.intensity += Time.fixedDeltaTime / 25;
-                //_light.color = Color.Lerp(_light.color, Color.white, Time.fixedDeltaTime / 25);
+                _light.intensity += Time.fixedDeltaTime / 50;
+                sun.intensity = _light.intensity;
             }
-            for (int i = 0; i < stars.Length; i++)
-            {
-                if (stars[i].intensity <= 1)
-                    stars[i].intensity += Time.fixedDeltaTime / 25;
+            if (moon.intensity > 0.01f)
+                moon.intensity -= Time.fixedDeltaTime / 50;
 
-            }
+        }
+    }
+
+    void CheckDay()
+    {
+        if (hours >= 22 && hours < 23)
+        {
+            isDay = false;
+        }
+        else if (hours >= 6 && hours < 7)
+        {
+            isDay = true;
             if (activateLights == true)
             {
                 for (int i = 0; i < lights.Length; i++)
@@ -114,15 +116,5 @@ public class DayNightCycle : MonoBehaviour
                 activateLights = false;
             }
         }
-    }
-
-    void CheckDay()
-    {
-        if (hours >= 21 && hours < 22)
-        {
-            isDay = false;
-        }
-        else if (hours >= 5 && hours < 6)
-            isDay = true;
     }
 }

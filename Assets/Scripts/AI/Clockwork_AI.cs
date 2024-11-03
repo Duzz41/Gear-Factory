@@ -15,12 +15,14 @@ public class Clockwork_AI : MonoBehaviour
     [Header("Robot Durumu")]
     public RobotState currentState = RobotState.Broken;
     public float moveSpeed = 2f; // Yapay zekanın hareket hızı
+    private float currentSpeed;
     public Transform spawnPoint;
     private Transform baseTransform; // Ana üssün transformu
     public Vector3 targetPosition; // Hedef pozisyo
     [SerializeField] Transform closestCoin;
 
     public List<GameObject> coins = new List<GameObject>();
+    [SerializeField] Animator anim;
 
 
     private void Start()
@@ -33,6 +35,7 @@ public class Clockwork_AI : MonoBehaviour
 
     private void Update()
     {
+        anim.SetFloat("Speed", currentSpeed);
         switch (currentState)
         {
             case RobotState.Broken:
@@ -93,6 +96,7 @@ public class Clockwork_AI : MonoBehaviour
         if (closestCoin != null)
         {
             CatchCoin(closestCoin);
+            UpdateDirection(new Vector3(closestCoin.position.x, closestCoin.position.y, closestCoin.position.z));
         }
         else
             Patrol();
@@ -104,13 +108,13 @@ public class Clockwork_AI : MonoBehaviour
     private void Patrol()
     {
         MoveTowardsTarget();
-        UpdateDirection();
+        UpdateDirection(targetPosition);
     }
     private void MoveTowardsTarget()
     {
         float distance = Vector2.Distance(transform.position, targetPosition);
         float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
-        float currentSpeed = moveSpeed * slowdownFactor;
+        currentSpeed = moveSpeed * slowdownFactor;
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
 
         // Hedef pozisyona doğru hareket et
@@ -155,10 +159,10 @@ public class Clockwork_AI : MonoBehaviour
 
     void CatchCoin(Transform targetCoin)
     {
-        UpdateDirection();
         float distance = Vector2.Distance(transform.position, targetCoin.position);
-        float currentSpeed = moveSpeed * 1.25f;
-        transform.position = Vector2.MoveTowards(transform.position, targetCoin.position, currentSpeed * Time.deltaTime);
+        currentSpeed = moveSpeed * 1.25f;
+        Vector2 targetPos = new Vector2(targetCoin.position.x, 1f);
+        transform.position = Vector2.MoveTowards(transform.position, targetPos, currentSpeed * Time.deltaTime);
         if (distance < 0.5f)
         {
             CollectGear(targetCoin.gameObject);
@@ -194,7 +198,7 @@ public class Clockwork_AI : MonoBehaviour
     {
         // Ana üssün etrafında döner
         MoveTowardsBase();
-        UpdateDirection();
+        UpdateDirection(targetPosition);
 
     }
 
@@ -208,7 +212,7 @@ public class Clockwork_AI : MonoBehaviour
             targetPosition = new Vector2(baseTransform.position.x, 1f);
             float distance = Vector2.Distance(transform.position, targetPosition);
             float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
-            float currentSpeed = moveSpeed * slowdownFactor;
+            currentSpeed = moveSpeed * slowdownFactor;
 
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
             if (distance < 0.5f)
@@ -222,7 +226,7 @@ public class Clockwork_AI : MonoBehaviour
         {
             float distance = Vector2.Distance(transform.position, targetPosition);
             float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
-            float currentSpeed = moveSpeed * slowdownFactor;
+            currentSpeed = moveSpeed * slowdownFactor;
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
             if (distance < 0.5f)
             {
@@ -251,15 +255,15 @@ public class Clockwork_AI : MonoBehaviour
 
 
 
-    private void UpdateDirection()
+    private void UpdateDirection(Vector3 target)
     {
         // Hedef pozisyona olan X mesafesini kontrol et
-        if (targetPosition.x > transform.position.x)
+        if (target.x > transform.position.x)
         {
             // Hedef sağda
             if (transform.localScale.x < 0) Flip(); // Eğer nesne sola bakıyorsa, sağa döndür
         }
-        else if (targetPosition.x < transform.position.x)
+        else if (target.x < transform.position.x)
         {
             // Hedef solda
             if (transform.localScale.x > 0) Flip(); // Eğer nesne sağa bakıyorsa, sola döndür
