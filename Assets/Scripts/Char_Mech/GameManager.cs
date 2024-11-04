@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public int maxAI = 2; // Maksimum AI sayısı
     public List<GameObject> coins = new List<GameObject>();
     public ParticleSystem sandEffect;
+    public bool _isDay;
     void Awake()
     {
         if (instance == null)

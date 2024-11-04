@@ -18,7 +18,7 @@ public class MoonCycle : MonoBehaviour
 
     void Cycle()
     {
-        if (dayNightCycle.isDay == false)
+        if (GameManager.instance._isDay == false)
             angle -= orbitSpeed * Time.deltaTime;
         else
             angle = -3;

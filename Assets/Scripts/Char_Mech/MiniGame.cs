@@ -12,6 +12,7 @@ public class MiniGame : MonoBehaviour
 
     [SerializeField] private Slider slider;
     [SerializeField] private float travel_speed;
+    
     private bool traveling = true;
     private Vector2 start_pos;
 

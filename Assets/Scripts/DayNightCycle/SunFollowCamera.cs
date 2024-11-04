@@ -18,7 +18,7 @@ public class SunFollowCamera : MonoBehaviour
 
     void Cycle()
     {
-        if (dayNightCycle.isDay == true)
+        if (GameManager.instance._isDay==true)
             angle -= orbitSpeed * Time.deltaTime;
         else
             angle = -3;

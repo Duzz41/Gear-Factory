@@ -12,7 +12,6 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] Color _color;
     [SerializeField] Gradient _gradient;
 
-    public bool isDay;
     public float tick;
     public float seconds;
     public int mins;
@@ -102,11 +101,11 @@ public class DayNightCycle : MonoBehaviour
     {
         if (hours >= 22 && hours < 23)
         {
-            isDay = false;
+            GameManager.instance._isDay = false;
         }
         else if (hours >= 6 && hours < 7)
         {
-            isDay = true;
+            GameManager.instance._isDay = true;
             if (activateLights == true)
             {
                 for (int i = 0; i < lights.Length; i++)
