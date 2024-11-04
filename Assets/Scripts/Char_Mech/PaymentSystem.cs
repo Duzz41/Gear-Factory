@@ -17,7 +17,7 @@ public class PaymentSystem : MonoBehaviour
     [SerializeField] private float fill_speed;
     [SerializeField] private float drop_duration;
     [SerializeField] private float remove_duration;
-
+    [SerializeField] GameObject square;
 
     #region Coin Jobs
     void FillCoin()
@@ -50,7 +50,7 @@ public class PaymentSystem : MonoBehaviour
             Vector3 slot_position = building_cs.coin_holders[current_slot].transform.position;
             current_slot += 1;
             CoinCollect.instance.coin_count -= 1;
-            
+
             GameObject coin = Instantiate(coin_prefab, transform.position + new Vector3(0, 2f, 0), Quaternion.identity);
             coin.transform.DOMove(slot_position, fill_speed).OnComplete(() =>
             {
