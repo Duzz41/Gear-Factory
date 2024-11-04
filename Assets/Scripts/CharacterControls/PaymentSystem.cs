@@ -162,7 +162,7 @@ public class PaymentSystem : MonoBehaviour
             building_cs = targetObject.GetComponent<Building>();
             robots = null; // Clear robots reference to avoid conflicts
             building_slot_count = building_cs.price;
-            // can_interact = true;
+
             #endregion
             if (!building_cs.lock_my_UI)
             {
@@ -177,7 +177,7 @@ public class PaymentSystem : MonoBehaviour
             targetObject = other.gameObject;
             robots = targetObject.GetComponent<Clockwork_AI>();
             building_cs = null; // Clear building reference to avoid conflicts
-                                //  can_interact = true;
+            can_interact = true;                  //  can_interact = true;
             #endregion
         }
     }

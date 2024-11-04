@@ -8,6 +8,7 @@ TagManager:
   - AI
   - Coin
   - Building
+  - Tool
   layers:
   - Default
   - TransparentFX

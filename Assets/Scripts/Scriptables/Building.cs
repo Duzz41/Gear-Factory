@@ -33,4 +33,9 @@ public class Building : MonoBehaviour
         // Debug.Log("Building sold!");
     }
 
+    public virtual void RemoveTool(Transform tool)
+    {
+        // Debug.Log("Tool removed!");
+    }
+
 }
