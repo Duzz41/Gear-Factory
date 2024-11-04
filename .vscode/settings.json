@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Gear-Factoryy.sln"
+    "dotnet.defaultSolution": "Gear-Factory.sln"
 }

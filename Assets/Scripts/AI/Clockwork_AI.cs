@@ -275,13 +275,14 @@ public class Clockwork_AI : MonoBehaviour
     }
     private void CatchTool(Transform targetTool)
     {
-        UpdateDirection();
+        UpdateDirection(targetTool.position);
         float distance = Vector2.Distance(transform.position, targetTool.position);
         float currentSpeed = moveSpeed * 1.25f;
 
         Vector2 targetPosition = new Vector2(targetTool.position.x, transform.position.y);
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
-        if (distance < 0.5f)
+        Debug.Log(distance);
+        if (distance < 1f)
         {
 
 

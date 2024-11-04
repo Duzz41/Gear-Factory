@@ -13,10 +13,12 @@ public class PaymentSystem : MonoBehaviour
     public List<GameObject> active_coins = new List<GameObject>();
     private Clockwork_AI robots;
     [SerializeField] bool isCoinsFalling = false;
+    [SerializeField] bool isCoinsRemoving = false;
     [SerializeField] private GameObject coin_prefab;
     [SerializeField] private float fill_speed;
     [SerializeField] private float drop_duration;
     [SerializeField] private float remove_duration;
+
 
     #region Coin Jobs
     void FillCoin()
@@ -62,7 +64,7 @@ public class PaymentSystem : MonoBehaviour
             if (current_slot == building_slot_count)
             {
                 StartCoroutine(RemoveCoinOnComplete());
-                PaymentDone();
+
             }
         }
     }
@@ -84,10 +86,11 @@ public class PaymentSystem : MonoBehaviour
     void PaymentDone()
     {
         Debug.Log("Payment Done");
+        targetObject.GetComponent<Building>().Upgrade();
     }
     IEnumerator RemoveCoinOnComplete()
     {
-
+        isCoinsRemoving = true;
         CancelInvoke("FillCoin");
         yield return new WaitForSeconds(remove_duration);
         for (int i = active_coins.Count; i > 0; i--)
@@ -96,7 +99,11 @@ public class PaymentSystem : MonoBehaviour
             active_coins.RemoveAt(0);
         }
         current_slot = 0;
+        isCoinsRemoving = false;
+        PaymentDone();
+        building_slot_count = building_cs.price;  //Binanın price değeri değiştiği için bu değeri tekrar güncelliyoruz
         StopCoroutine(RemoveCoinOnComplete());
+
 
 
     }
@@ -149,14 +156,18 @@ public class PaymentSystem : MonoBehaviour
     {
         if (other.gameObject.tag == "Building")
         {
-            OpenUI(other);
+
             #region GetObjectInfos
             targetObject = other.gameObject;
             building_cs = targetObject.GetComponent<Building>();
             robots = null; // Clear robots reference to avoid conflicts
-            building_slot_count = building_cs.coin_holders.Count;
-            // can_interact = true;
+            building_slot_count = building_cs.price;
+
             #endregion
+            if (!building_cs.lock_my_UI)
+            {
+                OpenUI(other);
+            }
         }
         else if (other.gameObject.tag == "AI")
         {
@@ -166,7 +177,7 @@ public class PaymentSystem : MonoBehaviour
             targetObject = other.gameObject;
             robots = targetObject.GetComponent<Clockwork_AI>();
             building_cs = null; // Clear building reference to avoid conflicts
-            can_interact = true;
+            can_interact = true;                  //  can_interact = true;
             #endregion
         }
     }
@@ -192,6 +203,8 @@ public class PaymentSystem : MonoBehaviour
 
     }
 
+    #region Input Actions
+
     public void InteractionKey(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -210,11 +223,14 @@ public class PaymentSystem : MonoBehaviour
 
         if (active_coins.Count == building_slot_count)
         {
-            StartCoroutine(RemoveCoinOnComplete());
+            if (!isCoinsRemoving)
+            { StartCoroutine(RemoveCoinOnComplete()); }
         }
         else if (active_coins.Count > 0)
         {
             StartCoroutine(DropCoin());
+
         }
     }
+    #endregion
 }
