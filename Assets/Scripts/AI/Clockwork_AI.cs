@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 public enum RobotState
 {
     Broken,
@@ -20,6 +21,7 @@ public class Clockwork_AI : MonoBehaviour
     private Transform baseTransform; // Ana üssün transformu
     public Vector3 targetPosition; // Hedef pozisyo
     [SerializeField] Transform closestCoin;
+    [SerializeField] private Transform closestTool;
 
     public List<GameObject> coins = new List<GameObject>();
     [SerializeField] Animator anim;
@@ -187,7 +189,16 @@ public class Clockwork_AI : MonoBehaviour
     #region Villager Clockwork
     private void HandleVillagerState()
     {
-        PatrolBase();
+        Transform closestTool = FindClosestTool();
+        if (closestTool != null)
+        {
+            CatchTool(closestTool);
+        }
+        else
+        {
+            PatrolBase();
+        }
+
     }
 
 
@@ -233,6 +244,65 @@ public class Clockwork_AI : MonoBehaviour
                 SetRandomBasePatrolPos();
 
             }
+
+        }
+    }
+
+    private Transform FindClosestTool()
+    {
+        float closestDistance = 7f;
+
+        GameObject[] tools = GameObject.FindGameObjectsWithTag("Tool");
+        foreach (GameObject tool in tools)
+        {
+            if (tool != null)
+            {
+                float distanceToTool = Vector2.Distance(transform.position, tool.transform.position);
+                if (distanceToTool < closestDistance)
+                {
+                    closestTool = tool.transform;
+                    return closestTool;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        return closestTool;
+    }
+    private void CatchTool(Transform targetTool)
+    {
+        UpdateDirection();
+        float distance = Vector2.Distance(transform.position, targetTool.position);
+        float currentSpeed = moveSpeed * 1.25f;
+
+        Vector2 targetPosition = new Vector2(targetTool.position.x, transform.position.y);
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
+        if (distance < 0.5f)
+        {
+
+
+            switch (targetTool.parent.parent.name)
+            {
+                case "MinerFactory":
+                    ChangeState(RobotState.Miner);
+                    break;
+                case "FarmerFactory":
+                    ChangeState(RobotState.Farmer);
+                    break;
+                case "MilitaryFactory":
+                    ChangeState(RobotState.Warrior);
+                    break;
+
+            }
+
+            targetTool.parent.parent.GetComponent<Building>().RemoveTool(targetTool);
+            targetTool.parent = this.transform;
+            targetTool.tag = "Untagged";
+
 
         }
     }
