@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject aiPrefab; // Yapay zeka prefab'ı
     public int maxAI = 2; // Maksimum AI sayısı
     public List<GameObject> coins = new List<GameObject>();
+    public List<GameObject> attackableObjects = new List<GameObject>();
     public ParticleSystem sandEffect;
     public bool _isDay;
     void Awake()

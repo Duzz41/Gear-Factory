@@ -142,7 +142,6 @@ public class Clockwork_AI : MonoBehaviour
                 float distanceToCoin = Vector2.Distance(transform.position, coin.transform.position);
                 if (distanceToCoin < closestDistance)
                 {
-                    Debug.Log("nasdsadasdasd");
 
                     closestCoin = coin.transform;
                     return closestCoin;

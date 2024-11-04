@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 
@@ -17,20 +18,39 @@ public class WaveSpawnner : MonoBehaviour
 {
     public Wave[] waves;
     public Transform[] spawnPoint;
+    public Animator anim;
+    public TMP_Text waveNameText;
+
 
     private Wave currentWave;
     private int currentWaveNumber = 0;
-    bool canSpawn = true;
+
     float nextSpawnTime;
+    bool canSpawn = true;
+    bool canAnimate = false;
     void Update()
     {
         currentWave = waves[currentWaveNumber];
         SpawnWave();
         GameObject[] totalEnemies = GameObject.FindGameObjectsWithTag("Enemy");
-        if (totalEnemies.Length == 0 && !canSpawn && currentWaveNumber != waves.Length)
+        if (totalEnemies.Length == 0)
         {
-            SpawnNextWave();
+            if (currentWaveNumber + 1 != waves.Length)
+            {
+                if (canAnimate)
+                {
+                    Debug.Log("Wave Complete");
+                    waveNameText.text = waves[currentWaveNumber + 1].waveName;
+                    anim.Play("WaveStart");
+                    canAnimate = false;
+                }
+            }
+            else
+            {
+                Debug.Log("Game Over");
+            }
         }
+
     }
 
 
@@ -48,13 +68,14 @@ public class WaveSpawnner : MonoBehaviour
                 GameObject randomEnemy = currentWave.typeOfEnemies[Random.Range(0, currentWave.typeOfEnemies.Length)];
                 Transform randomSpawnPoint = spawnPoint[Random.Range(0, spawnPoint.Length)];
 
-                Instantiate(randomEnemy, randomSpawnPoint.position, Quaternion.identity);
+                Instantiate(randomEnemy, new Vector2(randomSpawnPoint.position.x, 1f), Quaternion.identity);
                 currentWave.noOfEnemies--;
 
                 nextSpawnTime = Time.time + currentWave.spawnInterval;
                 if (currentWave.noOfEnemies == 0)
                 {
                     canSpawn = false;
+                    canAnimate = true;
                 }
             }
         }

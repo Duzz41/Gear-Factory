@@ -17,7 +17,6 @@ public class PaymentSystem : MonoBehaviour
     [SerializeField] private float fill_speed;
     [SerializeField] private float drop_duration;
     [SerializeField] private float remove_duration;
-    [SerializeField] GameObject square;
 
     #region Coin Jobs
     void FillCoin()

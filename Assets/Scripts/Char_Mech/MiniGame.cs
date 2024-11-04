@@ -12,7 +12,7 @@ public class MiniGame : MonoBehaviour
 
     [SerializeField] private Slider slider;
     [SerializeField] private float travel_speed;
-    
+
     private bool traveling = true;
     private Vector2 start_pos;
 
@@ -32,21 +32,21 @@ public class MiniGame : MonoBehaviour
             uiElement2.localPosition = new Vector2(xPos + start_pos.x, uiElement2.localPosition.y);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+    }
+    public void MiniGameForEnergy()
+    {
+        if (AreUIElementsOverlapping(uiElement1, uiElement2))
         {
-            if (AreUIElementsOverlapping(uiElement1, uiElement2))
-            {
-                characterMovement_cs.energy = 20f;
+            characterMovement_cs.energy = 20f;
 
-                Debug.Log("UI elementleri carpisiyor!");
-            }
-            else
-            {
-                Debug.Log("UI elementleri carpisymior.");
-            }
-            EventDispatcher.SummonEvent("MiniGameForEnergy");
-            traveling = false;
+            Debug.Log("UI elementleri carpisiyor!");
         }
+        else
+        {
+            Debug.Log("UI elementleri carpisymior.");
+        }
+        EventDispatcher.SummonEvent("MiniGameForEnergy");
+        traveling = false;
     }
 
     public void ActivateGame()
