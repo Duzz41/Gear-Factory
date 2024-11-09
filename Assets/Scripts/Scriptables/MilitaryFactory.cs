@@ -37,8 +37,5 @@ public class MilitaryFactory : Building
     }
 
 
-    public override void BuyFrombuilding()
-    {
-        base.BuyFrombuilding();
-    }
+
 }

@@ -143,7 +143,8 @@ public class PaymentSystem : MonoBehaviour
         if (active_coins.Count == 0 && !can_interact)
         {
             //if (other.transform.GetChild(0).gameObject != null)
-            other.transform.GetChild(0).gameObject.SetActive(false);
+            // other.transform.GetChild(0).gameObject.SetActive(false);
+            building_cs.my_canvas.gameObject.SetActive(false);
         }
 
     }
@@ -198,7 +199,8 @@ public class PaymentSystem : MonoBehaviour
 
     void OpenUI(Collider2D other)
     {
-        other.gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        //other.gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        building_cs.my_canvas.gameObject.SetActive(true);
         can_interact = true;
 
     }
