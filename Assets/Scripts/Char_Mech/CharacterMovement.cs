@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 using DG.Tweening;
 using UnityEngine.InputSystem.LowLevel;
 
@@ -21,9 +22,14 @@ public class CharacterMovement : MonoBehaviour
   public ParticleSystem movementParticle, frontTire;
   private bool facingRight = true;
   public GameObject carSprite;
+  public MiniGame mini_game;
+  public Animator anim;
 
-
-
+  [Header("Cinemachine")]
+  [SerializeField] private CinemachineVirtualCamera cinemachineCam; // Cinemachine referansı
+  [SerializeField] private float offsetWhenFacingRight = 2f;
+  [SerializeField] private float offsetWhenFacingLeft = -2f;
+  [SerializeField] private float offsetLerpSpeed = 5f;
 
 
 
@@ -32,7 +38,7 @@ public class CharacterMovement : MonoBehaviour
     rb = GetComponent<Rigidbody2D>();
     _paymentSystem = GetComponent<PaymentSystem>();
     current_speed = run_speed;
-    EventDispatcher.RegisterFunction("MiniGameForEnergy", MiniGameForEnergy);
+
   }
 
 
@@ -42,6 +48,7 @@ public class CharacterMovement : MonoBehaviour
     UpdateSpeed();
     MovementParticules();
     Movement();
+    UpdateCinemachineOffset();
   }
 
 
@@ -51,6 +58,7 @@ public class CharacterMovement : MonoBehaviour
   void Movement()
   {
     rb.velocity = new Vector2(horizontal_input * current_speed, rb.velocity.y);
+    anim.SetFloat("speed", rb.velocity.magnitude);
     if (horizontal_input > 0 && !facingRight)
     {
       Flip();
@@ -126,6 +134,21 @@ public class CharacterMovement : MonoBehaviour
     }
   }
 
+
+  void UpdateCinemachineOffset()
+  {
+    if (cinemachineCam != null)
+    {
+      var transposer = cinemachineCam.GetCinemachineComponent<CinemachineFramingTransposer>();
+      if (transposer != null)
+      {
+        float targetOffsetX = facingRight ? offsetWhenFacingRight : offsetWhenFacingLeft;
+        float newOffsetX = Mathf.Lerp(transposer.m_TrackedObjectOffset.x, targetOffsetX, offsetLerpSpeed * Time.deltaTime);
+        transposer.m_TrackedObjectOffset = new Vector3(newOffsetX, transposer.m_TrackedObjectOffset.y, transposer.m_TrackedObjectOffset.z);
+      }
+    }
+  }
+
   #endregion
 
 
@@ -139,6 +162,13 @@ public class CharacterMovement : MonoBehaviour
     horizontal_input = context.ReadValue<Vector2>().x;
   }
 
+  public void Energy(InputAction.CallbackContext context)
+  {
+    if (context.performed)
+    {
+      mini_game.MiniGameForEnergy();
+    }
+  }
 
 
   #endregion

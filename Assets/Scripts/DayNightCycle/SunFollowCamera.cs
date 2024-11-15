@@ -10,6 +10,7 @@ public class SunFollowCamera : MonoBehaviour
     public float radiusY = 5f;     // Y ekseni için yarıçap
     public float orbitSpeed = 0.03f;   // Güneşin dönme hızı
     [SerializeField] private float angle = -3;       // Başlangıç açısı
+    [SerializeField] private float offsett;
 
     void FixedUpdate()
     {
@@ -18,13 +19,13 @@ public class SunFollowCamera : MonoBehaviour
 
     void Cycle()
     {
-        if (GameManager.instance._isDay==true)
+        if (GameManager.instance._isDay == true)
             angle -= orbitSpeed * Time.deltaTime;
         else
-            angle = -3;
+            angle = -2.5f;
 
         // X ve Y pozisyonlarını hesapla (elips için farklı yarıçaplar kullanarak)
-        float x = centerObject.position.x + Mathf.Cos(angle) * radiusX;
+        float x = (centerObject.position.x + offsett) + Mathf.Cos(angle) * radiusX;
         float y = centerObject.position.y + Mathf.Sin(angle) * radiusY;
 
         // Güneşin yeni pozisyonunu belirle
