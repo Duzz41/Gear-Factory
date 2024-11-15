@@ -31,7 +31,7 @@ public class Wall : Building
         {
             level += 1;
             health = 100;
-            //price değeri arttır
+            price += 2;
             RedesignCoinPlaces();
 
             //Sprite'ı Değiştir
