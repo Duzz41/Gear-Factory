@@ -24,7 +24,7 @@ public class Enemy_AI : MonoBehaviour
         if (closestTarget != null)
         {
             MoveTowardsTarget();
-
+            FlipTowardsTarget();
             // Check if within attack range
             if (Vector2.Distance(transform.position, closestTarget.position) <= attackRange)
             {
@@ -68,7 +68,23 @@ public class Enemy_AI : MonoBehaviour
             anim.SetFloat("Speed", currentSpeed);
         }
     }
-
+    private void FlipTowardsTarget()
+    {
+        // Hedefe doğru bak
+        if (closestTarget != null)
+        {
+            Vector3 scale = transform.localScale;
+            if (closestTarget.position.x > transform.position.x)
+            {
+                scale.x = Mathf.Abs(scale.x); // Sağ tarafa bak
+            }
+            else if (closestTarget.position.x < transform.position.x)
+            {
+                scale.x = -Mathf.Abs(scale.x); // Sol tarafa bak
+            }
+            transform.localScale = scale;
+        }
+    }
     private void StartAttack()
     {
         currentSpeed = 0; // Stop moving when attacking

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5293246052709137007}
   - component: {fileID: 6662142986102547178}
   m_Layer: 0
-  m_Name: e
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,7 +95,7 @@ Animator:
   m_GameObject: {fileID: 5832249924513549263}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c8ea46437b802d34c84304ca2d6684f9, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6f20619a6c189694abce1d675c3ae73a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -157,6 +157,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 0}
   targetPosition: {x: 0, y: 0, z: 0}
   closestCoin: {fileID: 0}
+  closestTool: {fileID: 0}
   coins: []
   anim: {fileID: 6662142986102547178}
 --- !u!61 &8374594457438486400

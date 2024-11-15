@@ -199,6 +199,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   targetPosition: {x: 0, y: 0, z: 0}
-  attackRange: 1
+  attackRange: 2
   closestTarget: {fileID: 0}
   anim: {fileID: 6662142986102547178}

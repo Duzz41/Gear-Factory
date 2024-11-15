@@ -64,7 +64,7 @@ public class DayNightCycle : MonoBehaviour
         // Gradiente göre rengi ayarla
         _color = _gradient.Evaluate(timePercent);
         _light.color = _color;
-        if (hours >= 18 && hours < 22)
+        if (hours >= 19 && hours < 23)
         {
 
             if (_light.intensity > 0.01f)
@@ -99,11 +99,11 @@ public class DayNightCycle : MonoBehaviour
 
     void CheckDay()
     {
-        if (hours >= 22 && hours < 23)
+        if (hours >= 0 && hours < 1)
         {
             GameManager.instance._isDay = false;
         }
-        else if (hours >= 6 && hours < 7)
+        else if (hours >= 3 && hours < 5)
         {
             GameManager.instance._isDay = true;
             if (activateLights == true)
