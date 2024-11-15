@@ -5,11 +5,13 @@ using UnityEngine;
 public class Enemy_AI : MonoBehaviour
 {
     public float moveSpeed = 2f; // Yapay zekanın hareket hızı
+
     private float currentSpeed;
     public Vector3 targetPosition; // Hedef pozisyo
     public float attackRange = 1f;
     [SerializeField] Transform closestTarget;
     [SerializeField] Animator anim;
+    public int attackDamage = 1; // Saldırı başına hasar
 
     void Start()
     {
@@ -28,7 +30,7 @@ public class Enemy_AI : MonoBehaviour
             // Check if within attack range
             if (Vector2.Distance(transform.position, closestTarget.position) <= attackRange)
             {
-                StartAttack();
+                StartAttack(closestTarget.gameObject);
             }
             else
             {
@@ -85,12 +87,28 @@ public class Enemy_AI : MonoBehaviour
             transform.localScale = scale;
         }
     }
-    private void StartAttack()
+    private void StartAttack(GameObject target)
     {
+
         currentSpeed = 0; // Stop moving when attacking
         if (anim != null)
         {
             anim.SetBool("isAttacking", true);
+        }
+
+
+
+    }
+
+    public void Hit()
+    {
+        if (closestTarget != null)
+        {
+            Wall wall = closestTarget.GetComponent<Wall>();
+            if (wall != null)
+            {
+                wall.TakeDamage(attackDamage);
+            }
         }
     }
 

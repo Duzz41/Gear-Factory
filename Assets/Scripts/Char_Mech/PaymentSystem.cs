@@ -21,6 +21,54 @@ public class PaymentSystem : MonoBehaviour
 
 
     #region Coin Jobs
+    private Building building_cs;
+    private GameObject targetObject;
+
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Building")
+        {
+
+            #region GetObjectInfos
+            targetObject = other.gameObject;
+            building_cs = targetObject.GetComponent<Building>();
+            robots = null; // Clear robots reference to avoid conflicts
+            if (building_cs != null)
+            {
+                building_slot_count = building_cs.price;
+
+                if (!building_cs.lock_my_UI)
+                {
+                    OpenUI(other);
+                }
+            }
+            #endregion
+        }
+        else if (other.gameObject.tag == "AI")
+        {
+            #region GetAIInfos
+            targetObject = other.gameObject;
+            robots = targetObject.GetComponent<Clockwork_AI>();
+            building_cs = null; // Clear building reference to avoid conflicts
+            can_interact = true;
+            #endregion
+        }
+    }
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Building")
+        {
+            can_interact = false;
+            StartCoroutine(ControlBuildingUI(other));
+        }
+        else if (other.gameObject.tag == "AI")
+        {
+            can_interact = false;
+        }
+
+
+    }
     void FillCoin()
     {
         if (can_interact)
@@ -46,10 +94,11 @@ public class PaymentSystem : MonoBehaviour
     }
     void FillCoinForBuilding()
     {
-        if (current_slot < building_slot_count)
+        if (current_slot < building_slot_count && building_cs != null)
         {
             Vector3 slot_position = building_cs.coin_holders[current_slot].transform.position;
             current_slot += 1;
+
             CoinCollect.instance.coin_count -= 1;
 
             GameObject coin = Instantiate(coin_prefab, transform.position + new Vector3(0, 2f, 0), Quaternion.identity);
@@ -59,6 +108,7 @@ public class PaymentSystem : MonoBehaviour
                 CoinCollect.instance.RemoveToCoinFromList(null);
 
             });
+
             active_coins.Add(coin);
 
             if (current_slot == building_slot_count)
@@ -93,6 +143,7 @@ public class PaymentSystem : MonoBehaviour
         isCoinsRemoving = true;
         CancelInvoke("FillCoin");
         yield return new WaitForSeconds(remove_duration);
+
         for (int i = active_coins.Count; i > 0; i--)
         {
             Destroy(active_coins[0]);
@@ -149,53 +200,7 @@ public class PaymentSystem : MonoBehaviour
 
     }
 
-    private Building building_cs;
-    private GameObject targetObject;
 
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Building")
-        {
-
-            #region GetObjectInfos
-            targetObject = other.gameObject;
-            building_cs = targetObject.GetComponent<Building>();
-            robots = null; // Clear robots reference to avoid conflicts
-            building_slot_count = building_cs.price;
-
-            #endregion
-            if (!building_cs.lock_my_UI)
-            {
-                OpenUI(other);
-            }
-        }
-        else if (other.gameObject.tag == "AI")
-        {
-
-            //OpenUI(other);
-            #region GetAIInfos
-            targetObject = other.gameObject;
-            robots = targetObject.GetComponent<Clockwork_AI>();
-            building_cs = null; // Clear building reference to avoid conflicts
-            can_interact = true;                  //  can_interact = true;
-            #endregion
-        }
-    }
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Building")
-        {
-            can_interact = false;
-            StartCoroutine(ControlBuildingUI(other));
-        }
-        else if (other.gameObject.tag == "AI")
-        {
-            can_interact = false;
-        }
-
-
-    }
 
     void OpenUI(Collider2D other)
     {

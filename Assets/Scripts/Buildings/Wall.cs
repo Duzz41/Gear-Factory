@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Wall : Building
 {
-    private int health = 100;
+    public int health = 3;
     private int level = 0;
 
 
@@ -14,10 +14,13 @@ public class Wall : Building
         base.Build();
         transform.GetChild(0).gameObject.SetActive(true);//wall sprite'ını tutan obje
         level = 1;
-        health = 100;
+        health = 3;
         price += 2;
         RedesignCoinPlaces();
-
+        if (!GameManager.instance.attackableObjects.Contains(gameObject))
+        {
+            GameManager.instance.attackableObjects.Add(gameObject);
+        }
 
     }
 
@@ -40,6 +43,26 @@ public class Wall : Building
 
 
 
+    }
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            DestroyWall();
+        }
+    }
+
+    private void DestroyWall()
+    {
+        if (GameManager.instance.attackableObjects.Contains(gameObject))
+        {
+            GameManager.instance.attackableObjects.Remove(gameObject);
+        }
+
+        // Duvarı yok et
+        Debug.Log("Wall Destroyed!");
+        Destroy(gameObject);
     }
 
     public override void RedesignCoinPlaces()
