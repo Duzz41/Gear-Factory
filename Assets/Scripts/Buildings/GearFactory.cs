@@ -25,16 +25,9 @@ public class GearFactory : Building
 
     }
 
-    private void RedesignCoinPlaces()
+    public override void RedesignCoinPlaces()
     {
-        int new_coins_count = price - content.childCount;
-
-        for (int i = 0; i < new_coins_count; i++)
-        {
-            GameObject added_coin_place = Instantiate(coin_place_prefab, content);
-            coin_holders.Add(added_coin_place.transform);
-
-        }
+        base.RedesignCoinPlaces();
     }
 
     public override void BuyFrombuilding()
