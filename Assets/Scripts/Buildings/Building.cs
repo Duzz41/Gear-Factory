@@ -35,19 +35,26 @@ public class Building : MonoBehaviour
 
     public virtual void RemoveTool(Transform tool)
     {
+        Destroy(tool.gameObject);
+        
         // Debug.Log("Tool removed!");
     }
 
     public virtual void RedesignCoinPlaces()
     {
-        //  Debug.Log("Coin places redesigned!");
+        // Debug.Log("Coin places redesigned!");
+        if (content == null)
+        {
+            Debug.LogError("Content is not assigned!");
+            return;
+        }
+
         int new_coins_count = price - content.childCount;
 
         for (int i = 0; i < new_coins_count; i++)
         {
             GameObject added_coin_place = Instantiate(coin_place_prefab, content);
             coin_holders.Add(added_coin_place.transform);
-
         }
     }
 

@@ -195,7 +195,14 @@ public class PaymentSystem : MonoBehaviour
         {
             //if (other.transform.GetChild(0).gameObject != null)
             // other.transform.GetChild(0).gameObject.SetActive(false);
-            building_cs.my_canvas.gameObject.SetActive(false);
+            if (building_cs != null)
+            {
+                building_cs.my_canvas.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.Log("zor");
+            }
         }
 
     }

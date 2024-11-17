@@ -65,13 +65,37 @@ public class Clockwork_AI : MonoBehaviour
     }
     #endregion
 
-
-
-
+    #region WARRIOR
     private void HandleWarriorState()
     {
+        Transform closestTarget = FindEnemyOrTrash();
+
+        if (closestTarget != null)
+        {
+
+            UpdateDirection(closestTarget.position);
+        }
+        else
+        {
+            Patrol();
+        }
         // Savaşçı durumundaki davranışlar
     }
+    Transform FindEnemyOrTrash()
+    {
+        return null;
+    }
+
+
+    void AttackTarget(Transform targetCoin)
+    {
+        if (GameManager.instance._isDay == true)
+        {
+
+        }
+    }
+    #endregion
+
 
     private void HandleFarmerState()
     {
@@ -98,7 +122,7 @@ public class Clockwork_AI : MonoBehaviour
         if (closestCoin != null)
         {
             CatchCoin(closestCoin);
-            UpdateDirection(new Vector3(closestCoin.position.x, closestCoin.position.y, closestCoin.position.z));
+            UpdateDirection(closestCoin.position);
         }
         else
             Patrol();
@@ -301,6 +325,7 @@ public class Clockwork_AI : MonoBehaviour
             }
 
             targetTool.parent.parent.GetComponent<Building>().RemoveTool(targetTool);
+
             targetTool.parent = this.transform;
             targetTool.tag = "Untagged";
 
