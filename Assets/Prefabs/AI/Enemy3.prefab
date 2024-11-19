@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 4541975488710590263}
   - component: {fileID: 8374594457438486400}
   - component: {fileID: 6289719053337069292}
+  - component: {fileID: 6689087145512254719}
   m_Layer: 0
   m_Name: Enemy3
   m_TagString: Enemy
@@ -217,3 +218,18 @@ MonoBehaviour:
   closestTarget: {fileID: 0}
   anim: {fileID: 6662142986102547178}
   attackDamage: 1
+--- !u!114 &6689087145512254719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8434259183599704697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51f6750c2abe7d143ad2a8fabe45f5b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  currentHealth: 0
+  gear: {fileID: 6283444194330273741, guid: 76639da3b7023cb4e944be62bf543d77, type: 3}

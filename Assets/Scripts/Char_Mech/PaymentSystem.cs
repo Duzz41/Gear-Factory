@@ -199,10 +199,7 @@ public class PaymentSystem : MonoBehaviour
             {
                 building_cs.my_canvas.gameObject.SetActive(false);
             }
-            else
-            {
-                Debug.Log("zor");
-            }
+
         }
 
     }

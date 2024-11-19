@@ -12,7 +12,8 @@ public class Wall : Building
     public override void Build()
     {
         base.Build();
-        transform.GetChild(0).gameObject.SetActive(true);//wall sprite'ını tutan obje
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(true);//wall sprite'ını tutan obje
         level = 1;
         health = 3;
         price += 2;

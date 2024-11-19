@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour
     public GameObject aiPrefab; // Yapay zeka prefab'ı
     public int maxAI = 2; // Maksimum AI sayısı
     public List<GameObject> coins = new List<GameObject>();
+    public List<GameObject> gearTrashs = new List<GameObject>();
     public List<GameObject> attackableObjects = new List<GameObject>();
+    public List<GameObject> humans = new List<GameObject>();
     public ParticleSystem sandEffect;
     public bool _isDay;
     void Awake()
@@ -41,6 +43,7 @@ public class GameManager : MonoBehaviour
                 for (int i = 0; i < maxAI - 1; i++)
                 {
                     GameObject ai = Instantiate(aiPrefab, spawn.position, Quaternion.identity);
+                    
                     ai.transform.parent = spawn;
                     ai.GetComponent<Clockwork_AI>().spawnPoint = spawn;
                 }

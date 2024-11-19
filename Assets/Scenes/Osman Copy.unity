@@ -12893,7 +12893,9 @@ MonoBehaviour:
   - {fileID: 284799287}
   - {fileID: 1653270217}
   - {fileID: 47005618}
+  gearTrashs: []
   attackableObjects: []
+  humans: []
   sandEffect: {fileID: 1145398142}
   _isDay: 0
 --- !u!4 &1337544086

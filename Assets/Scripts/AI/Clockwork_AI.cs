@@ -16,25 +16,38 @@ public class Clockwork_AI : MonoBehaviour
     [Header("Robot Durumu")]
     public RobotState currentState = RobotState.Broken;
     public float moveSpeed = 2f; // Yapay zekanın hareket hızı
-    private float currentSpeed;
+    [SerializeField] private float currentSpeed;
     public Transform spawnPoint;
     private Transform baseTransform; // Ana üssün transformu
     public Vector3 targetPosition; // Hedef pozisyo
-    [SerializeField] Transform closestCoin;
-    [SerializeField] private Transform closestTool;
+    Transform closestCoin;
+    Transform closestTarget;
+    private Transform closestTool;
 
     public List<GameObject> coins = new List<GameObject>();
     [SerializeField] Animator anim;
+    [SerializeField] GameObject[] sprites;
 
+    [SerializeField] private GameObject laserPrefab; // Lazer prefabını buraya atayın
+    [SerializeField] private Transform firePoint; // Lazerin fırlayacağı nokta
+    [SerializeField] private float laserSpeed = 10f;
 
+    [SerializeField] private float fireCooldown = 2f; // Ateş etme arasındaki süre
+    [SerializeField] private float stopDistance = 4f; // Hedefe yaklaştığında duracağı mesafe
+
+    private float lastFireTime; // Son ateş zamanı
     private void Start()
     {
+        anim = sprites[0].GetComponent<Animator>();
         // Başlangıçta hedef pozisyonu belirle
+        /*for (int i = 0; i < sprites.Length; i++)
+         {
+             sprites[i].SetActive(false);
+         }*/
         baseTransform = GameObject.Find("GearFactory").transform;
         SetRandomTargetPosition();
 
     }
-
     private void Update()
     {
         anim.SetFloat("Speed", currentSpeed);
@@ -60,11 +73,29 @@ public class Clockwork_AI : MonoBehaviour
     #region ChangeState
     public void ChangeState(RobotState newState)
     {
+
         currentState = newState;
         Debug.Log("Robot durumu değişti: " + newState.ToString());
+        UpdateSpritesBasedOnState(newState);
+    }
+    private void UpdateSpritesBasedOnState(RobotState state)
+    {
+        for (int i = 0; i < sprites.Length; i++)
+        {
+            // State'in indeksini sprite dizisindeki sırasıyla eşleştiriyoruz
+            sprites[i].SetActive(i == (int)state);
+            anim = sprites[(int)state].GetComponent<Animator>();
+        }
     }
     #endregion
-
+    private void HandleFarmerState()
+    {
+        // Çiftçi durumundaki davranışlar
+    }
+    private void HandleMinerState()
+    {
+        // Madenci durumundaki davranışlar
+    }
     #region WARRIOR
     private void HandleWarriorState()
     {
@@ -72,47 +103,107 @@ public class Clockwork_AI : MonoBehaviour
 
         if (closestTarget != null)
         {
-
+            AttackTarget(closestTarget);
             UpdateDirection(closestTarget.position);
         }
         else
         {
-            Patrol();
+            PatrolBase();
         }
         // Savaşçı durumundaki davranışlar
     }
     Transform FindEnemyOrTrash()
     {
-        return null;
+
+        float closestDistance = 15f;
+        foreach (GameObject trashs in GameManager.instance.gearTrashs)
+        {
+            if (trashs != null)
+            {
+                float distanceToTrash = Vector2.Distance(transform.position, trashs.transform.position);
+                if (distanceToTrash < closestDistance)
+                {
+
+                    closestTarget = trashs.transform;
+                    return closestTarget;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+        foreach (GameObject enemy in GameManager.instance.humans)
+        {
+            if (enemy != null)
+            {
+                float distanceToEnemy = Vector2.Distance(transform.position, enemy.transform.position);
+                if (distanceToEnemy < closestDistance)
+                {
+                    closestTarget = enemy.transform;
+                    return closestTarget;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+        return closestTarget;
     }
 
 
-    void AttackTarget(Transform targetCoin)
+    void AttackTarget(Transform target)
     {
-        if (GameManager.instance._isDay == true)
-        {
+        UpdateDirection(target.position);
+        float distance = Vector2.Distance(transform.position, target.position);
 
+        // Yeterince yaklaşmamışsa hareket etmeye devam et
+        if (distance > stopDistance)
+        {
+            float currentSpeed = moveSpeed * 1.25f;
+            Vector2 targetPosition = new Vector2(target.position.x, transform.position.y);
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
+        }
+
+        // Saldırı mesafesinde lazer ateşle
+        if (distance <= stopDistance)
+        {
+            FireLaser(target);
+        }
+    }
+    void FireLaser(Transform target)
+    {
+        if (anim != null)
+        {
+            anim.SetTrigger("Attack"); // Attack animasyonunu çalıştır
+        }
+        // Cooldown kontrolü
+        if (Time.time - lastFireTime < fireCooldown)
+        {
+            return; // Cooldown süresi dolmadıysa çık
+        }
+
+        // Lazer nesnesini oluştur
+        if (laserPrefab != null && firePoint != null)
+        {
+            GameObject laser = Instantiate(laserPrefab, firePoint.position, Quaternion.identity);
+
+            // Lazerin yönünü hesapla
+            Vector2 direction = (target.position - firePoint.position).normalized;
+
+            // Rigidbody2D üzerinden hareket uygula
+            Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = direction * laserSpeed;
+            }
+
+            // Son ateş zamanını güncelle
+            lastFireTime = Time.time;
         }
     }
     #endregion
-
-
-    private void HandleFarmerState()
-    {
-        // Çiftçi durumundaki davranışlar
-    }
-
-    private void HandleMinerState()
-    {
-        // Madenci durumundaki davranışlar
-    }
-
-
-
-
-
-
-
     #region Broken Clockwork
 
 
@@ -185,7 +276,8 @@ public class Clockwork_AI : MonoBehaviour
     void CatchCoin(Transform targetCoin)
     {
         float distance = Vector2.Distance(transform.position, targetCoin.position);
-        currentSpeed = moveSpeed * 1.25f;
+        float slowdownFactor = Mathf.Clamp01(distance / 2f);
+        currentSpeed = moveSpeed / slowdownFactor;
         Vector2 targetPos = new Vector2(targetCoin.position.x, 1f);
         transform.position = Vector2.MoveTowards(transform.position, targetPos, currentSpeed * Time.deltaTime);
         if (distance < 0.5f)
@@ -193,6 +285,10 @@ public class Clockwork_AI : MonoBehaviour
             CollectGear(targetCoin.gameObject);
             MoveTowardsBase();
             ChangeState(RobotState.Villager);
+            if (!GameManager.instance.attackableObjects.Contains(gameObject))
+            {
+                GameManager.instance.attackableObjects.Add(gameObject);
+            }
         }
     }
 
@@ -206,10 +302,6 @@ public class Clockwork_AI : MonoBehaviour
     }
 
     #endregion
-
-
-
-
     #region Villager Clockwork
     private void HandleVillagerState()
     {
@@ -246,7 +338,7 @@ public class Clockwork_AI : MonoBehaviour
             targetPosition = new Vector2(baseTransform.position.x, 1f);
             float distance = Vector2.Distance(transform.position, targetPosition);
             float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
-            currentSpeed = moveSpeed * slowdownFactor;
+            currentSpeed = moveSpeed / slowdownFactor;
 
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
             if (distance < 0.5f)
@@ -274,7 +366,7 @@ public class Clockwork_AI : MonoBehaviour
 
     private Transform FindClosestTool()
     {
-        float closestDistance = 7f;
+        float closestDistance = 10f;
 
         GameObject[] tools = GameObject.FindGameObjectsWithTag("Tool");
         foreach (GameObject tool in tools)
@@ -301,7 +393,8 @@ public class Clockwork_AI : MonoBehaviour
     {
         UpdateDirection(targetTool.position);
         float distance = Vector2.Distance(transform.position, targetTool.position);
-        float currentSpeed = moveSpeed * 1.25f;
+        float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
+        currentSpeed = moveSpeed * slowdownFactor;
 
         Vector2 targetPosition = new Vector2(targetTool.position.x, transform.position.y);
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
@@ -328,7 +421,7 @@ public class Clockwork_AI : MonoBehaviour
 
             targetTool.parent = this.transform;
             targetTool.tag = "Untagged";
-
+            Destroy(targetTool.gameObject);
 
         }
     }
@@ -374,17 +467,4 @@ public class Clockwork_AI : MonoBehaviour
     }
 
     #endregion
-
-    // Oyuncu ile etkileşime girildiğinde çağrılacak metod
-    public void Interact()
-    {
-        if (currentState == RobotState.Broken)
-        {
-            moveSpeed = 5f;
-            currentState = RobotState.Villager;
-            Debug.Log("Dost yapay zeka onarıldı ve ana üssün etrafında dolaşmaya başladı.");
-        }
-
-    }
-
 }

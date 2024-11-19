@@ -1,49 +1,59 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using DG.Tweening;
+using UnityEngine.InputSystem;
 
 public class RotateWheel : MonoBehaviour
 {
     public RectTransform wheel;
     public Button[] buttons;
-    private int rotationStep = 5;
+    private int rotationStep = 45;
+
+    public UnityEvent<Button> OnButtonSelected; // Seçili butonu dışarıya bildiren UnityEvent
 
     private int currentRotationIndex = 0;
+    private bool isRotating = false;
 
     void Start()
     {
         AlignWheelToButton(0);
-        UpdateButtonStates(); 
+        UpdateButtonStates();
     }
 
     public void RotateClockwise()
     {
-        if (currentRotationIndex > 0)
+        if (!isRotating)
         {
-            currentRotationIndex--;
-            RotateWheelAndButtons(rotationStep);
+            currentRotationIndex = (currentRotationIndex - 1 + buttons.Length) % buttons.Length;
+            RotateWheelAndButtons(-rotationStep);
         }
     }
 
     public void RotateCounterClockwise()
     {
-        if (currentRotationIndex < buttons.Length - 1)
+        if (!isRotating)
         {
-            currentRotationIndex++;
-            RotateWheelAndButtons(-rotationStep);
+            currentRotationIndex = (currentRotationIndex + 1) % buttons.Length;
+            RotateWheelAndButtons(rotationStep);
         }
     }
 
     private void RotateWheelAndButtons(int angle)
     {
-        wheel.Rotate(0, 0, angle);
-        UpdateButtonStates();
+        if (isRotating == false)
+        {
+            isRotating = true;
+            Vector3 wheelRotate = wheel.localRotation.eulerAngles;
+            wheel.DORotate(wheelRotate + new Vector3(0, 0, angle), 1.25f).OnComplete(() => { isRotating = false; });
+            UpdateButtonStates();
+        }
     }
 
     private void AlignWheelToButton(int buttonIndex)
     {
         int targetRotation = -rotationStep * buttonIndex;
         wheel.localRotation = Quaternion.Euler(0, 0, targetRotation);
-        currentRotationIndex = buttonIndex;
     }
 
     private void UpdateButtonStates()
@@ -54,6 +64,9 @@ public class RotateWheel : MonoBehaviour
             {
                 buttons[i].interactable = true;
                 HighlightButton(buttons[i]);
+
+                // UnityEvent ile seçili butonu bildir
+
             }
             else
             {
@@ -65,11 +78,29 @@ public class RotateWheel : MonoBehaviour
 
     private void HighlightButton(Button button)
     {
-        button.GetComponent<Image>().color = Color.yellow;
+        //OnButtonSelected.Invoke(button);
+    button.Select();
+        //  button.GetComponent<Image>().color = Color.yellow;
     }
 
     private void ResetButtonAppearance(Button button)
     {
-        button.GetComponent<Image>().color = Color.white;
+        button.StopAllCoroutines();
+        // button.GetComponent<Image>().color = Color.white;
+    }
+
+    public void Rotate(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (context.ReadValue<Vector2>().y > 0)
+            {
+                RotateClockwise();
+            }
+            else if (context.ReadValue<Vector2>().y < 0)
+            {
+                RotateCounterClockwise();
+            }
+        }
     }
 }

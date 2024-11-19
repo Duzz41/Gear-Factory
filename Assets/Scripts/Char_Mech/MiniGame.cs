@@ -38,7 +38,7 @@ public class MiniGame : MonoBehaviour
         if (AreUIElementsOverlapping(uiElement1, uiElement2))
         {
             characterMovement_cs.energy = 20f;
-            this.gameObject.SetActive(false);
+
             Debug.Log("UI elementleri carpisiyor!");
         }
         else
@@ -46,6 +46,7 @@ public class MiniGame : MonoBehaviour
             Debug.Log("UI elementleri carpisymior.");
         }
         traveling = false;
+        this.gameObject.SetActive(false);
     }
 
     public void ActivateGame()

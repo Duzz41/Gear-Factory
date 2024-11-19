@@ -104,10 +104,21 @@ public class Enemy_AI : MonoBehaviour
     {
         if (closestTarget != null)
         {
-            Wall wall = closestTarget.GetComponent<Wall>();
-            if (wall != null)
+            if (closestTarget.GetComponent<Wall>() != null)
             {
-                wall.TakeDamage(attackDamage);
+                Wall wall = closestTarget.GetComponent<Wall>();
+                if (wall != null)
+                {
+                    wall.TakeDamage(attackDamage);
+                }
+            }
+            else if (closestTarget.GetComponent<Health>() != null)
+            {
+                Health health = closestTarget.GetComponent<Health>();
+                if (health != null)
+                {
+                    health.TakeDamage(attackDamage);
+                }
             }
         }
     }
