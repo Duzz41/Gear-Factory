@@ -10,9 +10,9 @@ public class CharacterMovement : MonoBehaviour
 
   [SerializeField] private Canvas mini_game_canvas;
   private Rigidbody2D rb;
-  PaymentSystem _paymentSystem;
 
   [Header("Movement")]
+  [SerializeField] private float turbo_speed;
   [SerializeField] private float run_speed = 5f;
   [SerializeField] private float walk_speed = 2f;
   private float current_speed;
@@ -30,7 +30,6 @@ public class CharacterMovement : MonoBehaviour
   void Start()
   {
     rb = GetComponent<Rigidbody2D>();
-    _paymentSystem = GetComponent<PaymentSystem>();
     current_speed = run_speed;
     EventDispatcher.RegisterFunction("MiniGameForEnergy", MiniGameForEnergy);
   }
@@ -96,9 +95,14 @@ public class CharacterMovement : MonoBehaviour
   {
     if (horizontal_input != 0)
     {
-      if (current_speed != walk_speed)
+      if (current_speed == run_speed)
       {
         energy -= 1 * Time.deltaTime;
+        
+      }
+      else if (current_speed == turbo_speed)
+      {
+        energy -= 1.5f * Time.deltaTime;
       }
       else
       {
@@ -116,7 +120,7 @@ public class CharacterMovement : MonoBehaviour
   {
     if (energy > 10)
     {
-      current_speed = run_speed;
+      current_speed = isTurbo ? turbo_speed : run_speed;
     }
     else if (energy <= 0)
     {
@@ -134,11 +138,16 @@ public class CharacterMovement : MonoBehaviour
 
 
   #region Inputs
-  public void WASD(InputAction.CallbackContext context)
+  public void WASD (InputAction.CallbackContext context)
   {
     horizontal_input = context.ReadValue<Vector2>().x;
   }
 
+  private bool isTurbo = false;
+  public void Shift(InputAction.CallbackContext context)
+  {
+    isTurbo = context.performed;
+  }
 
 
   #endregion

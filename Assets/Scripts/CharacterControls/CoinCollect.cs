@@ -58,6 +58,7 @@ public class CoinCollect : MonoBehaviour
         {
             Destroy(other.gameObject);
             GameManager.instance.coins.Remove(other.gameObject);
+            AudioManager.instance.PlaySfx("Coin Collect");
             ThrowBag();
         }
     }
