@@ -11,7 +11,6 @@ public class CharacterMovement : MonoBehaviour
 
   [SerializeField] private Canvas mini_game_canvas;
   private Rigidbody2D rb;
-  PaymentSystem _paymentSystem;
 
   [Header("Movement")]
   [SerializeField] private float run_speed = 5f;
@@ -36,7 +35,6 @@ public class CharacterMovement : MonoBehaviour
   void Start()
   {
     rb = GetComponent<Rigidbody2D>();
-    _paymentSystem = GetComponent<PaymentSystem>();
     current_speed = run_speed;
 
   }

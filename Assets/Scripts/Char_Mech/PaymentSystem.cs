@@ -60,7 +60,7 @@ public class PaymentSystem : MonoBehaviour
         if (other.gameObject.tag == "Building")
         {
             can_interact = false;
-            StartCoroutine(ControlBuildingUI(other));
+            StartCor();
         }
         else if (other.gameObject.tag == "AI")
         {
@@ -68,6 +68,10 @@ public class PaymentSystem : MonoBehaviour
         }
 
 
+    }
+    void StartCor()
+    {
+        StartCoroutine(ControlBuildingUI());
     }
     void FillCoin()
     {
@@ -186,7 +190,7 @@ public class PaymentSystem : MonoBehaviour
 
 
     #endregion
-    IEnumerator ControlBuildingUI(Collider2D other)
+    IEnumerator ControlBuildingUI()
     {
         float maxWaitTime = 2f; // Örneğin 5 saniye bekliyoruz
         float startTime = Time.time;
