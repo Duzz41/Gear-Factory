@@ -1063,10 +1063,13 @@ MonoBehaviour:
   musicSounds:
   - soundName: Theme
     loop: 0
-    soundClip: {fileID: 8300000, guid: 3e82a3042e21b964188814d6dea696dc, type: 3}
+    soundClip: {fileID: 8300000, guid: b6b076fdc2213b647a10e87bed97a1d5, type: 3}
   - soundName: Main Menu
     loop: 0
     soundClip: {fileID: 8300000, guid: 5fd36c488b62ba647afdcf7a2820c935, type: 3}
+  - soundName: NightTheme
+    loop: 0
+    soundClip: {fileID: 8300000, guid: 98c8d52fde196a54d974173c61d9c1ec, type: 3}
   sfxSounds:
   - soundName: Coin Collect
     loop: 0
