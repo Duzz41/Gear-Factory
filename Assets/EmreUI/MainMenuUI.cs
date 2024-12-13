@@ -11,6 +11,7 @@ public class MainMenuUI : MonoBehaviour
     {
         // Sahnenin ismini parametre olarak alır ve o sahneye geçer
         SceneManager.LoadScene(sceneName);
+        AudioManager.instance.PlayMusic("Theme");
     }
 
     // Oyunu kapatır

@@ -62,4 +62,5 @@ public class CoinCollect : MonoBehaviour
             ThrowBag();
         }
     }
+    
 }

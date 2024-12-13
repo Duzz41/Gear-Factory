@@ -79,7 +79,7 @@ public class RotateWheel : MonoBehaviour
     private void HighlightButton(Button button)
     {
         //OnButtonSelected.Invoke(button);
-    button.Select();
+        button.Select();
         //  button.GetComponent<Image>().color = Color.yellow;
     }
 
@@ -88,7 +88,7 @@ public class RotateWheel : MonoBehaviour
         button.StopAllCoroutines();
         // button.GetComponent<Image>().color = Color.white;
     }
-
+    #region Inputs
     public void Rotate(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -103,4 +103,5 @@ public class RotateWheel : MonoBehaviour
             }
         }
     }
+    #endregion
 }

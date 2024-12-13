@@ -1101,12 +1101,6 @@ MonoBehaviour:
   movementParticle: {fileID: 512408673}
   frontTire: {fileID: 2124062192}
   carSprite: {fileID: 601814719}
-  mini_game: {fileID: 0}
-  anim: {fileID: 0}
-  cinemachineCam: {fileID: 0}
-  offsetWhenFacingRight: 2
-  offsetWhenFacingLeft: -2
-  offsetLerpSpeed: 5
 --- !u!114 &339327255
 MonoBehaviour:
   m_ObjectHideFlags: 0

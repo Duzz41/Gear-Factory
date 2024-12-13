@@ -613,7 +613,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  moveSpeed: 0.7
+  moveSpeed: 1.5
+  currentSpeed: 0
   spawnPoint: {fileID: 0}
   targetPosition: {x: 0, y: 0, z: 0}
   coins: []

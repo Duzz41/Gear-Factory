@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
-using DG.Tweening;
-using UnityEngine.InputSystem.LowLevel;
+
+using Cinemachine;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -21,9 +20,17 @@ public class CharacterMovement : MonoBehaviour
   public ParticleSystem movementParticle, frontTire;
   private bool facingRight = true;
   public GameObject carSprite;
-
-
-
+  public MiniGame mini_game;
+  public Animator anim;
+  [Header("Cinemachine")]
+  [SerializeField] private CinemachineVirtualCamera cinemachineCam; // Cinemachine referansı
+  [SerializeField] private float offsetWhenFacingRight = 2f;
+  [SerializeField] private float offsetWhenFacingLeft = -2f;
+  [SerializeField] private float offsetLerpSpeed = 5f;
+  private CinemachineFramingTransposer transposer;
+  private Vector3 originalOffset; // Store the original offset
+  private float idleTimer = 0f; // Timer to track idle time
+  private const float idleThreshold = 5f;
 
 
 
@@ -31,7 +38,16 @@ public class CharacterMovement : MonoBehaviour
   {
     rb = GetComponent<Rigidbody2D>();
     current_speed = run_speed;
+    AudioManager.instance.PlaySfx("Car Idle");
     EventDispatcher.RegisterFunction("MiniGameForEnergy", MiniGameForEnergy);
+    if (cinemachineCam != null)
+    {
+      transposer = cinemachineCam.GetCinemachineComponent<CinemachineFramingTransposer>();
+      if (transposer != null)
+      {
+        originalOffset = transposer.m_TrackedObjectOffset; // Store the original offset
+      }
+    }
   }
 
 
@@ -41,6 +57,7 @@ public class CharacterMovement : MonoBehaviour
     UpdateSpeed();
     MovementParticules();
     Movement();
+    UpdateCinemachineOffset();
   }
 
 
@@ -50,6 +67,7 @@ public class CharacterMovement : MonoBehaviour
   void Movement()
   {
     rb.velocity = new Vector2(horizontal_input * current_speed, rb.velocity.y);
+    anim.SetFloat("speed", rb.velocity.magnitude);
     if (horizontal_input > 0 && !facingRight)
     {
       Flip();
@@ -98,14 +116,15 @@ public class CharacterMovement : MonoBehaviour
       if (current_speed == run_speed)
       {
         energy -= 1 * Time.deltaTime;
-        
       }
       else if (current_speed == turbo_speed)
       {
+
         energy -= 1.5f * Time.deltaTime;
       }
       else
       {
+
         energy += 0.5f * Time.deltaTime;
       }
     }
@@ -116,6 +135,7 @@ public class CharacterMovement : MonoBehaviour
 
     energy = Mathf.Clamp(energy, 0, 20);
   }
+  private bool isCarIdlePlaying = false;
   void UpdateSpeed()
   {
     if (energy > 10)
@@ -128,6 +148,57 @@ public class CharacterMovement : MonoBehaviour
       mini_game_canvas.gameObject.SetActive(true);
       EventDispatcher.SummonEvent("ActivateGame");
     }
+    if (horizontal_input == 0)
+    {
+      if (!isCarIdlePlaying)
+      {
+        AudioManager.instance.PlaySfx("Car Idle");
+        isCarIdlePlaying = true; // Set the flag to true
+      }
+    }
+    else
+    {
+      if (isCarIdlePlaying)
+      {
+        AudioManager.instance.StopSfx();
+        isCarIdlePlaying = false; // Reset the flag when moving
+      }
+    }
+  }
+  void UpdateCinemachineOffset()
+  {
+    if (horizontal_input == 0)
+    {
+      idleTimer += Time.deltaTime; // Increment timer
+      if (idleTimer >= idleThreshold)
+      {
+        // Change the offset after 5 seconds of being idle
+        ChangeOffset();
+      }
+    }
+    else
+    {
+      idleTimer = 0f; // Reset timer if moving
+      ResetOffset(); // Reset the offset when moving
+    }
+  }
+
+  void ChangeOffset()
+  {
+    if (cinemachineCam != null && transposer != null)
+    {
+      float targetOffsetX = facingRight ? offsetWhenFacingRight : offsetWhenFacingLeft;
+      float newOffsetX = Mathf.Lerp(transposer.m_TrackedObjectOffset.x, targetOffsetX, offsetLerpSpeed * Time.deltaTime);
+      transposer.m_TrackedObjectOffset = new Vector3(newOffsetX, transposer.m_TrackedObjectOffset.y, transposer.m_TrackedObjectOffset.z);
+    }
+  }
+
+  void ResetOffset()
+  {
+    if (cinemachineCam != null && transposer != null)
+    {
+      transposer.m_TrackedObjectOffset = originalOffset; // Reset to the original offset
+    }
   }
 
   #endregion
@@ -138,11 +209,17 @@ public class CharacterMovement : MonoBehaviour
 
 
   #region Inputs
-  public void WASD (InputAction.CallbackContext context)
+  public void WASD(InputAction.CallbackContext context)
   {
     horizontal_input = context.ReadValue<Vector2>().x;
   }
-
+  public void Energy(InputAction.CallbackContext context)
+  {
+    if (context.performed)
+    {
+      mini_game.MiniGameForEnergy();
+    }
+  }
   private bool isTurbo = false;
   public void Shift(InputAction.CallbackContext context)
   {

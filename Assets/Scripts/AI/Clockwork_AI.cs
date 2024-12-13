@@ -282,9 +282,11 @@ public class Clockwork_AI : MonoBehaviour
         transform.position = Vector2.MoveTowards(transform.position, targetPos, currentSpeed * Time.deltaTime);
         if (distance < 0.5f)
         {
-            CollectGear(targetCoin.gameObject);
-            MoveTowardsBase();
             ChangeState(RobotState.Villager);
+            CollectGear(targetCoin.gameObject);
+
+            MoveTowardsBase();
+
             if (!GameManager.instance.attackableObjects.Contains(gameObject))
             {
                 GameManager.instance.attackableObjects.Add(gameObject);
@@ -337,14 +339,10 @@ public class Clockwork_AI : MonoBehaviour
         {
             targetPosition = new Vector2(baseTransform.position.x, 1f);
             float distance = Vector2.Distance(transform.position, targetPosition);
-            float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
-            currentSpeed = moveSpeed / slowdownFactor;
-
+            currentSpeed = moveSpeed * 1.5f;
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
-            if (distance < 0.5f)
+            if (distance < 1f)
             {
-                moveSpeed = 2f;
-
                 SetRandomBasePatrolPos();
             }
         }
@@ -352,7 +350,7 @@ public class Clockwork_AI : MonoBehaviour
         {
             float distance = Vector2.Distance(transform.position, targetPosition);
             float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
-            currentSpeed = moveSpeed * slowdownFactor;
+            currentSpeed = (moveSpeed * 1.5f) * slowdownFactor;
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
             if (distance < 0.5f)
             {
@@ -394,11 +392,11 @@ public class Clockwork_AI : MonoBehaviour
         UpdateDirection(targetTool.position);
         float distance = Vector2.Distance(transform.position, targetTool.position);
         float slowdownFactor = Mathf.Clamp01(distance / 1.5f);
-        currentSpeed = moveSpeed * slowdownFactor;
+        currentSpeed = (moveSpeed * 1.5f) * slowdownFactor;
 
         Vector2 targetPosition = new Vector2(targetTool.position.x, transform.position.y);
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
-        Debug.Log(distance);
+        
         if (distance < 1f)
         {
 
@@ -414,7 +412,6 @@ public class Clockwork_AI : MonoBehaviour
                 case "MilitaryFactory":
                     ChangeState(RobotState.Warrior);
                     break;
-
             }
 
             targetTool.parent.parent.GetComponent<Building>().RemoveTool(targetTool);

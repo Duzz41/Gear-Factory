@@ -18,7 +18,7 @@ public class PaymentSystem : MonoBehaviour
     [SerializeField] private float fill_speed;
     [SerializeField] private float drop_duration;
     [SerializeField] private float remove_duration;
-
+    [SerializeField] GameObject carSprite;
 
     #region Coin Jobs
     private Building building_cs;
@@ -127,9 +127,17 @@ public class PaymentSystem : MonoBehaviour
         if (current_slot < 1)
         {
             Vector3 dropPos = transform.position;
+
+            // Karakterin bakış yönünü al
+            float lookDirection = carSprite.transform.localScale.x; // Eğer karakter sağa bakıyorsa, bu doğru olur. 
+                                                                    // Eğer karakterin bakış yönü farklı bir eksende ise, uygun yönü kullanmalısınız.
+
+            // Coin'in konumunu bakış yönüne göre hesapla
+            Vector3 coinPosition = new Vector3(dropPos.x + lookDirection * 3f, dropPos.y, dropPos.z); // 3 birim ileri
+
             CoinCollect.instance.coin_count -= 1;
             CoinCollect.instance.RemoveToCoinFromList(null);
-            GameObject coin = Instantiate(coin_prefab, dropPos + new Vector3(3f, 0, 0), Quaternion.identity);
+            GameObject coin = Instantiate(coin_prefab, coinPosition, Quaternion.identity);
             GameManager.instance.coins.Add(coin);
 
             coin.GetComponent<Rigidbody2D>().simulated = true;

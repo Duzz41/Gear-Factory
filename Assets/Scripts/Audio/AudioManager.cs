@@ -26,7 +26,7 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        PlayMusic("Theme");
+        PlayMusic("Main Menu");
     }
 
     public void PlayMusic(string name)
@@ -56,8 +56,24 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            sfxSource.PlayOneShot(s.soundClip);
+            if (s.loop)
+            {
+                sfxSource.clip = s.soundClip;
+                sfxSource.loop = true;
+                sfxSource.Play();
+            }
+            else
+            {
+                sfxSource.PlayOneShot(s.soundClip);
+            }
         }
+    }
+
+    public void StopSfx()
+    {
+        sfxSource.clip = null;
+        sfxSource.Stop();
+        sfxSource.loop = false; // Reset loop to false
     }
 
 

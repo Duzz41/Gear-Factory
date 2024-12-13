@@ -14,6 +14,7 @@ public class Wall : Building
         base.Build();
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(true);//wall sprite'ını tutan obje
+
         level = 1;
         health = 3;
         price += 2;
@@ -34,11 +35,13 @@ public class Wall : Building
         else
         {
             level += 1;
-            health = 100;
+            price += 2;             
+            health = 5;
             //price değeri arttır
             RedesignCoinPlaces();
-
             //Sprite'ı Değiştir
+            transform.GetChild(1).gameObject.SetActive(false);
+            transform.GetChild(2).gameObject.SetActive(true);
 
         }
 
