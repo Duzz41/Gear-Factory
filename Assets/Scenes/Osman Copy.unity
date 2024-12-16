@@ -1382,7 +1382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9260c6b8acfd6d4ba3ffe36cffe91ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mini_game_canvas: {fileID: 0}
+  mini_game_canvas: {fileID: 1348070181}
   turbo_speed: 8
   run_speed: 5
   walk_speed: 2
@@ -1448,7 +1448,19 @@ MonoBehaviour:
     m_ActionId: 08d1344c-4bb8-402b-b109-f2ba9e98fa78
     m_ActionName: Player/Interaction[/Keyboard/s,/Keyboard/downArrow]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1348070182}
+        m_TargetAssemblyTypeName: MiniGame, Assembly-CSharp
+        m_MethodName: EnergyButton
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 4aadd138-0ee8-4347-a388-703b7640999c
     m_ActionName: Player/Energy[/Keyboard/space]
   - m_PersistentCalls:
@@ -13443,7 +13455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88be41a21bb45d34dbdb8e0593a85c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterMovement_cs: {fileID: 0}
+  characterMovement_cs: {fileID: 339327254}
   uiElement1: {fileID: 1280528524}
   uiElement2: {fileID: 436398848}
   slider: {fileID: 299624359}

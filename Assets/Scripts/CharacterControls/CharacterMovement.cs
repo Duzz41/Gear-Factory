@@ -98,7 +98,7 @@ public class CharacterMovement : MonoBehaviour
       if (current_speed == run_speed)
       {
         energy -= 1 * Time.deltaTime;
-        
+
       }
       else if (current_speed == turbo_speed)
       {
@@ -116,18 +116,30 @@ public class CharacterMovement : MonoBehaviour
 
     energy = Mathf.Clamp(energy, 0, 20);
   }
+  private bool energy_renew = false;
   void UpdateSpeed()
   {
+
     if (energy > 10)
     {
+      if (energy_renew) energy_renew = false;
       current_speed = isTurbo ? turbo_speed : run_speed;
     }
     else if (energy <= 0)
     {
+      energy_renew = true;
       current_speed = walk_speed;
       mini_game_canvas.gameObject.SetActive(true);
       EventDispatcher.SummonEvent("ActivateGame");
     }
+    else if (!energy_renew && !isTurbo)
+    {
+      current_speed = run_speed;
+    }
+
+
+
+
   }
 
   #endregion
@@ -138,7 +150,7 @@ public class CharacterMovement : MonoBehaviour
 
 
   #region Inputs
-  public void WASD (InputAction.CallbackContext context)
+  public void WASD(InputAction.CallbackContext context)
   {
     horizontal_input = context.ReadValue<Vector2>().x;
   }
@@ -146,7 +158,8 @@ public class CharacterMovement : MonoBehaviour
   private bool isTurbo = false;
   public void Shift(InputAction.CallbackContext context)
   {
-    isTurbo = context.performed;
+    if (context.started) isTurbo = true;
+    if (context.canceled) isTurbo = false;
   }
 
 
