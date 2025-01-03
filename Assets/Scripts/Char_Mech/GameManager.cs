@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> gearTrashs = new List<GameObject>();
     public List<GameObject> attackableObjects = new List<GameObject>();
     public List<GameObject> humans = new List<GameObject>();
+    public List<GameObject> constBuildings = new List<GameObject>();
     public ParticleSystem sandEffect;
     public bool _isDay;
     void Awake()
@@ -43,12 +44,25 @@ public class GameManager : MonoBehaviour
                 for (int i = 0; i < maxAI - 1; i++)
                 {
                     GameObject ai = Instantiate(aiPrefab, spawn.position, Quaternion.identity);
-                    
+
                     ai.transform.parent = spawn;
                     ai.GetComponent<Clockwork_AI>().spawnPoint = spawn;
                 }
             }
         }
+    }
+    public void OnConstructionStarted(Wall wall)
+    {
+        // İnşaat başladığında yapılacak işlemler
+        // Örneğin, constBuildings listesine ekleyebilirsiniz
+        if (!constBuildings.Contains(wall.gameObject))
+            constBuildings.Add(wall.gameObject);
+    }
+
+    public void OnConstructionCompleted(Wall wall)
+    {
+        // İnşaat tamamlandığında yapılacak işlemler
+        constBuildings.Remove(wall.gameObject);
     }
     public void SpawnHumans()
     {

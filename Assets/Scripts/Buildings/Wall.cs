@@ -6,28 +6,27 @@ public class Wall : Building
 {
     public int health = 3;
     private int level = 0;
-
-
+    private bool isConstructed = false;
+    public GameObject constructionSprite; // İnşaatta olan sprite
+    public GameObject[] builtSprite;
 
     public override void Build()
     {
         base.Build();
-        transform.GetChild(0).gameObject.SetActive(false);
-        transform.GetChild(1).gameObject.SetActive(true);//wall sprite'ını tutan obje
-
+        constructionSprite.SetActive(true);
+        for (int i = 0; i < builtSprite.Length; i++)
+            builtSprite[i].SetActive(false);
         level = 1;
         health = 3;
         price += 2;
         RedesignCoinPlaces();
-        if (!GameManager.instance.attackableObjects.Contains(gameObject))
-        {
-            GameManager.instance.attackableObjects.Add(gameObject);
-        }
+
 
     }
 
     public override void Upgrade()
     {
+        NotifyWorkerAboutConstruction();
         if (level == 0)
         {
             Build();
@@ -35,19 +34,46 @@ public class Wall : Building
         else
         {
             level += 1;
-            price += 2;             
+            price += 2;
             health = 5;
             //price değeri arttır
             RedesignCoinPlaces();
             //Sprite'ı Değiştir
-            transform.GetChild(1).gameObject.SetActive(false);
-            transform.GetChild(2).gameObject.SetActive(true);
+            constructionSprite.SetActive(true);
+            for (int i = 0; i < builtSprite.Length; i++)
+                builtSprite[i].SetActive(false);
 
         }
 
 
 
     }
+    private void NotifyWorkerAboutConstruction()
+    {
+        // İşçiyi bilgilendirmek için bir olay veya callback kullanabilirsiniz
+        // Örneğin, GameManager'da bir olay tetikleyebilirsiniz
+        GameManager.instance.OnConstructionStarted(this);
+        isConstructed = true;
+    }
+
+    public void CompleteConstruction()
+    {
+        if (isConstructed == true)
+        {
+            GameManager.instance.OnConstructionCompleted(this);
+            if (!GameManager.instance.attackableObjects.Contains(gameObject))
+            {
+                GameManager.instance.attackableObjects.Add(gameObject);
+            }
+            // İnşaat tamamlandığında yapılacak işlemler
+            constructionSprite.SetActive(false); // İnşaatta olan sprite'ı gizle
+            builtSprite[level - 1].SetActive(true);
+            Debug.Log(level);
+            Debug.Log("Construction Complete!");
+            isConstructed = false;
+        }
+    }
+
     public void TakeDamage(int damage)
     {
         health -= damage;

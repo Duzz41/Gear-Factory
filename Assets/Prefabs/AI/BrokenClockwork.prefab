@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 8667575894586901075}
   - component: {fileID: 7110633629189017937}
   m_Layer: 0
-  m_Name: FarmerC
+  m_Name: WorkerC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -211,8 +211,8 @@ SpriteRenderer:
   m_SortingLayerID: 933180517
   m_SortingLayer: 1
   m_SortingOrder: 8
-  m_Sprite: {fileID: 159271396, guid: 7324a8bf35de0e7419f8de359386f29e, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 563838238, guid: 774b5144e0c859348b0b520a4963c690, type: 3}
+  m_Color: {r: 0.09826109, g: 0.990566, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -232,7 +232,7 @@ Animator:
   m_GameObject: {fileID: 3906890242727960053}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6f20619a6c189694abce1d675c3ae73a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 20ea5cb5200b91f46bf4cc252344a40a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

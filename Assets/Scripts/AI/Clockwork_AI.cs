@@ -8,7 +8,7 @@ public enum RobotState
     Broken,
     Villager,
     Warrior,
-    Farmer,
+    Worker,
     Miner
 }
 public class Clockwork_AI : MonoBehaviour
@@ -35,6 +35,8 @@ public class Clockwork_AI : MonoBehaviour
     [SerializeField] private float fireCooldown = 2f; // Ateş etme arasındaki süre
     [SerializeField] private float stopDistance = 4f; // Hedefe yaklaştığında duracağı mesafe
 
+    [SerializeField] private float workerDistance = 1f;
+    // Transform closestTarget;
     private float lastFireTime; // Son ateş zamanı
     private void Start()
     {
@@ -62,8 +64,8 @@ public class Clockwork_AI : MonoBehaviour
             case RobotState.Warrior:
                 HandleWarriorState();
                 break;
-            case RobotState.Farmer:
-                HandleFarmerState();
+            case RobotState.Worker:
+                HandleWorkerState();
                 break;
             case RobotState.Miner:
                 HandleMinerState();
@@ -87,15 +89,95 @@ public class Clockwork_AI : MonoBehaviour
             anim = sprites[(int)state].GetComponent<Animator>();
         }
     }
-    #endregion
-    private void HandleFarmerState()
-    {
-        // Çiftçi durumundaki davranışlar
-    }
+    #endregion    
     private void HandleMinerState()
     {
         // Madenci durumundaki davranışlar
     }
+    #region Worker
+    private void HandleWorkerState()
+    {
+        closestTarget = FindWork();
+
+        if (closestTarget != null)
+        {
+            Debug.Log("İŞ bulll");
+            BuildTarget(closestTarget);
+            UpdateDirection(closestTarget.position);
+        }
+        else
+        {
+            PatrolBase();
+        }
+    }
+    Transform FindWork()
+    {
+
+        float closestDistance = 15f;
+        foreach (GameObject constr in GameManager.instance.constBuildings)
+        {
+            if (constr != null)
+            {
+                float distanceToTrash = Vector2.Distance(transform.position, constr.transform.position);
+                if (distanceToTrash < closestDistance)
+                {
+                    closestTarget = constr.transform;
+                    return closestTarget;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+        return closestTarget;
+    }
+    void BuildTarget(Transform target)
+    {
+        UpdateDirection(target.position);
+        float distance = Vector2.Distance(transform.position, target.position);
+
+        // Yeterince yaklaşmamışsa hareket etmeye devam et
+        if (distance > workerDistance)
+        {
+            float currentSpeed = moveSpeed * 1.25f;
+            Vector2 targetPosition = new Vector2(target.position.x, transform.position.y);
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
+        }
+
+        if (distance <= workerDistance)
+        {
+            BuildingTarget(target);
+        }
+    }
+    void BuildingTarget(Transform target)
+    {
+        if (anim != null)
+        {
+            anim.SetTrigger("Work"); // Attack animasyonunu çalıştır
+        }
+
+        StartCoroutine(ConstructionCoroutine(target));
+
+        // Lazer nesnesini oluştur
+    }
+    private IEnumerator ConstructionCoroutine(Transform target)
+    {
+        // Construction duration (e.g., 2 seconds)
+        yield return new WaitForSeconds(2f);
+
+        // Complete construction
+        Wall wall = target.GetComponent<Wall>();
+        if (wall != null)
+        {
+            Debug.Log("Construction completed!");
+            anim.ResetTrigger("Work");
+            wall.CompleteConstruction();
+            closestTarget = null;
+            // Resume worker's patrol or walking behavior
+        }
+    }
+    #endregion
     #region WARRIOR
     private void HandleWarriorState()
     {
@@ -396,7 +478,7 @@ public class Clockwork_AI : MonoBehaviour
 
         Vector2 targetPosition = new Vector2(targetTool.position.x, transform.position.y);
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
-        
+
         if (distance < 1f)
         {
 
@@ -406,8 +488,8 @@ public class Clockwork_AI : MonoBehaviour
                 case "MinerFactory":
                     ChangeState(RobotState.Miner);
                     break;
-                case "FarmerFactory":
-                    ChangeState(RobotState.Farmer);
+                case "WorkerFactory":
+                    ChangeState(RobotState.Worker);
                     break;
                 case "MilitaryFactory":
                     ChangeState(RobotState.Warrior);

@@ -129,6 +129,10 @@ MonoBehaviour:
   coin_place_prefab: {fileID: 7550915173377395829, guid: 6e138a893bc5e204d9258ba6e0ab4944, type: 3}
   price: 1
   health: 3
+  constructionSprite: {fileID: 6306932765742688363}
+  builtSprite:
+  - {fileID: 8355130577850725245}
+  - {fileID: 4332352218995412065}
 --- !u!61 &3705333622213433855
 BoxCollider2D:
   m_ObjectHideFlags: 0

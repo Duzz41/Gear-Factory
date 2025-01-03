@@ -22,6 +22,7 @@ public class CharacterMovement : MonoBehaviour
   public GameObject carSprite;
   public MiniGame mini_game;
   public Animator anim;
+  public float maxSpeed = 20f;
   [Header("Cinemachine")]
   [SerializeField] private CinemachineVirtualCamera cinemachineCam; // Cinemachine referansı
   [SerializeField] private float offsetWhenFacingRight = 2f;
@@ -135,7 +136,8 @@ public class CharacterMovement : MonoBehaviour
 
     energy = Mathf.Clamp(energy, 0, 20);
   }
-  private bool isCarIdlePlaying = false;
+  private bool isCarMoving = false; // Arabanın hareket edip etmediğini kontrol etmek için bir bayrak
+
   void UpdateSpeed()
   {
     if (energy > 10)
@@ -148,22 +150,33 @@ public class CharacterMovement : MonoBehaviour
       mini_game_canvas.gameObject.SetActive(true);
       EventDispatcher.SummonEvent("ActivateGame");
     }
-    if (horizontal_input == 0)
+    UpdateEngineSound();
+    // Araba hareket ediyor mu kontrol et
+    if (horizontal_input != 0)
     {
-      if (!isCarIdlePlaying)
+      if (!isCarMoving) // Eğer araba hareket etmiyorsa
       {
-        AudioManager.instance.PlaySfx("Car Idle");
-        isCarIdlePlaying = true; // Set the flag to true
+        AudioManager.instance.PlaySfx("Car Move"); // Araba hareket sesi çal
+        isCarMoving = true; // Bayrağı güncelle
       }
     }
     else
     {
-      if (isCarIdlePlaying)
+      if (isCarMoving) // Eğer araba duruyorsa
       {
-        AudioManager.instance.StopSfx();
-        isCarIdlePlaying = false; // Reset the flag when moving
+        AudioManager.instance.StopSfx(); // Araba hareket sesini durdur
+        AudioManager.instance.PlaySfx("Car Idle");
+        isCarMoving = false; // Bayrağı güncelle
       }
     }
+
+  }
+  void UpdateEngineSound()
+  {
+    // Calculate the pitch based on current speed
+    float pitch = Mathf.Clamp(rb.velocity.magnitude / maxSpeed, 0.5f, 2f); // Adjust the range as needed
+    AudioManager.instance.sfxSource.pitch = pitch;
+
   }
   void UpdateCinemachineOffset()
   {
