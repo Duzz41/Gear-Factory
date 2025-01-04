@@ -9,6 +9,8 @@ TagManager:
   - Coin
   - Building
   - Tool
+  - Enemy
+  - Trash
   layers:
   - Default
   - TransparentFX
