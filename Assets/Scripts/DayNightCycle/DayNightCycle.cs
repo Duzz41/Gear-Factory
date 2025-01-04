@@ -5,18 +5,14 @@ using UnityEngine.Rendering.Universal;
 
 public class DayNightCycle : MonoBehaviour
 {
-    //public Volume ppv;
+    [SerializeField] Color _color;
     public Light2D _light;
     public Light2D sun;
     public Light2D moon;
-    [SerializeField] Color _color;
     [SerializeField] Gradient _gradient;
 
-    public float tick;
-    public float seconds;
-    public int mins;
-    public int hours;
-    public int days = 1;
+    public float dayLength = 120f; // Gün uzunluğu (saniye cinsinden)
+    public float timeOfDay; // Gün içindeki zaman (0.0 - 1.0 arası)
 
     public bool activateLights;
     public GameObject[] lights;
@@ -24,96 +20,65 @@ public class DayNightCycle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _light = GetComponent<Light2D>();
+        timeOfDay = 0.25f; // Başlangıçta 120 derece konumunda
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        CalcTime();
-        ControlPPV();
-    }
-    public void CalcTime()
-    {
-        seconds += Time.fixedDeltaTime * tick;
-        if (seconds >= 60)
-        {
-            seconds = 0;
-            mins += 1;
-
-        }
-        if (mins >= 60)
-        {
-            mins = 0;
-            hours += 1;
-
-        }
-        if (hours >= 24)
-        {
-            hours = 0;
-            days += 1;
-        }
-        ControlPPV();
-        CheckDay();
+        UpdateTimeOfDay();
+        ControlLighting();
+        CheckDayNight();
     }
 
-    void ControlPPV()
+    void UpdateTimeOfDay()
     {
-        float timePercent = (hours * 60 + mins) / 1440f;
+        timeOfDay += Time.deltaTime / dayLength; // Zamanı gün uzunluğuna göre güncelle
+        if (timeOfDay >= 1f) // Gün tamamlandığında sıfırla
+        {
+            timeOfDay = 0f;
+        }
+    }
 
-        // Gradiente göre rengi ayarla
+    void ControlLighting()
+    {
+        float timePercent = timeOfDay; // 0.0 - 1.0 arası
+
+        // Renk ve yoğunluk ayarları
         _color = _gradient.Evaluate(timePercent);
         _light.color = _color;
-        if (hours >= 19 && hours < 23)
+
+        // Güneş ve ayın yoğunluğunu ayarla
+        sun.intensity = Mathf.Clamp01(1 - Mathf.Abs(2 * timePercent - 1)); // Gündüz yoğunluğu
+        moon.intensity = Mathf.Clamp01(2 * timePercent); // Gece yoğunluğu
+
+        // Işıkları aç/kapa
+        if (timePercent >= 0.75f || timePercent < 0.25f) // Gece
         {
-
-            if (_light.intensity > 0.01f)
+            if (!activateLights)
             {
-                _light.intensity -= Time.fixedDeltaTime / 50;
-                sun.intensity = _light.intensity - 0.04f;
-
-            }
-            if (moon.intensity <= 0.6)
-                moon.intensity += Time.fixedDeltaTime / 50;
-            if (activateLights == false)
-            {
-                for (int i = 0; i < lights.Length; i++)
+                foreach (var light in lights)
                 {
-                    lights[i].SetActive(true);
+                    light.SetActive(true);
                 }
                 activateLights = true;
             }
         }
-        if (hours >= 3 && hours < 7)
+        else // Gündüz
         {
-            if (_light.intensity <= 1)
+            if (activateLights)
             {
-                _light.intensity += Time.fixedDeltaTime / 50;
-                sun.intensity = _light.intensity;
-            }
-            if (moon.intensity > 0.01f)
-                moon.intensity -= Time.fixedDeltaTime / 50;
-
-        }
-    }
-
-    void CheckDay()
-    {
-        if (hours >= 0 && hours < 1)
-        {
-            GameManager.instance._isDay = false;
-        }
-        else if (hours >= 3 && hours < 5)
-        {
-            GameManager.instance._isDay = true;
-            if (activateLights == true)
-            {
-                for (int i = 0; i < lights.Length; i++)
+                foreach (var light in lights)
                 {
-                    lights[i].SetActive(false);
+                    light.SetActive(false);
                 }
                 activateLights = false;
             }
         }
+    }
+
+    void CheckDayNight()
+    {
+        GameManager.instance._isDay = timeOfDay >= 0.2f || timeOfDay < 0.8f; // Gündüz ve gece kontrolü
     }
 }
