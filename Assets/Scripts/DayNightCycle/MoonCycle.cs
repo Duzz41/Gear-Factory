@@ -21,7 +21,7 @@ public class MoonCycle : MonoBehaviour
         if (GameManager.instance._isDay == false)
             angle -= orbitSpeed * Time.deltaTime;
         else
-            angle = -3;
+            angle = -2.5f;
 
         // X ve Y pozisyonlarını hesapla (elips için farklı yarıçaplar kullanarak)
         float x = centerObject.position.x + Mathf.Cos(angle) * radiusX;

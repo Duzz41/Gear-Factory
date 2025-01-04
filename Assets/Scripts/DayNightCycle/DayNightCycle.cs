@@ -1,5 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
+
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -11,16 +12,24 @@ public class DayNightCycle : MonoBehaviour
     public Light2D moon;
     [SerializeField] Gradient _gradient;
 
-    public float dayLength = 120f; // Gün uzunluğu (saniye cinsinden)
+    public float dayLength = 180f; // Gün uzunluğu (saniye cinsinden)
     public float timeOfDay; // Gün içindeki zaman (0.0 - 1.0 arası)
 
     public bool activateLights;
     public GameObject[] lights;
 
+    public int days; // Gün sayacı
+    public GameObject dayImage; // Gün değiştiğinde aktif olacak görüntü
+    public TextMeshProUGUI dayText; // Gün sayısını gösterecek metin
+    
+
+
     // Start is called before the first frame update
     void Start()
     {
-        timeOfDay = 0.25f; // Başlangıçta 120 derece konumunda
+        days = 1;
+        ShowDayText();
+
     }
 
     // Update is called once per frame
@@ -37,7 +46,51 @@ public class DayNightCycle : MonoBehaviour
         if (timeOfDay >= 1f) // Gün tamamlandığında sıfırla
         {
             timeOfDay = 0f;
+            days++;
+
         }
+    }
+    void ShowDayText()
+    {
+        AudioManager.instance.PlaySfx("TextType");
+        dayText.gameObject.SetActive(true); // Yazıyı aktif et
+        StartCoroutine(TypeText("DAY: " + days)); // Gün sayısını yazdır
+    }
+
+    IEnumerator TypeText(string text)
+    {
+        dayText.text = ""; // Önce metni temizle
+        dayText.color = new Color(dayText.color.r, dayText.color.g, dayText.color.b, 1f); // Opaklığı 1 yap
+
+        foreach (char letter in text.ToCharArray())
+        {
+            dayText.text += letter; // Harf ekle
+
+            yield return new WaitForSeconds(0.5f); // Her harf arasında bekle (daha kısa süre)
+        }
+
+        // Yazıyı belirli bir süre açık tut
+        yield return new WaitForSeconds(2f);
+
+        // Yazıyı yavaşça kapat
+        StartCoroutine(FadeOut());
+    }
+
+    IEnumerator FadeOut()
+    {
+        float duration = 1f; // Kapanma süresi
+        float time = 0f;
+
+        // Opaklığı yavaşça azalt
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, time / duration);
+            dayText.color = new Color(dayText.color.r, dayText.color.g, dayText.color.b, alpha);
+            yield return null;
+        }
+
+        dayText.gameObject.SetActive(false); // Yazıyı kapat
     }
 
     void ControlLighting()
@@ -53,10 +106,11 @@ public class DayNightCycle : MonoBehaviour
         moon.intensity = Mathf.Clamp01(2 * timePercent); // Gece yoğunluğu
 
         // Işıkları aç/kapa
-        if (timePercent >= 0.75f || timePercent < 0.25f) // Gece
+        if (timePercent >= 0.75f || timePercent < 0.2f) // Gece
         {
             if (!activateLights)
             {
+                sun.intensity = 0f;
                 foreach (var light in lights)
                 {
                     light.SetActive(true);
@@ -68,6 +122,9 @@ public class DayNightCycle : MonoBehaviour
         {
             if (activateLights)
             {
+                ShowDayText();
+                sun.intensity = 1f;
+
                 foreach (var light in lights)
                 {
                     light.SetActive(false);
@@ -79,6 +136,14 @@ public class DayNightCycle : MonoBehaviour
 
     void CheckDayNight()
     {
-        GameManager.instance._isDay = timeOfDay >= 0.2f || timeOfDay < 0.8f; // Gündüz ve gece kontrolü
+        if (timeOfDay >= 0.2f && timeOfDay < 0.85f) // Gece veya gün kontrolü
+        {
+            GameManager.instance._isDay = true;
+        }
+        else if (timeOfDay >= 0.85f || timeOfDay < 0.2f)
+        {
+            GameManager.instance._isDay = false;
+        }
+
     }
 }
