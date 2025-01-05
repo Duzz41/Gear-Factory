@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/OsmanScene.unity
     guid: 96b75d3a1cc0be841b4d9af63a495028
+  - enabled: 1
+    path: Assets/EmreUI/SettingsUI/SettingsUI.unity
+    guid: 1562c30112cde3d4f9f2b64b5e53cd3c
   m_configObjects: {}

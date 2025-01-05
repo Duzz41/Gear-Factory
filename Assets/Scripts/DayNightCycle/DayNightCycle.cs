@@ -54,7 +54,7 @@ public class DayNightCycle : MonoBehaviour
     {
         AudioManager.instance.PlaySfx("TextType");
         dayText.gameObject.SetActive(true); // Yazıyı aktif et
-        StartCoroutine(TypeText("DAY: " + days)); // Gün sayısını yazdır
+        StartCoroutine(TypeText("Day: " + days)); // Gün sayısını yazdır
     }
 
     IEnumerator TypeText(string text)
