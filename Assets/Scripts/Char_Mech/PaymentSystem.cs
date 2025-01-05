@@ -25,22 +25,22 @@ public class PaymentSystem : MonoBehaviour
     private GameObject targetObject;
 
 
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Building")
         {
-
             #region GetObjectInfos
             targetObject = other.gameObject;
             building_cs = targetObject.GetComponent<Building>();
-            robots = null; // Clear robots reference to avoid conflicts
+            robots = null; //Clear robots reference to avoid conflicts
             if (building_cs != null)
             {
                 building_slot_count = building_cs.price;
 
                 if (!building_cs.lock_my_UI)
                 {
-                    OpenUI(other);
+                    OpenUI(building_cs);
                 }
             }
             #endregion
@@ -59,8 +59,11 @@ public class PaymentSystem : MonoBehaviour
     {
         if (other.gameObject.tag == "Building")
         {
-            can_interact = false;
-            StartCor();
+
+            var test = other.gameObject.GetComponent<Building>();
+            if (building_cs == test)
+            { can_interact = false; }
+            StartCor(test);
         }
         else if (other.gameObject.tag == "AI")
         {
@@ -69,9 +72,9 @@ public class PaymentSystem : MonoBehaviour
 
 
     }
-    void StartCor()
+    void StartCor(Building test)
     {
-        StartCoroutine(ControlBuildingUI());
+        StartCoroutine(ControlBuildingUI(test));
     }
     void FillCoin()
     {
@@ -148,6 +151,7 @@ public class PaymentSystem : MonoBehaviour
     void PaymentDone()
     {
         Debug.Log("Payment Done");
+        Debug.Log(targetObject.name);
         targetObject.GetComponent<Building>().Upgrade();
     }
     IEnumerator RemoveCoinOnComplete()
@@ -198,18 +202,19 @@ public class PaymentSystem : MonoBehaviour
 
 
     #endregion
-    IEnumerator ControlBuildingUI()
+    IEnumerator ControlBuildingUI(Building test)
     {
         float maxWaitTime = 2f; // Örneğin 5 saniye bekliyoruz
         float startTime = Time.time;
         yield return new WaitUntil(() => active_coins.Count == 0 || Time.time - startTime >= maxWaitTime);
-        if (active_coins.Count == 0 && !can_interact)
+        if (active_coins.Count == 0)
         {
             //if (other.transform.GetChild(0).gameObject != null)
             // other.transform.GetChild(0).gameObject.SetActive(false);
             if (building_cs != null)
             {
-                building_cs.my_canvas.gameObject.SetActive(false);
+                test.my_canvas.gameObject.SetActive(false);
+                //Debug.Log(test.name);
             }
 
         }
@@ -218,12 +223,10 @@ public class PaymentSystem : MonoBehaviour
 
 
 
-    void OpenUI(Collider2D other)
+    void OpenUI(Building building)
     {
-        //other.gameObject.transform.GetChild(0).gameObject.SetActive(true);
-        building_cs.my_canvas.gameObject.SetActive(true);
+        building.my_canvas.gameObject.SetActive(true);
         can_interact = true;
-
     }
 
     #region Input Actions

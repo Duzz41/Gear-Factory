@@ -97,7 +97,7 @@ public class CharacterMovement : MonoBehaviour
       {
         movementParticle.Play();
         frontTire.Play();
-        Debug.Log("Movement Particle is Playing");
+        //Debug.Log("Movement Particle is Playing");
       }
 
     }

@@ -1,8 +1,7 @@
 using System.Collections;
-
+using UnityEngine;
 public class GearFactory : Building
 {
-
     private int level = 1;
 
 
@@ -15,11 +14,18 @@ public class GearFactory : Building
     public override void Upgrade()
     {
         base.Upgrade();
-        //Debug.Log("Building-specific upgrade logic.");
         level += 1;
-        price += 2;
+        Debug.Log("Level: " + level);
+        if (level == 19)
+        {
+            price += 6;
+        }
+        else if (level == 20)
+        {
+            price = 0;
+            //Kazanma ekranı
+        }
         RedesignCoinPlaces();
-
     }
 
     public override void RedesignCoinPlaces()
