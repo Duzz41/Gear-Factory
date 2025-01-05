@@ -14,7 +14,7 @@ public class Building : MonoBehaviour
     public Transform content;
     public GameObject coin_place_prefab;
 
-    public int price = 3;
+    public int price;
 
     // Temel binalar için ortak işlevler burada tanımlanabilir
     public virtual void Build()
@@ -36,7 +36,7 @@ public class Building : MonoBehaviour
     public virtual void RemoveTool(Transform tool)
     {
         Destroy(tool.gameObject);
-        
+
         // Debug.Log("Tool removed!");
     }
 
@@ -51,10 +51,18 @@ public class Building : MonoBehaviour
 
         int new_coins_count = price - content.childCount;
 
-        for (int i = 0; i < new_coins_count; i++)
+
+        if (new_coins_count < 0)
         {
-            GameObject added_coin_place = Instantiate(coin_place_prefab, content);
-            coin_holders.Add(added_coin_place.transform);
+            Destroy(my_canvas);
+        }
+        else
+        {
+            for (int i = 0; i < new_coins_count; i++)
+            {
+                GameObject added_coin_place = Instantiate(coin_place_prefab, content);
+                coin_holders.Add(added_coin_place.transform);
+            }
         }
     }
 

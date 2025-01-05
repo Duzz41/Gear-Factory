@@ -10,6 +10,8 @@ public class Wall : Building
     public GameObject constructionSprite; // İnşaatta olan sprite
     public GameObject[] builtSprite;
 
+    public Transform walls;
+
     public override void Build()
     {
         base.Build();
@@ -21,7 +23,7 @@ public class Wall : Building
         price += 2;
         RedesignCoinPlaces();
 
-
+        transform.parent = walls;
     }
 
     public override void Upgrade()

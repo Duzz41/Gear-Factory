@@ -49,6 +49,8 @@ public class Clockwork_AI : MonoBehaviour
         baseTransform = GameObject.Find("GearFactory").transform;
         SetRandomTargetPosition();
 
+        walls_parent = GameObject.Find("Walls").transform;
+
     }
     private void Update()
     {
@@ -101,9 +103,11 @@ public class Clockwork_AI : MonoBehaviour
 
         if (closestTarget != null)
         {
+
             Debug.Log("İŞ bulll");
             BuildTarget(closestTarget);
             UpdateDirection(closestTarget.position);
+
         }
         else
         {
@@ -131,9 +135,15 @@ public class Clockwork_AI : MonoBehaviour
             }
         }
         return closestTarget;
+
+
     }
     void BuildTarget(Transform target)
     {
+        if (GameManager.instance._isDay == false && (target.position.x < left_wall.position.x || target.position.x > right_wall.position.x))
+        {
+            return;
+        }
         UpdateDirection(target.position);
         float distance = Vector2.Distance(transform.position, target.position);
 
@@ -190,7 +200,10 @@ public class Clockwork_AI : MonoBehaviour
         }
         else
         {
-            PatrolBase();
+            if (GameManager.instance._isDay)
+                PatrolBase();
+            else
+                NightBehaviour();
         }
         // Savaşçı durumundaki davranışlar
     }
@@ -543,6 +556,60 @@ public class Clockwork_AI : MonoBehaviour
         Vector3 localScale = transform.localScale;
         localScale.x *= -1; // X eksenindeki ölçeği ters çevir
         transform.localScale = localScale;
+    }
+
+
+    private void NightBehaviour()
+    {
+        if (GameManager.instance._isDay == false)
+        {
+            if (currentState == RobotState.Warrior)
+            {
+                FindLastWall();
+                if (transform.position.x < 0)
+                {
+                    transform.position = Vector2.MoveTowards(transform.position, left_wall.position, currentSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    transform.position = Vector2.MoveTowards(transform.position, right_wall.position, currentSpeed * Time.deltaTime);
+                }
+            }
+            else if (currentState == RobotState.Worker)
+            {
+
+            }
+        }
+    }
+
+    public Transform walls_parent;
+    private Transform left_wall;
+    private Transform right_wall;
+    private void FindLastWall()
+    {
+        for (int i = 0; i < walls_parent.childCount; i++)
+        {
+
+            if (i == 0)
+            {
+                left_wall = walls_parent.GetChild(i);
+                right_wall = walls_parent.GetChild(i);
+            }
+            else
+            {
+                if (walls_parent.GetChild(i).position.x < left_wall.position.x)
+                {
+                    left_wall = walls_parent.GetChild(i);
+                }
+                else if (walls_parent.GetChild(i).position.x > right_wall.position.x)
+                {
+                    right_wall = walls_parent.GetChild(i);
+                }
+            }
+
+        }
+
+
     }
 
     #endregion
