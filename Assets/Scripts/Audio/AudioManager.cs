@@ -7,7 +7,7 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
     public Sound[] musicSounds, sfxSounds;
-    public AudioSource musicSource, sfxSource;
+    public AudioSource musicSource, sfxSource, carSource;
 
 
     private void Awake()
@@ -44,7 +44,30 @@ public class AudioManager : MonoBehaviour
             musicSource.Play();
         }
     }
+    public void PlayCar(string name)
+    {
+        Sound s = Array.Find(sfxSounds, x => x.soundName == name);
 
+        if (s == null)
+        {
+            Debug.LogError("Sound: " + name + " not found!");
+            return;
+        }
+        else
+        {
+            if (s.loop)
+            {
+                carSource.clip = s.soundClip;
+                carSource.loop = true;
+                carSource.Play();
+            }
+            else
+            {
+                carSource.PlayOneShot(s.soundClip);
+            }
+        }
+
+    }
     public void PlaySfx(string name)
     {
         Sound s = Array.Find(sfxSounds, x => x.soundName == name);
@@ -74,6 +97,12 @@ public class AudioManager : MonoBehaviour
         sfxSource.clip = null;
         sfxSource.Stop();
         sfxSource.loop = false; // Reset loop to false
+    }
+    public void StopCar()
+    {
+        carSource.clip = null;
+        carSource.Stop();
+        carSource.loop = false; // Reset loop to false
     }
 
 

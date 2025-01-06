@@ -125,6 +125,7 @@ public class Clockwork_AI : MonoBehaviour
                 float distanceToTrash = Vector2.Distance(transform.position, constr.transform.position);
                 if (distanceToTrash < closestDistance)
                 {
+
                     closestTarget = constr.transform;
                     return closestTarget;
                 }
@@ -150,6 +151,7 @@ public class Clockwork_AI : MonoBehaviour
         // Yeterince yaklaşmamışsa hareket etmeye devam et
         if (distance > workerDistance)
         {
+
             float currentSpeed = moveSpeed * 1.25f;
             Vector2 targetPosition = new Vector2(target.position.x, transform.position.y);
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
@@ -157,14 +159,23 @@ public class Clockwork_AI : MonoBehaviour
 
         if (distance <= workerDistance)
         {
+            // GameManager.instance.constBuildings.Remove(target.gameObject);
             BuildingTarget(target);
         }
     }
+    private bool isConstructionSoundPlaying = false;
     void BuildingTarget(Transform target)
     {
+        Debug.Log(target.name);
         if (anim != null)
         {
             anim.SetTrigger("Work"); // Attack animasyonunu çalıştır
+        }
+        if (!isConstructionSoundPlaying)
+        {
+
+            AudioManager.instance.PlaySfx("Construction");
+            isConstructionSoundPlaying = true; // Ses çalmaya başladı, bayrağı güncelle
         }
 
         StartCoroutine(ConstructionCoroutine(target));
@@ -174,8 +185,8 @@ public class Clockwork_AI : MonoBehaviour
     private IEnumerator ConstructionCoroutine(Transform target)
     {
         // Construction duration (e.g., 2 seconds)
-        yield return new WaitForSeconds(2f);
-
+        yield return new WaitForSeconds(4f);
+        isConstructionSoundPlaying = false;
         // Complete construction
         Wall wall = target.GetComponent<Wall>();
         if (wall != null)

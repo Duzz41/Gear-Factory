@@ -109,6 +109,7 @@ public class Enemy_AI : MonoBehaviour
                 Wall wall = closestTarget.GetComponent<Wall>();
                 if (wall != null)
                 {
+                    AudioManager.instance.PlaySfx("HumanAttack");
                     wall.TakeDamage(attackDamage);
                 }
             }
@@ -117,6 +118,7 @@ public class Enemy_AI : MonoBehaviour
                 Health health = closestTarget.GetComponent<Health>();
                 if (health != null)
                 {
+                    AudioManager.instance.PlaySfx("HumanAttack");
                     health.TakeDamage(attackDamage);
                 }
             }

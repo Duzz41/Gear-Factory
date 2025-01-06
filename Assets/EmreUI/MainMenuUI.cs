@@ -26,10 +26,15 @@ public class MainMenuUI : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         // Animasyonu başlat
-        anim.SetTrigger("StartAnimation");
+        if (sceneName == "GameScene")
+        {
+            anim.SetTrigger("StartAnimation");
 
-        // Coroutine başlat
-        StartCoroutine(WaitForAnimationAndLoadScene(sceneName));
+            // Coroutine başlat
+            StartCoroutine(WaitForAnimationAndLoadScene(sceneName));
+        }
+        else
+            SceneManager.LoadScene(sceneName);
     }
 
     // Animasyon bitene kadar bekler ve sahneyi yükler
@@ -37,7 +42,7 @@ public class MainMenuUI : MonoBehaviour
     {
         // Animasyonun süresini bekle
         yield return new WaitForSeconds(5f);
-        SceneManager.LoadScene("OsmanScene");
+        SceneManager.LoadScene("GameScene");
         textImage.SetActive(true); // Image'i aktif et
         currentMessageIndex = 0; // İlk mesajı göster
         typingCoroutine = StartCoroutine(TypeText(messages[currentMessageIndex])); // İlk mesajı yazdır
@@ -62,7 +67,7 @@ public class MainMenuUI : MonoBehaviour
             {
                 AudioManager.instance.PlayMusic("Theme");
                 // Tüm mesajlar gösterildiyse, sahneye geçiş yap
-                SceneManager.LoadScene("OsmanScene");
+                SceneManager.LoadScene("GameScene");
 
             }
         }

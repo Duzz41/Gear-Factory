@@ -39,7 +39,7 @@ public class CharacterMovement : MonoBehaviour
   {
     rb = GetComponent<Rigidbody2D>();
     current_speed = run_speed;
-    AudioManager.instance.PlaySfx("Car Idle");
+    AudioManager.instance.PlayCar("Car Idle");
     EventDispatcher.RegisterFunction("MiniGameForEnergy", MiniGameForEnergy);
     if (cinemachineCam != null)
     {
@@ -150,13 +150,14 @@ public class CharacterMovement : MonoBehaviour
       mini_game_canvas.gameObject.SetActive(true);
       EventDispatcher.SummonEvent("ActivateGame");
     }
-    UpdateEngineSound();
+
     // Araba hareket ediyor mu kontrol et
     if (horizontal_input != 0)
     {
+      UpdateEngineSound();
       if (!isCarMoving) // Eğer araba hareket etmiyorsa
       {
-        AudioManager.instance.PlaySfx("Car Move"); // Araba hareket sesi çal
+        AudioManager.instance.PlayCar("Car Move"); // Araba hareket sesi çal
         isCarMoving = true; // Bayrağı güncelle
       }
     }
@@ -164,8 +165,8 @@ public class CharacterMovement : MonoBehaviour
     {
       if (isCarMoving) // Eğer araba duruyorsa
       {
-        AudioManager.instance.StopSfx(); // Araba hareket sesini durdur
-        AudioManager.instance.PlaySfx("Car Idle");
+        AudioManager.instance.StopCar(); // Araba hareket sesini durdur
+        AudioManager.instance.PlayCar("Car Idle");
         isCarMoving = false; // Bayrağı güncelle
       }
     }
@@ -175,7 +176,7 @@ public class CharacterMovement : MonoBehaviour
   {
     // Calculate the pitch based on current speed
     float pitch = Mathf.Clamp(rb.velocity.magnitude / maxSpeed, 0.5f, 2f); // Adjust the range as needed
-    AudioManager.instance.sfxSource.pitch = pitch;
+    AudioManager.instance.carSource.pitch = pitch;
 
   }
   void UpdateCinemachineOffset()

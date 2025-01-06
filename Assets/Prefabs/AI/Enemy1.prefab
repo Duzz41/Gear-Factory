@@ -230,6 +230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51f6750c2abe7d143ad2a8fabe45f5b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitSoundName: HumanHit
+  dieSoudName: HumanDie
   maxHealth: 30
   currentHealth: 0
   gear: {fileID: 6283444194330273741, guid: 76639da3b7023cb4e944be62bf543d77, type: 3}

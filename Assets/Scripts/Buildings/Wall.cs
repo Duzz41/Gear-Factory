@@ -70,7 +70,6 @@ public class Wall : Building
             // İnşaat tamamlandığında yapılacak işlemler
             constructionSprite.SetActive(false); // İnşaatta olan sprite'ı gizle
             builtSprite[level - 1].SetActive(true);
-            Debug.Log(level);
             Debug.Log("Construction Complete!");
             isConstructed = false;
         }
@@ -78,9 +77,11 @@ public class Wall : Building
 
     public void TakeDamage(int damage)
     {
+        AudioManager.instance.PlaySfx("Trash");
         health -= damage;
         if (health <= 0)
         {
+            AudioManager.instance.PlaySfx("WallHit");
             DestroyWall();
         }
     }
