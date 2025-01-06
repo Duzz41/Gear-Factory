@@ -74,7 +74,11 @@ public class PaymentSystem : MonoBehaviour
     }
     void StartCor(Building test)
     {
-        StartCoroutine(ControlBuildingUI(test));
+        if (gameObject.activeInHierarchy) // GameObject aktif mi?
+        {
+            StartCoroutine(ControlBuildingUI(test));
+        }
+
     }
     void FillCoin()
     {

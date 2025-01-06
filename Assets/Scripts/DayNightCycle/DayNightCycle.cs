@@ -21,7 +21,7 @@ public class DayNightCycle : MonoBehaviour
     public int days; // Gün sayacı
     public GameObject dayImage; // Gün değiştiğinde aktif olacak görüntü
     public TextMeshProUGUI dayText; // Gün sayısını gösterecek metin
-    
+
 
 
     // Start is called before the first frame update
@@ -102,7 +102,7 @@ public class DayNightCycle : MonoBehaviour
         _light.color = _color;
 
         // Güneş ve ayın yoğunluğunu ayarla
-        sun.intensity = Mathf.Clamp01(1 - Mathf.Abs(2 * timePercent - 1)); // Gündüz yoğunluğu
+        _light.intensity = Mathf.Clamp01(1 - Mathf.Abs(2 * timePercent - 1)); // Gündüz yoğunluğu
         moon.intensity = Mathf.Clamp01(2 * timePercent); // Gece yoğunluğu
 
         // Işıkları aç/kapa

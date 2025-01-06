@@ -49,7 +49,7 @@ public class Clockwork_AI : MonoBehaviour
         baseTransform = GameObject.Find("GearFactory").transform;
         SetRandomTargetPosition();
 
-        walls_parent = GameObject.Find("Walls").transform;
+        walls_parent = GameObject.Find("#WALLS").transform;
 
     }
     private void Update()

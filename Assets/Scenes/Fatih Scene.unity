@@ -16590,10 +16590,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4938a224c7e6d4d9ea25d04bd94351, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _color: {r: 0, g: 0, b: 0, a: 0}
   _light: {fileID: 1456694668}
   sun: {fileID: 751791241}
   moon: {fileID: 597882478}
-  _color: {r: 0, g: 0, b: 0, a: 0}
   _gradient:
     serializedVersion: 2
     key0: {r: 0.0627451, g: 0.09803922, b: 0.11764706, a: 1}
@@ -16624,14 +16624,14 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 7
     m_NumAlphaKeys: 2
-  tick: 600
-  seconds: 0
-  mins: 0
-  hours: 4
-  days: 1
+  dayLength: 180
+  timeOfDay: 0
   activateLights: 0
   lights:
   - {fileID: 157894425}
+  days: 1
+  dayImage: {fileID: 0}
+  dayText: {fileID: 0}
 --- !u!1 &1484023528
 GameObject:
   m_ObjectHideFlags: 0

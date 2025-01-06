@@ -31,12 +31,7 @@ public class CoinCollect : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(timer);
-
         timer -= Time.deltaTime;
-
-
-
     }
 
     void ThrowBag()
