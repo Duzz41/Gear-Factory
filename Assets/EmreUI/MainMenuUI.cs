@@ -4,23 +4,29 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Events;
 public class MainMenuUI : MonoBehaviour
 {
     public Animator anim;
     public GameObject textImage; // Yazıların gösterileceği Image GameObject'i
     public TextMeshProUGUI textMeshPro; // TextMeshPro bileşeni
-    public Button nextButton; // Geçiş butonu
     public string[] messages; // Gösterilecek mesaj parçaları
     private int currentMessageIndex = 0; // Şu anki mesajın indeksi
     private Coroutine typingCoroutine;
 
     void Start()
     {
+
         Screen.fullScreen = true;
-        nextButton.onClick.AddListener(OnNextButtonClicked); // Buton tıklama olayını dinle
         textImage.SetActive(false); // Başlangıçta Image'i gizle
     }
-
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1))
+        {
+            OnNextButtonClicked();
+        }
+    }
 
     // Belirli bir sahneye geçiş yapar
     public void LoadScene(string sceneName)
@@ -42,12 +48,13 @@ public class MainMenuUI : MonoBehaviour
     {
         // Animasyonun süresini bekle
         yield return new WaitForSeconds(5f);
-        SceneManager.LoadScene("GameScene");
+
+        //SceneManager.LoadScene("GameScene");
         textImage.SetActive(true); // Image'i aktif et
         currentMessageIndex = 0; // İlk mesajı göster
         typingCoroutine = StartCoroutine(TypeText(messages[currentMessageIndex])); // İlk mesajı yazdır
     }
-    private void OnNextButtonClicked()
+    public void OnNextButtonClicked()
     {
         if (typingCoroutine != null)
         {
@@ -81,6 +88,7 @@ public class MainMenuUI : MonoBehaviour
             textMeshPro.text += letter; // Harf ekle
             yield return new WaitForSeconds(0.1f); // Her harf arasında bekle
         }
+        OnNextButtonClicked();
     }
     // Oyunu kapatır
     public void QuitGame()
