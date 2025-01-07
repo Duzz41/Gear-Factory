@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 public class MainMenuUI : MonoBehaviour
 {
+    [SerializeField] private string[] typeNames;
     public Animator anim;
     public GameObject textImage; // Yazıların gösterileceği Image GameObject'i
     public TextMeshProUGUI textMeshPro; // TextMeshPro bileşeni
@@ -79,6 +80,22 @@ public class MainMenuUI : MonoBehaviour
             }
         }
     }
+    private int currentIndex = 0;
+    string TypeSound()
+    {
+        if (currentIndex >= typeNames.Length)
+        {
+            currentIndex = 0; // Başlangıca dön
+        }
+
+        // Mevcut taneyi al
+        string typeName = typeNames[currentIndex];
+
+        // İndeksi bir artır
+        currentIndex++;
+
+        return typeName; // Taneyi döndür
+    }
     // Yazıları harf harf yazdırır
     private IEnumerator TypeText(string text)
     {
@@ -86,6 +103,8 @@ public class MainMenuUI : MonoBehaviour
         foreach (char letter in text.ToCharArray())
         {
             textMeshPro.text += letter; // Harf ekle
+            AudioManager.instance.PlaySfx(TypeSound());
+
             yield return new WaitForSeconds(0.1f); // Her harf arasında bekle
         }
         OnNextButtonClicked();

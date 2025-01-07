@@ -6,7 +6,7 @@ using System;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
-    public Sound[] musicSounds, sfxSounds;
+    public Sound[] musicSounds, sfxSounds, typeSounds;
     public AudioSource musicSource, sfxSource, carSource;
 
 

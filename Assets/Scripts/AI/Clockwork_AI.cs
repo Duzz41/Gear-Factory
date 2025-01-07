@@ -116,7 +116,6 @@ public class Clockwork_AI : MonoBehaviour
     }
     Transform FindWork()
     {
-
         float closestDistance = 15f;
         foreach (GameObject constr in GameManager.instance.constBuildings)
         {
@@ -136,8 +135,6 @@ public class Clockwork_AI : MonoBehaviour
             }
         }
         return closestTarget;
-
-
     }
     void BuildTarget(Transform target)
     {

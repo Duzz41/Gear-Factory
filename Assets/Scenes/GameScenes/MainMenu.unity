@@ -589,7 +589,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000025488, y: 0.0000019073}
+  m_AnchoredPosition: {x: -0.000025488, y: 0}
   m_SizeDelta: {x: 898.6827, y: 156.0718}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &185100590
@@ -653,9 +653,9 @@ MonoBehaviour:
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_characterSpacing: 1
+  m_wordSpacing: 15
+  m_lineSpacing: 15
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -1728,6 +1728,31 @@ MonoBehaviour:
   - soundName: HumanWalk
     loop: 0
     soundClip: {fileID: 8300000, guid: bc9ee800327af9b4091baa7a899ee2b7, type: 3}
+  - soundName: Type1
+    loop: 0
+    soundClip: {fileID: 8300000, guid: 7410bf881e8246f49976e5d323f5a094, type: 3}
+  - soundName: Type2
+    loop: 0
+    soundClip: {fileID: 8300000, guid: a392e6b6b2aa61a499566d664f3380b4, type: 3}
+  - soundName: Type3
+    loop: 0
+    soundClip: {fileID: 8300000, guid: d4cef15f4cd407046b7734162cfdb93f, type: 3}
+  - soundName: Type4
+    loop: 0
+    soundClip: {fileID: 8300000, guid: 8db6a595432cf21429bc49ccca4d1a89, type: 3}
+  - soundName: Type5
+    loop: 0
+    soundClip: {fileID: 8300000, guid: 8dfdda29925478a48b18eb8a2a2532fa, type: 3}
+  - soundName: Type6
+    loop: 0
+    soundClip: {fileID: 8300000, guid: c00735ae18fb5704f98d553359617337, type: 3}
+  - soundName: Type7
+    loop: 0
+    soundClip: {fileID: 8300000, guid: c9e0b3dceee184846b11bcb860da4992, type: 3}
+  - soundName: Type8
+    loop: 0
+    soundClip: {fileID: 8300000, guid: 51a7f77bd61da304098b712bf99a7f69, type: 3}
+  typeSounds: []
   musicSource: {fileID: 1854504387}
   sfxSource: {fileID: 913134289}
   carSource: {fileID: 1962446870}
@@ -2789,6 +2814,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e32b216a15a70d3428d2dc00c20c070c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typeNames:
+  - Type1
+  - Type2
+  - Type3
+  - Type4
+  - Type5
+  - Type6
+  - Type7
+  - Type8
   anim: {fileID: 1287869883}
   textImage: {fileID: 1632292756}
   textMeshPro: {fileID: 185100590}
