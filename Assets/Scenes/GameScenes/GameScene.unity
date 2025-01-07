@@ -889,7 +889,7 @@ Transform:
   m_GameObject: {fileID: 110857842}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 28, y: 10, z: 10}
+  m_LocalPosition: {x: 4837.8193, y: 1047.5919, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1146,6 +1146,11 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
+--- !u!224 &185980782 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8622720638848152925, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
+  m_PrefabInstance: {fileID: 968649294}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &205337474
 GameObject:
   m_ObjectHideFlags: 0
@@ -10081,7 +10086,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4288140205040826493, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 25.5
       objectReference: {fileID: 0}
     - target: {fileID: 4288140205040826493, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -10149,7 +10154,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4806373487548260264, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
       propertyPath: m_Size.y
-      value: 4.0346537
+      value: 5.99494
       objectReference: {fileID: 0}
     - target: {fileID: 4806373487548260264, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
       propertyPath: m_Offset.x
@@ -10157,7 +10162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4806373487548260264, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
       propertyPath: m_Offset.y
-      value: -0.011947155
+      value: -0.9920902
       objectReference: {fileID: 0}
     - target: {fileID: 4806373487548260264, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -10197,16 +10202,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7090460244088964889, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 24.5
       objectReference: {fileID: 0}
     - target: {fileID: 7090460244088964889, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7714190885785294368, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
+      propertyPath: price
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7714190885785294368, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
+      propertyPath: content
+      value: 
+      objectReference: {fileID: 185980782}
+    - target: {fileID: 7714190885785294368, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
       propertyPath: coin_place_prefab
       value: 
       objectReference: {fileID: 7550915173377395829, guid: 6e138a893bc5e204d9258ba6e0ab4944, type: 3}
+    - target: {fileID: 7714190885785294368, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
+      propertyPath: coin_holders.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8622720638848152925, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -10224,7 +10241,8 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5729922863932437432, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6892792661243331629, guid: 99cc5803fbc1afc46971c37913365fb2, type: 3}
@@ -18124,7 +18142,7 @@ Transform:
   m_GameObject: {fileID: 1521387968}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 43.180733, y: 7.4080997, z: 13.607002}
+  m_LocalPosition: {x: 4853, y: 1045, z: 13.607002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21048,6 +21066,7 @@ MonoBehaviour:
   - soundName: HumanWalk
     loop: 0
     soundClip: {fileID: 8300000, guid: bc9ee800327af9b4091baa7a899ee2b7, type: 3}
+  typeSounds: []
   musicSource: {fileID: 1646592742}
   sfxSource: {fileID: 1516394886}
   carSource: {fileID: 2146375776}

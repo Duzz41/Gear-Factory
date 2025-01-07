@@ -16,7 +16,7 @@ public class GearFactory : Building
         base.Upgrade();
         level += 1;
         Debug.Log("Level: " + level);
-        if (level == 19)
+        if (level == 2)
         {
             price += 6;
         }
