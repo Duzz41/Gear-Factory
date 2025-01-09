@@ -9,7 +9,8 @@ public class MoonCycle : MonoBehaviour
     public float radiusX = 10f;     // X ekseni için yarıçap
     public float radiusY = 5f;     // Y ekseni için yarıçap
     public float orbitSpeed = 0.03f;   // Güneşin dönme hızı
-    [SerializeField] private float angle = -3;       // Başlangıç açısı
+    [SerializeField] private float angle = -3;       // Başlangıç açıs
+    [SerializeField] private float offsett;
 
     void FixedUpdate()
     {
@@ -24,11 +25,11 @@ public class MoonCycle : MonoBehaviour
             angle = -2.5f;
 
         // X ve Y pozisyonlarını hesapla (elips için farklı yarıçaplar kullanarak)
-        float x = centerObject.position.x + Mathf.Cos(angle) * radiusX;
+        float x = (centerObject.position.x + offsett) + Mathf.Cos(angle) * radiusX;
         float y = centerObject.position.y + Mathf.Sin(angle) * radiusY;
 
         // Güneşin yeni pozisyonunu belirle
         transform.position = new Vector3(x, y, transform.position.z);
-
+        // Günün zamanını al
     }
 }
