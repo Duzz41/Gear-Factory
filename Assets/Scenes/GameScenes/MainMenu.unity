@@ -2673,6 +2673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e32b216a15a70d3428d2dc00c20c070c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateWheel: {fileID: 1287869880}
   isMenu: 0
   typeNames:
   - Type1
@@ -4593,6 +4594,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  currentRotationIndex: 0
 --- !u!114 &1287869881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6516,10 +6518,10 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
+    m_SelectOnUp: {fileID: 851140967}
     m_SelectOnDown: {fileID: 1108055779}
     m_SelectOnLeft: {fileID: 1108055779}
-    m_SelectOnRight: {fileID: 0}
+    m_SelectOnRight: {fileID: 1920985527}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -6987,6 +6989,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicSlider: {fileID: 1920985527}
+  exit: {fileID: 0}
 --- !u!4 &1705420111
 Transform:
   m_ObjectHideFlags: 0
@@ -7830,7 +7833,7 @@ MonoBehaviour:
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnLeft: {fileID: 1614673446}
     m_SelectOnRight: {fileID: 1108055779}
   m_Transition: 1
   m_Colors:
