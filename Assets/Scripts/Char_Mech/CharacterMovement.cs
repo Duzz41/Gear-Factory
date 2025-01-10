@@ -141,7 +141,7 @@ public class CharacterMovement : MonoBehaviour
     if (energy > 10)
     {
       current_speed = isTurbo ? turbo_speed : run_speed;
-      AudioManager.instance.StopSfx();
+      // AudioManager.instance.StopSfx();
     }
     else if (energy <= 0)
     {

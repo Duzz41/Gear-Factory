@@ -1835,6 +1835,9 @@ MonoBehaviour:
   - soundName: Type8
     loop: 0
     soundClip: {fileID: 8300000, guid: 51a7f77bd61da304098b712bf99a7f69, type: 3}
+  - soundName: MiniGame
+    loop: 1
+    soundClip: {fileID: 8300000, guid: b21486e8a06a20c4e94deb736a7f4213, type: 3}
   typeSounds: []
   musicSource: {fileID: 1854504387}
   sfxSource: {fileID: 913134289}

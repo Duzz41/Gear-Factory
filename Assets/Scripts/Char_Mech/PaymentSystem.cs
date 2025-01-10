@@ -161,6 +161,7 @@ public class PaymentSystem : MonoBehaviour
     }
     IEnumerator RemoveCoinOnComplete()
     {
+        Debug.Log("naağğber müdür");
         isCoinsRemoving = true;
         CancelInvoke("FillCoin");
         yield return new WaitForSeconds(remove_duration);
@@ -175,9 +176,6 @@ public class PaymentSystem : MonoBehaviour
         PaymentDone();
         building_slot_count = building_cs.price;  //Binanın price değeri değiştiği için bu değeri tekrar güncelliyoruz
         StopCoroutine(RemoveCoinOnComplete());
-
-
-
     }
     IEnumerator DropCoin()
     {
