@@ -12,7 +12,7 @@ public class RotateWheel : MonoBehaviour
     [SerializeField] MainMenuUI mainMenuUI;
     public UnityEvent<Button> OnButtonSelected; // Seçili butonu dışarıya bildiren UnityEvent
 
-    private int currentRotationIndex = 0;
+    [SerializeField] private int currentRotationIndex = 0;
     private bool isRotating = false;
 
     void Start()
@@ -50,13 +50,13 @@ public class RotateWheel : MonoBehaviour
         }
     }
 
-    private void AlignWheelToButton(int buttonIndex)
+    public void AlignWheelToButton(int buttonIndex)
     {
         int targetRotation = -rotationStep * buttonIndex;
         wheel.localRotation = Quaternion.Euler(0, 0, targetRotation);
     }
 
-    private void UpdateButtonStates()
+    public void UpdateButtonStates()
     {
         for (int i = 0; i < buttons.Length; i++)
         {
@@ -64,7 +64,7 @@ public class RotateWheel : MonoBehaviour
             {
                 buttons[i].interactable = true;
                 HighlightButton(buttons[i]);
-
+                Debug.Log(buttons[i].name);
                 // UnityEvent ile seçili butonu bildir
 
             }

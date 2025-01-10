@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 public class MainMenuUI : MonoBehaviour
 {
+   [SerializeField] RotateWheel rotateWheel;
     public bool isMenu = false;
     [SerializeField] private string[] typeNames;
     public Animator anim;
@@ -40,6 +41,7 @@ public class MainMenuUI : MonoBehaviour
     }
     public void StopSettingsAnim()
     {
+        rotateWheel.UpdateButtonStates();
         isMenu = false;
         settingAnim.ResetTrigger("StartSetting");
         settingAnim.SetTrigger("ExitSetting");

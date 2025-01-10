@@ -6,20 +6,34 @@ using UnityEngine.UI;
 public class SettingsMenu : MonoBehaviour
 {
     public Slider musicSlider;
+    public Button exit;
     //  public Slider sfxSlider;
     //  public Slider carSlider;
 
     private void Start()
     {
-        // Slider değerlerini ayarlamak için mevcut ses seviyelerini alabilirsiniz
-        musicSlider.value = AudioManager.instance.musicSource.volume;
-        //  sfxSlider.value = AudioManager.instance.sfxSource.volume;
-        // carSlider.value = AudioManager.instance.carSource.volume;
+        if (musicSlider != null)
+        {
+            // Slider değerlerini ayarlamak için mevcut ses seviyelerini alabilirsiniz
+            musicSlider.value = AudioManager.instance.musicSource.volume;
+            //  sfxSlider.value = AudioManager.instance.sfxSource.volume;
+            // carSlider.value = AudioManager.instance.carSource.volume;
 
-        // Slider değerleri değiştiğinde çağrılacak fonksiyonları ayarlayın
-        musicSlider.onValueChanged.AddListener(SetMusicVolume);
-        // sfxSlider.onValueChanged.AddListener(SetSfxVolume);
-        //  carSlider.onValueChanged.AddListener(SetCarVolume);
+            // Slider değerleri değiştiğinde çağrılacak fonksiyonları ayarlayın
+            musicSlider.onValueChanged.AddListener(SetMusicVolume);
+            // sfxSlider.onValueChanged.AddListener(SetSfxVolume);
+            //  carSlider.onValueChanged.AddListener(SetCarVolume);
+        }
+    }
+    void Update()
+    {
+        if (SceneManager.GetActiveScene().name == "Credits")
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                SceneManager.LoadScene("MainMenu");
+            }
+        }
     }
     public void SetMusicVolume(float volume)
     {
