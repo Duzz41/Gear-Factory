@@ -29,7 +29,7 @@ public class CharacterMovement : MonoBehaviour
   [SerializeField] private float offsetWhenFacingLeft = -2f;
   [SerializeField] private float offsetLerpSpeed = 5f;
   private CinemachineFramingTransposer transposer;
-  private Vector3 originalOffset; // Store the original offset
+  [SerializeField] private Vector3 originalOffset; // Store the original offset
   private float idleTimer = 0f; // Timer to track idle time
   private const float idleThreshold = 5f;
 
@@ -143,11 +143,13 @@ public class CharacterMovement : MonoBehaviour
     if (energy > 10)
     {
       current_speed = isTurbo ? turbo_speed : run_speed;
+      AudioManager.instance.StopSfx();
     }
     else if (energy <= 0)
     {
       current_speed = walk_speed;
       mini_game_canvas.gameObject.SetActive(true);
+      AudioManager.instance.PlaySfx("MiniGame");
       EventDispatcher.SummonEvent("ActivateGame");
     }
 
@@ -179,6 +181,8 @@ public class CharacterMovement : MonoBehaviour
     AudioManager.instance.carSource.pitch = pitch;
 
   }
+  #endregion
+  #region Cinemachine
   void UpdateCinemachineOffset()
   {
     if (horizontal_input == 0)

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8546800551a1ce54cb9a0f0cfb216010
+guid: 221173feae96b414aa6eeab36e60bc6f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -39,17 +39,17 @@ TextureImporter:
     mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: 1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 10
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  alignment: 9
+  spritePivot: {x: 0.5124269, y: 0.49707603}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 80, y: 28, z: 76, w: 28}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -110,85 +110,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Broken_Zeplin_0
+      name: carminigame_0
       rect:
         serializedVersion: 2
-        x: 10
-        y: 92
-        width: 113
-        height: 84
+        x: 80
+        y: 28
+        width: 4
+        height: 24
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0e046415d5f090f43ae0be74936bf97b
-      internalID: 1324278731
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Broken_Zeplin_1
-      rect:
-        serializedVersion: 2
-        x: 266
-        y: 92
-        width: 113
-        height: 84
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f3d082e81e11b18428876eaa2e72a330
-      internalID: 1559319914
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Broken_Zeplin_2
-      rect:
-        serializedVersion: 2
-        x: 522
-        y: 92
-        width: 113
-        height: 84
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9b79050dc804ebf4d9eea611cddfc2ec
-      internalID: 1248979316
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Broken_Zeplin_3
-      rect:
-        serializedVersion: 2
-        x: 778
-        y: 92
-        width: 113
-        height: 84
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5dcddcc5759b6ed4eaf7e6af2c96efcd
-      internalID: -624567390
+      spriteID: 0e937e1f79880214cbcdb1f8f4c6beed
+      internalID: 1029125764
       vertices: []
       indices: 
       edges: []
@@ -197,18 +134,14 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Broken_Zeplin_0: 1324278731
-      Broken_Zeplin_1: 1559319914
-      Broken_Zeplin_2: 1248979316
-      Broken_Zeplin_3: -624567390
-      Broken_Zeplin_4: 1355297095
+      carminigame_0: 1029125764
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

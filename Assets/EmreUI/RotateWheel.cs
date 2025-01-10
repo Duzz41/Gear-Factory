@@ -9,7 +9,7 @@ public class RotateWheel : MonoBehaviour
     public RectTransform wheel;
     public Button[] buttons;
     private int rotationStep = 45;
-
+    [SerializeField] MainMenuUI mainMenuUI;
     public UnityEvent<Button> OnButtonSelected; // Seçili butonu dışarıya bildiren UnityEvent
 
     private int currentRotationIndex = 0;
@@ -91,17 +91,21 @@ public class RotateWheel : MonoBehaviour
     #region Inputs
     public void Rotate(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (mainMenuUI.isMenu == false)
         {
-            if (context.ReadValue<Vector2>().y > 0)
+            if (context.performed)
             {
-                RotateClockwise();
-            }
-            else if (context.ReadValue<Vector2>().y < 0)
-            {
-                RotateCounterClockwise();
+                if (context.ReadValue<Vector2>().y > 0)
+                {
+                    RotateClockwise();
+                }
+                else if (context.ReadValue<Vector2>().y < 0)
+                {
+                    RotateCounterClockwise();
+                }
             }
         }
+
     }
     #endregion
 }
