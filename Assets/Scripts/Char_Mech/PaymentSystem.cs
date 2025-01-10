@@ -63,6 +63,7 @@ public class PaymentSystem : MonoBehaviour
             var test = other.gameObject.GetComponent<Building>();
             if (building_cs == test)
             { can_interact = false; }
+            Debug.Log(test.name);
             StartCor(test);
         }
         else if (other.gameObject.tag == "AI")
@@ -215,7 +216,7 @@ public class PaymentSystem : MonoBehaviour
         {
             //if (other.transform.GetChild(0).gameObject != null)
             // other.transform.GetChild(0).gameObject.SetActive(false);
-            if (building_cs != null)
+            if (test != null)
             {
                 test.my_canvas.gameObject.SetActive(false);
                 //Debug.Log(test.name);
