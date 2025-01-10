@@ -120,12 +120,10 @@ public class CharacterMovement : MonoBehaviour
       }
       else if (current_speed == turbo_speed)
       {
-
         energy -= 1.5f * Time.deltaTime;
       }
       else
       {
-
         energy += 0.5f * Time.deltaTime;
       }
     }
@@ -229,7 +227,15 @@ public class CharacterMovement : MonoBehaviour
   #region Inputs
   public void WASD(InputAction.CallbackContext context)
   {
+    if (context.started)
+    {
+      if (energy > 0 && energy < 10)
+      {
+        current_speed = run_speed;
+      }
+    }
     horizontal_input = context.ReadValue<Vector2>().x;
+
   }
   public void Energy(InputAction.CallbackContext context)
   {
