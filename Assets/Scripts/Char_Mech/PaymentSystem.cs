@@ -25,15 +25,16 @@ public class PaymentSystem : MonoBehaviour
     private GameObject targetObject;
 
 
+    [SerializeField] private bool isInBuildingTrigger = false;
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Building")
         {
-            #region GetObjectInfos
+            isInBuildingTrigger = true; // Building tetikleyicisine girdik
             targetObject = other.gameObject;
             building_cs = targetObject.GetComponent<Building>();
-            robots = null; //Clear robots reference to avoid conflicts
+            robots = null; // Clear robots reference to avoid conflicts
             if (building_cs != null)
             {
                 building_slot_count = building_cs.price;
@@ -43,35 +44,42 @@ public class PaymentSystem : MonoBehaviour
                     OpenUI(building_cs);
                 }
             }
-            #endregion
         }
         else if (other.gameObject.tag == "AI")
         {
-            #region GetAIInfos
-            targetObject = other.gameObject;
-            robots = targetObject.GetComponent<Clockwork_AI>();
-            building_cs = null; // Clear building reference to avoid conflicts
-            can_interact = true;
-            #endregion
+            if (isInBuildingTrigger == false) // Eğer bir bina tetikleyicisindeysek
+            {
+                // AI ile etkileşimde bulunma
+                targetObject = other.gameObject;
+                robots = targetObject.GetComponent<Clockwork_AI>();
+                can_interact = true;
+            }
         }
     }
+
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag == "Building")
         {
-
+            isInBuildingTrigger = false; // Building tetikleyicisinden çıktık
             var test = other.gameObject.GetComponent<Building>();
             if (building_cs == test)
-            { can_interact = false; }
-            Debug.Log(test.name);
+            {
+                can_interact = false;
+            }
+            Debug.Log("ANANDANNANA");
+
+            building_cs = null;
             StartCor(test);
         }
         else if (other.gameObject.tag == "AI")
         {
-            can_interact = false;
+            if (isInBuildingTrigger) // Eğer bir bina tetikleyicisindeysek
+            {
+                // AI ile etkileşimde bulunma
+                can_interact = false;
+            }
         }
-
-
     }
     void StartCor(Building test)
     {
@@ -90,11 +98,13 @@ public class PaymentSystem : MonoBehaviour
                 // Determine whether to use Building or AI for coin filling
                 if (building_cs != null)
                 {
+                    Debug.Log("Building cs not null");
                     if (isCoinsFalling == false)
                         FillCoinForBuilding();
                 }
                 else if (robots != null)
                 {
+                    Debug.Log("Robot cs not null");
                     FillCoinForAI();
                 }
             }
@@ -126,7 +136,6 @@ public class PaymentSystem : MonoBehaviour
             if (current_slot == building_slot_count)
             {
                 StartCoroutine(RemoveCoinOnComplete());
-
             }
         }
     }
@@ -161,7 +170,6 @@ public class PaymentSystem : MonoBehaviour
     }
     IEnumerator RemoveCoinOnComplete()
     {
-        Debug.Log("naağğber müdür");
         isCoinsRemoving = true;
         CancelInvoke("FillCoin");
         yield return new WaitForSeconds(remove_duration);
@@ -238,8 +246,8 @@ public class PaymentSystem : MonoBehaviour
     {
         if (context.performed)
         {
+            Debug.Log("Interaction Key Pressed");
             InvokeRepeating("FillCoin", 0.5f, 1f);
-
         }
         if (context.canceled)
         {
@@ -253,7 +261,9 @@ public class PaymentSystem : MonoBehaviour
         if (active_coins.Count == building_slot_count)
         {
             if (!isCoinsRemoving)
-            { StartCoroutine(RemoveCoinOnComplete()); }
+            {
+                StartCoroutine(RemoveCoinOnComplete());
+            }
         }
         else if (active_coins.Count > 0)
         {

@@ -116,7 +116,7 @@ public class Clockwork_AI : MonoBehaviour
     }
     Transform FindWork()
     {
-        float closestDistance = 15f;
+        float closestDistance = 45f;
         foreach (GameObject constr in GameManager.instance.constBuildings)
         {
             if (constr != null)
@@ -218,7 +218,7 @@ public class Clockwork_AI : MonoBehaviour
     Transform FindEnemyOrTrash()
     {
 
-        float closestDistance = 15f;
+        float closestDistance = 150f;
         foreach (GameObject trashs in GameManager.instance.gearTrashs)
         {
             if (trashs != null)
@@ -265,7 +265,7 @@ public class Clockwork_AI : MonoBehaviour
         if (distance > stopDistance)
         {
             float currentSpeed = moveSpeed * 1.25f;
-            Vector2 targetPosition = new Vector2(target.position.x, transform.position.y);
+            Vector2 targetPosition = new Vector2(target.position.x, 1f);
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
         }
 
@@ -500,7 +500,7 @@ public class Clockwork_AI : MonoBehaviour
         Vector2 targetPosition = new Vector2(targetTool.position.x, transform.position.y);
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
 
-        if (distance < 2f)
+        if (distance < 2.5f)
         {
 
 

@@ -60,3 +60,6 @@ TagManager:
   - name: road
     uniqueID: 933180517
     locked: 0
+  - name: Sands
+    uniqueID: 2502930067
+    locked: 0

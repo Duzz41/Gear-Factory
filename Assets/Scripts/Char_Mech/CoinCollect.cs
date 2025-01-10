@@ -63,7 +63,7 @@ public class CoinCollect : MonoBehaviour
         }
     }
 
-    IEnumerator FadeFront()
+    public IEnumerator FadeFront()
     {
         yield return new WaitForSeconds(3f);
         if (timer < 0)
