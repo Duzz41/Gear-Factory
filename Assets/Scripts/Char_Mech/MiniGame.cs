@@ -40,6 +40,7 @@ public class MiniGame : MonoBehaviour
             characterMovement_cs.energy = 20f;
 
             Debug.Log("UI elementleri carpisiyor!");
+            AudioManager.instance.sfxSource.Stop();
         }
         else
         {

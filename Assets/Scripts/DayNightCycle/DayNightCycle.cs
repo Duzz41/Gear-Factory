@@ -103,11 +103,12 @@ public class DayNightCycle : MonoBehaviour
 
         // Güneş ve ayın yoğunluğunu ayarla
         _light.intensity = Mathf.Clamp01(1 - Mathf.Abs(2 * timePercent - 1)); // Gündüz yoğunluğu
-        moon.intensity = Mathf.Clamp01(2 * timePercent); // Gece yoğunluğu
+        //moon.intensity = Mathf.Clamp01(1 - Mathf.Abs(2 * timePercent - 1)); // Gece yoğunluğu
 
         // Işıkları aç/kapa
         if (timePercent >= 0.75f || timePercent < 0.2f) // Gece
         {
+            moon.gameObject.SetActive(true);
             if (!activateLights)
             {
                 sun.intensity = 0f;
@@ -120,6 +121,7 @@ public class DayNightCycle : MonoBehaviour
         }
         else // Gündüz
         {
+            moon.gameObject.SetActive(false);
             if (activateLights)
             {
                 ShowDayText();

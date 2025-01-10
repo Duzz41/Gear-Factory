@@ -7,8 +7,10 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 public class MainMenuUI : MonoBehaviour
 {
+    public bool isMenu = false;
     [SerializeField] private string[] typeNames;
     public Animator anim;
+    public Animator settingAnim;
     public GameObject textImage; // Yazıların gösterileceği Image GameObject'i
     public TextMeshProUGUI textMeshPro; // TextMeshPro bileşeni
     public string[] messages; // Gösterilecek mesaj parçaları
@@ -27,8 +29,22 @@ public class MainMenuUI : MonoBehaviour
         {
             OnNextButtonClicked();
         }
-    }
 
+
+    }
+    public void StartSettingsAnim()
+    {
+        isMenu = true;
+        settingAnim.SetTrigger("StartSetting");
+
+    }
+    public void StopSettingsAnim()
+    {
+        isMenu = false;
+        settingAnim.ResetTrigger("StartSetting");
+        settingAnim.SetTrigger("ExitSetting");
+
+    }
     // Belirli bir sahneye geçiş yapar
     public void LoadScene(string sceneName)
     {
@@ -103,9 +119,10 @@ public class MainMenuUI : MonoBehaviour
         foreach (char letter in text.ToCharArray())
         {
             textMeshPro.text += letter; // Harf ekle
+            //AudioManager.instance.sfxSource.pitch=0.8f;
             AudioManager.instance.PlaySfx(TypeSound());
 
-            yield return new WaitForSeconds(0.1f); // Her harf arasında bekle
+            yield return new WaitForSeconds(0.08f); // Her harf arasında bekle
         }
         OnNextButtonClicked();
     }

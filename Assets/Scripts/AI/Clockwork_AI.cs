@@ -467,7 +467,7 @@ public class Clockwork_AI : MonoBehaviour
 
     private Transform FindClosestTool()
     {
-        float closestDistance = 10f;
+        float closestDistance = 30f;
 
         GameObject[] tools = GameObject.FindGameObjectsWithTag("Tool");
         foreach (GameObject tool in tools)
@@ -500,7 +500,7 @@ public class Clockwork_AI : MonoBehaviour
         Vector2 targetPosition = new Vector2(targetTool.position.x, transform.position.y);
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
 
-        if (distance < 1f)
+        if (distance < 2f)
         {
 
 

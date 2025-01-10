@@ -105,7 +105,22 @@ public class AudioManager : MonoBehaviour
         carSource.loop = false; // Reset loop to false
     }
 
+    public void SetMusicVolume(float volume)
+    {
+        musicSource.volume = volume;
+        sfxSource.volume = volume;
+        carSource.volume = volume;
+    }
 
+    public void SetSfxVolume(float volume)
+    {
+        sfxSource.volume = volume;
+    }
+
+    public void SetCarVolume(float volume)
+    {
+        carSource.volume = volume;
+    }
 
 
 
