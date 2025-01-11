@@ -13,7 +13,7 @@ public class MiniGame : MonoBehaviour
     [SerializeField] private Slider slider;
     [SerializeField] private float travel_speed;
 
-    private bool traveling = true;
+    public bool traveling = true;
     private Vector2 start_pos;
 
 
@@ -40,11 +40,13 @@ public class MiniGame : MonoBehaviour
             characterMovement_cs.energy = 20f;
 
             Debug.Log("UI elementleri carpisiyor!");
+            characterMovement_cs.stopCar = false;
             AudioManager.instance.sfxSource.Stop();
         }
         else
         {
             Debug.Log("UI elementleri carpisymior.");
+            characterMovement_cs.stopCar = false;
         }
         traveling = false;
         this.gameObject.SetActive(false);

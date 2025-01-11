@@ -12,6 +12,8 @@ public class Enemy_AI : MonoBehaviour
     [SerializeField] Transform closestTarget;
     [SerializeField] Animator anim;
     public int attackDamage = 1; // Saldırı başına hasar
+    public float attackCooldown = 1f; // Saldırı cooldown süresi
+    private float lastAttackTime = 0f; // Son saldırı zamanı
 
     void Start()
     {
@@ -67,6 +69,7 @@ public class Enemy_AI : MonoBehaviour
         // Trigger walking animation if an animator is attached
         if (anim != null)
         {
+            StopAttack();
             anim.SetFloat("Speed", currentSpeed);
         }
     }
@@ -89,15 +92,14 @@ public class Enemy_AI : MonoBehaviour
     }
     private void StartAttack(GameObject target)
     {
-
         currentSpeed = 0; // Stop moving when attacking
         if (anim != null)
         {
             anim.SetBool("isAttacking", true);
         }
 
-
-
+        // Saldırı yap
+        lastAttackTime = Time.time; // Son saldırı zamanını güncelle
     }
 
     public void Hit()

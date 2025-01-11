@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public int factoryLevel = 0;
     public static GameManager instance;
     public SpawnPoint spawnPoint; // Spawn noktası
     public GameObject aiPrefab; // Yapay zeka prefab'ı
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour
         //sandEffect.Play();
     }
 
-    private void SpawnAI()
+    public void SpawnAI()
     {
         // Tüm spawn noktalarında AI'ları doğur
         foreach (Transform spawn in spawnPoint.spawnPoints)

@@ -53,7 +53,7 @@ public class Health : MonoBehaviour
             Debug.Log($"{gameObject.name} has been destroyed!");
 
             Destroy(gameObject);
-            SceneManager.LoadScene("Emre");
+            SceneManager.LoadScene("MainMenu");
         }
 
     }

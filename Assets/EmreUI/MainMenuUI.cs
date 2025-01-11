@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 public class MainMenuUI : MonoBehaviour
 {
-   [SerializeField] RotateWheel rotateWheel;
+    [SerializeField] RotateWheel rotateWheel;
     public bool isMenu = false;
     [SerializeField] private string[] typeNames;
     public Animator anim;
@@ -17,6 +17,7 @@ public class MainMenuUI : MonoBehaviour
     public string[] messages; // Gösterilecek mesaj parçaları
     private int currentMessageIndex = 0; // Şu anki mesajın indeksi
     private Coroutine typingCoroutine;
+    [SerializeField] private Animator anim2;
 
     void Start()
     {
@@ -54,7 +55,7 @@ public class MainMenuUI : MonoBehaviour
         if (sceneName == "GameScene")
         {
             anim.SetTrigger("StartAnimation");
-
+            anim2.SetTrigger("FALL");
             // Coroutine başlat
             StartCoroutine(WaitForAnimationAndLoadScene(sceneName));
         }

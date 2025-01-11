@@ -15,6 +15,7 @@ public class GearFactory : Building
     {
         base.Upgrade();
         level += 1;
+        GameManager.instance.factoryLevel = level;
         Debug.Log("Level: " + level);
         if (level == 19)
         {

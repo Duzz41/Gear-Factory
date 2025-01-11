@@ -126,10 +126,15 @@ public class DayNightCycle : MonoBehaviour
             moon.gameObject.SetActive(false);
             if (activateLights)
             {
-                GameObject newGear = Instantiate(coin, gearSpawnPoint.position, Quaternion.identity);
-                GameObject newGear2 = Instantiate(coin, gearSpawnPoint.position, Quaternion.identity);
-                GameManager.instance.coins.Add(newGear2);
-                GameManager.instance.coins.Add(newGear);
+                GameManager.instance.SpawnAI();
+                int level = GameManager.instance.factoryLevel + 2;
+                Debug.Log(level);
+                for (int i = 0; i < level; i++)
+                {
+                    GameObject newGear = Instantiate(coin, gearSpawnPoint.position, Quaternion.identity);
+                    GameManager.instance.coins.Add(newGear);
+                }
+
                 ShowDayText();
                 sun.intensity = 1f;
 

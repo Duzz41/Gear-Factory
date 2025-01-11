@@ -32,7 +32,7 @@ public class CharacterMovement : MonoBehaviour
   [SerializeField] private Vector3 originalOffset; // Store the original offset
   private float idleTimer = 0f; // Timer to track idle time
   private const float idleThreshold = 5f;
-
+  public bool stopCar = false;
 
 
   void Start()
@@ -57,7 +57,8 @@ public class CharacterMovement : MonoBehaviour
     UpdateEnergy();
     UpdateSpeed();
     MovementParticules();
-    Movement();
+    if (stopCar == false)
+      Movement();
     UpdateCinemachineOffset();
   }
 
@@ -141,6 +142,7 @@ public class CharacterMovement : MonoBehaviour
     if (energy > 10)
     {
       current_speed = isTurbo ? turbo_speed : run_speed;
+      stopCar = false;
       // AudioManager.instance.StopSfx();
     }
     else if (energy <= 0)
@@ -149,6 +151,7 @@ public class CharacterMovement : MonoBehaviour
       mini_game_canvas.gameObject.SetActive(true);
       AudioManager.instance.PlaySfx("MiniGame");
       EventDispatcher.SummonEvent("ActivateGame");
+      stopCar = true;
     }
 
     // Araba hareket ediyor mu kontrol et

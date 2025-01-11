@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Wall : Building
 {
-    public int health = 3;
+    public int health = 0;
     private int level = 0;
     private bool isConstructed = false;
     public GameObject constructionSprite; // İnşaatta olan sprite
@@ -18,7 +18,7 @@ public class Wall : Building
         for (int i = 0; i < builtSprite.Length; i++)
             builtSprite[i].SetActive(false);
         level = 1;
-        health = 3;
+        health = 10;
         price += 2;
         RedesignCoinPlaces();
 
@@ -36,7 +36,7 @@ public class Wall : Building
         {
             level += 1;
             price += 2;
-            health = 5;
+            health += 5;
             //price değeri arttır
             RedesignCoinPlaces();
             //Sprite'ı Değiştir
@@ -96,7 +96,7 @@ public class Wall : Building
         builtSprite[level - 1].SetActive(false);
         builtSprite[level].SetActive(false);
         level = 0;
-
+        health = 0;
         // Duvarı yok et
         Debug.Log("Wall Destroyed!");
         //Destroy(gameObject);

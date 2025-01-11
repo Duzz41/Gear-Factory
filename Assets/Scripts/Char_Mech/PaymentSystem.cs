@@ -172,10 +172,10 @@ public class PaymentSystem : MonoBehaviour
         CancelInvoke("FillCoin");
         yield return new WaitForSeconds(remove_duration);
 
-        for (int i = active_coins.Count; i > 0; i--)
+        for (int i = active_coins.Count - 1; i >= 0; i--)
         {
-            Destroy(active_coins[0]);
-            active_coins.RemoveAt(0);
+            Destroy(active_coins[i]);
+            active_coins.RemoveAt(i);
         }
         current_slot = 0;
         isCoinsRemoving = false;

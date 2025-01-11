@@ -208,10 +208,10 @@ public class Clockwork_AI : MonoBehaviour
         }
         else
         {
-            if (GameManager.instance._isDay)
-                PatrolBase();
-            else
-                NightBehaviour();
+            //if (GameManager.instance._isDay)
+            PatrolBase();
+            //else
+            //NightBehaviour();
         }
         // Savaşçı durumundaki davranışlar
     }
