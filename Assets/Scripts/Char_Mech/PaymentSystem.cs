@@ -6,21 +6,19 @@ using DG.Tweening;
 
 public class PaymentSystem : MonoBehaviour
 {
-    [Header("Interaction")]
-    private bool can_interact = false;
+    [Header("Interaction")] private bool can_interact = false;
     private int current_slot = 0;
     private int building_slot_count;
     public List<GameObject> active_coins = new List<GameObject>();
-    private Clockwork_AI robots;
-    [SerializeField] bool isCoinsFalling = false;
+    private Clockwork_AI robots; [SerializeField] bool isCoinsFalling = false;
     [SerializeField] bool isCoinsRemoving = false;
     [SerializeField] private GameObject coin_prefab;
     [SerializeField] private float fill_speed;
     [SerializeField] private float drop_duration;
     [SerializeField] private float remove_duration;
     [SerializeField] GameObject carSprite;
-
     #region Coin Jobs
+
     private Building building_cs;
     private GameObject targetObject;
 

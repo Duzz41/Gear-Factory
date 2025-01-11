@@ -19,7 +19,6 @@ public class WaveSpawnner : MonoBehaviour
     public Wave[] waves;
     public Transform[] spawnPoint;
     //public Animator anim;
-    public TMP_Text waveNameText;
 
 
     private Wave currentWave;
@@ -40,7 +39,7 @@ public class WaveSpawnner : MonoBehaviour
                 if (canAnimate)
                 {
                     Debug.Log("Wave Complete");
-                    waveNameText.text = waves[currentWaveNumber + 1].waveName;
+                    //waveNameText.text = waves[currentWaveNumber + 1].waveName;
                     //anim.Play("WaveStart");
                     canAnimate = false;
                 }

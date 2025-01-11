@@ -11,7 +11,8 @@ public class DayNightCycle : MonoBehaviour
     public Light2D sun;
     public Light2D moon;
     [SerializeField] Gradient _gradient;
-
+    [SerializeField] GameObject coin;
+    [SerializeField] Transform gearSpawnPoint;
     public float dayLength = 180f; // Gün uzunluğu (saniye cinsinden)
     public float timeOfDay; // Gün içindeki zaman (0.0 - 1.0 arası)
 
@@ -121,9 +122,14 @@ public class DayNightCycle : MonoBehaviour
         }
         else // Gündüz
         {
+
             moon.gameObject.SetActive(false);
             if (activateLights)
             {
+                GameObject newGear = Instantiate(coin, gearSpawnPoint.position, Quaternion.identity);
+                GameObject newGear2 = Instantiate(coin, gearSpawnPoint.position, Quaternion.identity);
+                GameManager.instance.coins.Add(newGear2);
+                GameManager.instance.coins.Add(newGear);
                 ShowDayText();
                 sun.intensity = 1f;
 

@@ -50,7 +50,6 @@ public class PauseMenu : MonoBehaviour
         if (!isPaused)
         {
             pauseAnimator.ResetTrigger("Hide");
-            pauseMenuUI.SetActive(false);
         }
     }
 }

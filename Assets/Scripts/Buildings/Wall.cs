@@ -9,7 +9,6 @@ public class Wall : Building
     private bool isConstructed = false;
     public GameObject constructionSprite; // İnşaatta olan sprite
     public GameObject[] builtSprite;
-
     public Transform walls;
 
     public override void Build()
@@ -92,10 +91,15 @@ public class Wall : Building
         {
             GameManager.instance.attackableObjects.Remove(gameObject);
         }
+        price = 2;
+        constructionSprite.SetActive(true);
+        builtSprite[level - 1].SetActive(false);
+        builtSprite[level].SetActive(false);
+        level = 0;
 
         // Duvarı yok et
         Debug.Log("Wall Destroyed!");
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     public override void RedesignCoinPlaces()
