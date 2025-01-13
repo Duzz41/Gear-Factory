@@ -54,7 +54,7 @@ public class MiniGame : MonoBehaviour
 
     public void ActivateGame()
     {
-        slider.value = (float)Random.Range(0, 1f);
+        slider.value = (float)Random.Range(0.1f, 1f);
         traveling = true;
     }
 

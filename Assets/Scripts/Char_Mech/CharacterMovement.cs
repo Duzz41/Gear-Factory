@@ -86,7 +86,7 @@ public class CharacterMovement : MonoBehaviour
     scale.x *= -1; // X eksenini tersine çevir
     carSprite.transform.localScale = scale;
   }
-  
+
   void MiniGameForEnergy()
   {
     mini_game_canvas.gameObject.SetActive(false);
@@ -233,7 +233,7 @@ public class CharacterMovement : MonoBehaviour
   {
     if (context.started)
     {
-      if (energy > 0 && energy < 10)
+      if (energy > 0 && energy < 10 && isCarMoving == true)
       {
         current_speed = run_speed;
       }
