@@ -218,7 +218,7 @@ public class Clockwork_AI : MonoBehaviour
     Transform FindEnemyOrTrash()
     {
 
-        float closestDistance = 150f;
+        float closestDistance = 300f;
         foreach (GameObject trashs in GameManager.instance.gearTrashs)
         {
             if (trashs != null)
@@ -528,7 +528,7 @@ public class Clockwork_AI : MonoBehaviour
 
     void SetRandomBasePatrolPos()
     {
-        targetPosition = GetRandomPosition(baseTransform, 10f);
+        targetPosition = GetRandomPosition(baseTransform, 30f);
     }
     #endregion
     #region Used by all

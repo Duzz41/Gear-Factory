@@ -739,7 +739,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: To build the wall, you must give orders to the worker Clockworks.
+  m_text: To build the wall, you must give orders to the Worker Clockworks.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 005685fe6716bb74690d4be9050cec14, type: 2}
   m_sharedMaterial: {fileID: 6456566242589585695, guid: 005685fe6716bb74690d4be9050cec14, type: 2}

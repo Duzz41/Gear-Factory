@@ -10,6 +10,7 @@ public class PaymentSystem : MonoBehaviour
     private bool can_interact = false;
     private int current_slot = 0;
     private int building_slot_count;
+
     public List<GameObject> active_coins = new List<GameObject>();
     private Clockwork_AI robots;
     [SerializeField] bool isCoinsFalling = false;
@@ -19,6 +20,7 @@ public class PaymentSystem : MonoBehaviour
     [SerializeField] private float drop_duration;
     [SerializeField] private float remove_duration;
     [SerializeField] GameObject carSprite;
+    [SerializeField] GameObject spawnText;
 
     #region Coin Jobs
 
@@ -51,10 +53,14 @@ public class PaymentSystem : MonoBehaviour
             if (isInBuildingTrigger == false) // Eğer bir bina tetikleyicisindeysek
             {
                 // AI ile etkileşimde bulunma
-                targetObject = other.gameObject;
-                robots = targetObject.GetComponent<Clockwork_AI>();
-                can_interact = true;
+                //targetObject = other.gameObject;
+                // robots = targetObject.GetComponent<Clockwork_AI>();
+                //can_interact = true;
             }
+        }
+        if (other.gameObject.tag == "Spawn")
+        {
+            spawnText.SetActive(true);
         }
     }
 
@@ -80,8 +86,12 @@ public class PaymentSystem : MonoBehaviour
             if (isInBuildingTrigger) // Eğer bir bina tetikleyicisindeysek
             {
                 // AI ile etkileşimde bulunma
-                can_interact = false;
+                //can_interact = false;
             }
+        }
+        else if (other.gameObject.tag == "Spawn")
+        {
+            spawnText.SetActive(true);
         }
     }
     void StartCor(Building test)
@@ -103,18 +113,19 @@ public class PaymentSystem : MonoBehaviour
                 {
                     Debug.Log("Building cs not null");
                     //if (isCoinsFalling == false)
-                        FillCoinForBuilding();
+                    FillCoinForBuilding();
                 }
-                else if (robots != null)
-                {
-                    Debug.Log("Robot cs not null");
-                    FillCoinForAI();
-                }
+
             }
             if (CoinCollect.instance.coin_count == 0)
             {
                 StartCoroutine(DropCoin());
             }
+        }
+        if (isInBuildingTrigger == false)
+        {
+            Debug.Log("Robot cs not null");
+            FillCoinForAI();
         }
     }
     void FillCoinForBuilding()
@@ -232,7 +243,7 @@ public class PaymentSystem : MonoBehaviour
 
             }
             current_slot = 0;
-            
+
             StopCoroutine(DropCoin());
 
         }
@@ -274,7 +285,7 @@ public class PaymentSystem : MonoBehaviour
         if (context.performed)
         {
             Debug.Log("Interaction Key Pressed");
-            InvokeRepeating("FillCoin", 0.5f, 1f);
+            InvokeRepeating("FillCoin", 0.2f, 1f);
         }
         if (context.canceled)
         {

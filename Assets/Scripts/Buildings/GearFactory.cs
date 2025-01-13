@@ -1,9 +1,16 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 public class GearFactory : Building
 {
     private int level = 1;
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] Animator finalAnim;
 
+    void Start()
+    {
+        levelText.text = level.ToString() + " / 20";
+    }
 
     public override void Build()
     {
@@ -14,7 +21,8 @@ public class GearFactory : Building
     public override void Upgrade()
     {
         base.Upgrade();
-        level += 1;
+        level++;
+        levelText.text = level.ToString() + " / 20";
         GameManager.instance.factoryLevel = level;
         Debug.Log("Level: " + level);
         if (level == 19)
@@ -23,7 +31,7 @@ public class GearFactory : Building
         }
         else if (level == 20)
         {
-            price = 0;
+            finalAnim.SetTrigger("PlayFinal");
             //Kazanma ekranı
         }
         RedesignCoinPlaces();
