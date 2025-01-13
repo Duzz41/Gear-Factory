@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class MiniGame : MonoBehaviour
 {
 
@@ -28,7 +29,7 @@ public class MiniGame : MonoBehaviour
 
         if (traveling)
         {
-            float xPos = Mathf.PingPong(travel_speed * Time.time, 140);
+            float xPos = Mathf.PingPong(travel_speed * Time.time, 160);
             pointer.localPosition = new Vector2(xPos + start_pos.x, pointer.localPosition.y);
         }
 
@@ -36,49 +37,31 @@ public class MiniGame : MonoBehaviour
     public void MiniGameForEnergy()
     {
         traveling = false;
+        float xPosition = Mathf.Lerp(-80f, 80f, slider.value);
 
-        if (AreUIElementsOverlapping(handle, pointer))
+        if (pointer.localPosition.x <= xPosition && pointer.localPosition.x >= xPosition - 13f)
         {
             characterMovement_cs.energy = 20f;
-
-            Debug.Log("UI elementleri carpisiyor!");
+            Debug.Log("Değdi");
             characterMovement_cs.stopCar = false;
             AudioManager.instance.sfxSource.Stop();
         }
         else
         {
-            Debug.Log("UI elementleri carpisymior.");
+            Debug.Log("Değmedi");
             characterMovement_cs.stopCar = false;
         }
+
 
         this.gameObject.SetActive(false);
     }
 
     public void ActivateGame()
     {
-        slider.value = (float)Random.Range(0, 1f);
+        slider.value = (float)Random.Range(0.1f, 1f);
         traveling = true;
     }
 
-    // İki UI elementinin çarpışıp çarpışmadığını kontrol eden fonksiyon
-    public bool AreUIElementsOverlapping(RectTransform rect1, RectTransform rect2)
-    {
-        // UI elementlerinin dünya koordinatlarındaki dikdörtgen sınırlarını alıyoruz
-        Rect rect1World = GetWorldRect(rect1);
-        Rect rect2World = GetWorldRect(rect2);
 
-        // Dikdörtgenlerin çarpışıp çarpışmadığını kontrol ediyoruz
-        return rect1World.Overlaps(rect2World);
-    }
 
-    // Verilen RectTransform'un dünya koordinatlarında dikdörtgensel sınırlarını alır
-    public Rect GetWorldRect(RectTransform rectTransform)
-    {
-        Vector3[] corners = new Vector3[4];
-        rectTransform.GetWorldCorners(corners);
-
-        // Dünya koordinatlarıyla Rect oluşturuyoruz
-        Vector2 size = new Vector2(corners[2].x - corners[0].x, corners[2].y - corners[0].y);
-        return new Rect(corners[0], size);
-    }
 }
