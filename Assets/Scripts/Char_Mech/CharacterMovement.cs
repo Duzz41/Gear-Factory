@@ -233,7 +233,7 @@ public class CharacterMovement : MonoBehaviour
   {
     if (context.started)
     {
-      if (energy > 0 && energy < 10 && isCarMoving)
+      if (energy > 0 && energy < 10 && !mini_game_canvas.gameObject.activeSelf)
       {
         current_speed = run_speed;
       }
@@ -243,7 +243,7 @@ public class CharacterMovement : MonoBehaviour
   }
   public void Energy(InputAction.CallbackContext context)
   {
-    if (context.performed)
+    if (context.started)
     {
       mini_game.MiniGameForEnergy();
     }
