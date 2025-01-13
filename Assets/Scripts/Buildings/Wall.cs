@@ -10,6 +10,7 @@ public class Wall : Building
     public GameObject constructionSprite; // İnşaatta olan sprite
     public GameObject[] builtSprite;
     public Transform walls;
+    [SerializeField] GameObject destroyedWall;
 
     public override void Build()
     {
@@ -89,14 +90,37 @@ public class Wall : Building
     {
         if (GameManager.instance.attackableObjects.Contains(gameObject))
         {
+
             GameManager.instance.attackableObjects.Remove(gameObject);
         }
-        price = 2;
-        constructionSprite.SetActive(true);
-        builtSprite[level - 1].SetActive(false);
-        builtSprite[level].SetActive(false);
+        /*
         level = 0;
-        health = 0;
+        health = 3;
+        price = 1;
+        constructionSprite.SetActive(true);
+        for (int i = 0; i < builtSprite.Length; i++)
+            builtSprite[i].SetActive(false);
+        */
+        //destroyedWall = gameObject;
+
+        // Duvarı yok et
+
+        GameObject NewWall = Instantiate(destroyedWall, destroyedWall.transform.position, Quaternion.identity);
+
+        NewWall.transform.parent = destroyedWall.transform.parent;
+        Wall NewWallcss = NewWall.GetComponent<Wall>();
+
+        NewWallcss.level = 0;
+        NewWallcss.health = 3;
+        NewWallcss.price = 1;
+        NewWallcss.constructionSprite.SetActive(true);
+        for (int i = 0; i < builtSprite.Length; i++)
+            NewWallcss.builtSprite[i].SetActive(false);
+        RedesignCoinPlaces();
+        Destroy(gameObject);
+
+        // En basit haliyle yeniden oluştur
+
         // Duvarı yok et
         Debug.Log("Wall Destroyed!");
         //Destroy(gameObject);

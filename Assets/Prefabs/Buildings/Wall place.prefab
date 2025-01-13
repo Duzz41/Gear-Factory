@@ -63,6 +63,7 @@ MonoBehaviour:
   - {fileID: 8355130577850725245}
   - {fileID: 4332352218995412065}
   walls: {fileID: 53151141085391574}
+  destroyedWall: {fileID: 349879803719455116}
 --- !u!61 &3705333622213433855
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -102,7 +102,7 @@ public class PaymentSystem : MonoBehaviour
                 if (building_cs != null)
                 {
                     Debug.Log("Building cs not null");
-                    if (isCoinsFalling == false)
+                    //if (isCoinsFalling == false)
                         FillCoinForBuilding();
                 }
                 else if (robots != null)
@@ -227,11 +227,12 @@ public class PaymentSystem : MonoBehaviour
                     active_coins[0].GetComponent<Rigidbody2D>().simulated = true;
                     GameManager.instance.coins.Add(active_coins[0]);
                     active_coins.RemoveAt(0);
+                    isCoinsFalling = false;
                 }
 
             }
             current_slot = 0;
-            isCoinsFalling = false;
+            
             StopCoroutine(DropCoin());
 
         }

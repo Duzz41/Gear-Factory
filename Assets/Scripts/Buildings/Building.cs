@@ -41,29 +41,36 @@ public class Building : MonoBehaviour
     }
 
     public virtual void RedesignCoinPlaces()
+{
+    // Debug.Log("Coin places redesigned!");
+    if (content == null)
     {
-        // Debug.Log("Coin places redesigned!");
-        if (content == null)
-        {
-            Debug.LogError("Content is not assigned!");
-            return;
-        }
+        Debug.LogError("Content is not assigned!");
+        return;
+    }
 
-        int new_coins_count = price - content.childCount;
+    // Önce mevcut coin yerlerini temizle
+    foreach (Transform coinHolder in coin_holders)
+    {
+        Destroy(coinHolder.gameObject);
+    }
+    coin_holders.Clear(); // Listeyi temizle
 
+    // Yeni coin sayısını hesapla
+    int new_coins_count = price - content.childCount;
 
-        if (new_coins_count < 0)
+    if (new_coins_count < 0)
+    {
+        Destroy(my_canvas);
+    }
+    else
+    {
+        for (int i = 0; i < new_coins_count; i++)
         {
-            Destroy(my_canvas);
-        }
-        else
-        {
-            for (int i = 0; i < new_coins_count; i++)
-            {
-                GameObject added_coin_place = Instantiate(coin_place_prefab, content);
-                coin_holders.Add(added_coin_place.transform);
-            }
+            GameObject added_coin_place = Instantiate(coin_place_prefab, content);
+            coin_holders.Add(added_coin_place.transform);
         }
     }
+}
 
 }
