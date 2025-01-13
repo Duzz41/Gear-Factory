@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> constBuildings = new List<GameObject>();
     public ParticleSystem sandEffect;
     public bool _isDay;
+    public int _dayCount = 0;
     void Awake()
     {
         if (instance == null)
@@ -67,7 +68,7 @@ public class GameManager : MonoBehaviour
     }
     public void SpawnHumans()
     {
-
+        
     }
     private int CountAIAtSpawn(Transform spawn)
     {

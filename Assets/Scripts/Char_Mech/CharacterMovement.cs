@@ -86,6 +86,7 @@ public class CharacterMovement : MonoBehaviour
     scale.x *= -1; // X eksenini tersine çevir
     carSprite.transform.localScale = scale;
   }
+  
   void MiniGameForEnergy()
   {
     mini_game_canvas.gameObject.SetActive(false);

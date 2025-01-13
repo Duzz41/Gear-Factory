@@ -45,6 +45,10 @@ public class Health : MonoBehaviour
             {
                 GameManager.instance.humans.Remove(gameObject);
             }
+            if (gameObject.tag == "AI" || gameObject.tag == "Building")
+            {
+                GameManager.instance.attackableObjects.Remove(gameObject);
+            }
             Destroy(gameObject);
 
         }

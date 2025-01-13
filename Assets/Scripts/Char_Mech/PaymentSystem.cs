@@ -6,17 +6,20 @@ using DG.Tweening;
 
 public class PaymentSystem : MonoBehaviour
 {
-    [Header("Interaction")] private bool can_interact = false;
+    [Header("Interaction")]
+    private bool can_interact = false;
     private int current_slot = 0;
     private int building_slot_count;
     public List<GameObject> active_coins = new List<GameObject>();
-    private Clockwork_AI robots; [SerializeField] bool isCoinsFalling = false;
+    private Clockwork_AI robots;
+    [SerializeField] bool isCoinsFalling = false;
     [SerializeField] bool isCoinsRemoving = false;
     [SerializeField] private GameObject coin_prefab;
     [SerializeField] private float fill_speed;
     [SerializeField] private float drop_duration;
     [SerializeField] private float remove_duration;
     [SerializeField] GameObject carSprite;
+
     #region Coin Jobs
 
     private Building building_cs;
@@ -63,12 +66,14 @@ public class PaymentSystem : MonoBehaviour
             var test = other.gameObject.GetComponent<Building>();
             if (building_cs == test)
             {
-                can_interact = false;
-            }
-            Debug.Log("ANANDANNANA");
 
-            building_cs = null;
-            StartCor(test);
+                can_interact = false;
+                if (active_coins.Count > 0)
+                {
+                    StartCoroutine(DropCoin());
+                }
+                StartCor(test);
+            }
         }
         else if (other.gameObject.tag == "AI")
         {
@@ -122,19 +127,24 @@ public class PaymentSystem : MonoBehaviour
             CoinCollect.instance.coin_count -= 1;
 
             GameObject coin = Instantiate(coin_prefab, transform.position + new Vector3(0, 2f, 0), Quaternion.identity);
+            active_coins.Add(coin);
+
             coin.transform.DOMove(slot_position, fill_speed).OnComplete(() =>
             {
                 coin.GetComponent<Rigidbody2D>().simulated = false;
                 CoinCollect.instance.RemoveToCoinFromList(null);
 
+
             });
 
-            active_coins.Add(coin);
-
-            if (current_slot == building_slot_count)
+            if (can_interact == true)
             {
-                StartCoroutine(RemoveCoinOnComplete());
+                if (current_slot == building_slot_count)
+                {
+                    StartCoroutine(RemoveCoinOnComplete());
+                }
             }
+
         }
     }
     void FillCoinForAI()
@@ -164,6 +174,7 @@ public class PaymentSystem : MonoBehaviour
     {
         Debug.Log("Payment Done");
         Debug.Log(targetObject.name);
+        isCoinsFalling = false;
         targetObject.GetComponent<Building>().Upgrade();
     }
     IEnumerator RemoveCoinOnComplete()
@@ -172,17 +183,33 @@ public class PaymentSystem : MonoBehaviour
         CancelInvoke("FillCoin");
         yield return new WaitForSeconds(remove_duration);
 
+        // Eğer active_coins listesi boşsa, işlemi durdur
+        if (active_coins.Count == 0)
+        {
+            isCoinsRemoving = false;
+            yield break; // Coroutine'i sonlandır
+        }
+
         for (int i = active_coins.Count - 1; i >= 0; i--)
         {
-            Destroy(active_coins[i]);
+            if (active_coins[i] != null) // Eğer nesne null değilse
+            {
+                Destroy(active_coins[i]);
+            }
             active_coins.RemoveAt(i);
         }
+
         current_slot = 0;
         isCoinsRemoving = false;
-        PaymentDone();
-        building_slot_count = building_cs.price;  //Binanın price değeri değiştiği için bu değeri tekrar güncelliyoruz
-        StopCoroutine(RemoveCoinOnComplete());
+
+        // Eğer building_cs null değilse, ödeme işlemini tamamla
+        if (building_cs != null)
+        {
+            PaymentDone();
+            building_slot_count = building_cs.price;  // Binanın price değeri değiştiği için bu değeri tekrar güncelliyoruz
+        }
     }
+
     IEnumerator DropCoin()
     {
         CancelInvoke("FillCoin");
@@ -196,6 +223,7 @@ public class PaymentSystem : MonoBehaviour
                 yield return new WaitForSeconds(drop_duration);
                 if (active_coins.Count != 0)
                 {
+                    Debug.Log("düşşşş");
                     active_coins[0].GetComponent<Rigidbody2D>().simulated = true;
                     GameManager.instance.coins.Add(active_coins[0]);
                     active_coins.RemoveAt(0);
@@ -205,10 +233,9 @@ public class PaymentSystem : MonoBehaviour
             current_slot = 0;
             isCoinsFalling = false;
             StopCoroutine(DropCoin());
+
         }
-
     }
-
 
     #endregion
     IEnumerator ControlBuildingUI(Building test)
@@ -223,6 +250,7 @@ public class PaymentSystem : MonoBehaviour
             if (test != null)
             {
                 test.my_canvas.gameObject.SetActive(false);
+                building_cs = null;
                 //Debug.Log(test.name);
             }
 
@@ -256,17 +284,17 @@ public class PaymentSystem : MonoBehaviour
     {
         CancelInvoke("FillCoin");
 
-        if (active_coins.Count == building_slot_count)
+        // Eğer aktif paralar varsa, DropCoin coroutine'ini başlat
+        if (active_coins.Count > 0)
+        {
+            StartCoroutine(DropCoin());
+        }
+        else if (active_coins.Count == building_slot_count)
         {
             if (!isCoinsRemoving)
             {
-                StartCoroutine(RemoveCoinOnComplete());
+                StartCoroutine(DropCoin());
             }
-        }
-        else if (active_coins.Count > 0)
-        {
-            StartCoroutine(DropCoin());
-
         }
     }
     #endregion

@@ -51,14 +51,15 @@ public class CoinCollect : MonoBehaviour
     {
         if (trash != null)
         {
-            coins.Remove(trash);
             Destroy(trash);
+            coins.Remove(trash);
+            
             coin_count -= 1;
         }
         else
         {
-            Destroy(coins[coins.Count - 1]);
-            coins.RemoveAt(coins.Count - 1);
+            Destroy(coins[0]);
+            coins.RemoveAt(0);
 
         }
     }
