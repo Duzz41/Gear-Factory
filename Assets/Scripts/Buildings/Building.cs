@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -41,36 +43,32 @@ public class Building : MonoBehaviour
     }
 
     public virtual void RedesignCoinPlaces()
-{
-    // Debug.Log("Coin places redesigned!");
-    if (content == null)
     {
-        Debug.LogError("Content is not assigned!");
-        return;
-    }
+        // Debug.Log("Coin places redesigned!");
+        if (content == null)
+        {
+            Debug.LogError("Content is not assigned!");
+            return;
+        }
 
-    // Önce mevcut coin yerlerini temizle
-    foreach (Transform coinHolder in coin_holders)
-    {
-        Destroy(coinHolder.gameObject);
-    }
-    coin_holders.Clear(); // Listeyi temizle
+        // Önce mevcut coin yerlerini temizle
+        foreach (Transform coinHolder in coin_holders)
+        {
+            Destroy(coinHolder.gameObject);
+        }
+        coin_holders.Clear(); // Listeyi temizle
 
-    // Yeni coin sayısını hesapla
-    int new_coins_count = price - content.childCount;
+        // Yeni coin sayısını hesapla
+        // int new_coins_count = price - content.childCount;
 
-    if (new_coins_count < 0)
-    {
-        Destroy(my_canvas);
-    }
-    else
-    {
-        for (int i = 0; i < new_coins_count; i++)
+
+        for (int i = 0; i < price; i++)
         {
             GameObject added_coin_place = Instantiate(coin_place_prefab, content);
             coin_holders.Add(added_coin_place.transform);
         }
+
+
     }
-}
 
 }

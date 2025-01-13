@@ -93,31 +93,19 @@ public class Wall : Building
 
             GameManager.instance.attackableObjects.Remove(gameObject);
         }
-        /*
+
         level = 0;
-        health = 3;
         price = 1;
+        health = 10;
+        //price değeri arttır
+        RedesignCoinPlaces();
+        //Sprite'ı Değiştir
         constructionSprite.SetActive(true);
         for (int i = 0; i < builtSprite.Length; i++)
             builtSprite[i].SetActive(false);
-        */
-        //destroyedWall = gameObject;
 
-        // Duvarı yok et
 
-        GameObject NewWall = Instantiate(destroyedWall, destroyedWall.transform.position, Quaternion.identity);
 
-        NewWall.transform.parent = destroyedWall.transform.parent;
-        Wall NewWallcss = NewWall.GetComponent<Wall>();
-
-        NewWallcss.level = 0;
-        NewWallcss.health = 3;
-        NewWallcss.price = 1;
-        NewWallcss.constructionSprite.SetActive(true);
-        for (int i = 0; i < builtSprite.Length; i++)
-            NewWallcss.builtSprite[i].SetActive(false);
-        RedesignCoinPlaces();
-        Destroy(gameObject);
 
         // En basit haliyle yeniden oluştur
 
