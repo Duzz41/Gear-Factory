@@ -233,7 +233,7 @@ public class CharacterMovement : MonoBehaviour
   {
     if (context.started)
     {
-      if (energy > 0 && energy < 10 && isCarMoving == true)
+      if (energy > 0 && energy < 10 && isCarMoving)
       {
         current_speed = run_speed;
       }

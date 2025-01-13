@@ -7,8 +7,8 @@ public class MiniGame : MonoBehaviour
 {
 
     [SerializeField] private CharacterMovement characterMovement_cs;
-    public RectTransform uiElement1; // Birinci UI elementi
-    public RectTransform uiElement2; // İkinci UI elementi
+    public RectTransform handle; // Birinci UI elementi
+    public RectTransform pointer; // İkinci UI elementi
 
     [SerializeField] private Slider slider;
     [SerializeField] private float travel_speed;
@@ -20,7 +20,7 @@ public class MiniGame : MonoBehaviour
 
     void Start()
     {
-        start_pos = uiElement2.localPosition;
+        start_pos = pointer.localPosition;
         EventDispatcher.RegisterFunction("ActivateGame", ActivateGame);
     }
     void Update()
@@ -29,13 +29,15 @@ public class MiniGame : MonoBehaviour
         if (traveling)
         {
             float xPos = Mathf.PingPong(travel_speed * Time.time, 140);
-            uiElement2.localPosition = new Vector2(xPos + start_pos.x, uiElement2.localPosition.y);
+            pointer.localPosition = new Vector2(xPos + start_pos.x, pointer.localPosition.y);
         }
 
     }
     public void MiniGameForEnergy()
     {
-        if (AreUIElementsOverlapping(uiElement1, uiElement2))
+        traveling = false;
+
+        if (AreUIElementsOverlapping(handle, pointer))
         {
             characterMovement_cs.energy = 20f;
 
@@ -48,7 +50,7 @@ public class MiniGame : MonoBehaviour
             Debug.Log("UI elementleri carpisymior.");
             characterMovement_cs.stopCar = false;
         }
-        traveling = false;
+
         this.gameObject.SetActive(false);
     }
 
